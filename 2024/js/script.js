@@ -48,7 +48,7 @@ function addRow(number, name, score, twitterLink) {
 }
 
 function colorListItems(){
-    listItems = d3.selectAll("li")._groups[0] // select all list items
+    listItems = document.getElementById("Leaderboard").querySelectorAll("li"); // select all list items
 
     colors = (jsgradient.generateGradient('#004d99', '#4da6ff', list.length)); // generate colors list
 
@@ -73,7 +73,7 @@ function readData(){ // reads csv, save all to a dictionary for later use
         colorListItems(); // color each list item
         document.getElementById("aggregate").style.backgroundColor = "#008b8b"; // make aggregate row unique
 
-        d3.selectAll("li").on("mouseover", function() { // on li mouse over, show predictions div
+        d3.select("#Leaderboard").selectAll("li").on("mouseover", function() { // on li mouse over, show predictions div
             
             if (IsMobileCard()){
                 return;
@@ -118,8 +118,7 @@ function readData(){ // reads csv, save all to a dictionary for later use
                 document.getElementById("playerPredictions").style.visibility = 'visible';
             }
             
-        });
-        d3.selectAll("li").on("mouseout", function() { 
+        }).on("mouseout", function() { 
             d3.select(this).select('mark')["_groups"][0][0].style.textDecoration = "none";
         });
 
@@ -444,3 +443,6 @@ jsgradient = {
 
 }
 
+$( function() {
+    $( "#sortable" ).sortable();
+  } );

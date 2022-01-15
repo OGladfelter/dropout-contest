@@ -11,14 +11,13 @@ body {
   min-height: 450px;
   height: 200vh;
   margin: 0;
-  background: linear-gradient(to right,  #333399, #8181df, #333399);
+  background: #8181df;
   color: #fff;
   font-family: 'Open Sans', sans-serif;
 }
 
 h1 {
   font-size: 22px;
-  color: #e1e1e1;
   padding: 12px 13px 18px;
 }
 
@@ -67,6 +66,42 @@ h1 {
   from {opacity: 0;}
   to {opacity: 1;}
 }
+
+#Survey {
+  text-align: center;
+}
+
+.sortable { 
+  list-style-type: none; 
+  margin: 0; 
+  padding: 0; 
+  width: 40%; 
+  display: inline-block;
+}
+.sortable li {
+  margin: 10px; 
+  padding: 10px; 
+  font-size: 20px; 
+  background: white;
+  color: black;
+  border: black 1px solid;
+}
+.sortableGuide { 
+  list-style-type: none; 
+  margin: 0; 
+  padding: 0; 
+  display: inline-block;
+}
+.sortableGuide li {
+  margin: 10px; 
+  padding: 10px; 
+  font-size: 20px; 
+  background: none;
+  color: black;
+  text-align: right;
+  border: 1px transparent solid;
+}
+
 
 /*--------------------
 Leaderboard

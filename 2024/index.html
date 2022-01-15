@@ -13,7 +13,7 @@
 
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <meta charset="UTF-8">
-  <title>Dropout Predictions Leaderboard</title>
+  <title>2024 Republican Primary Drop Out Prediction Competition</title>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -47,10 +47,11 @@
   <!-- Add icon library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <script src="https://d3js.org/d3.v4.0.0-alpha.40.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 </head>
 <body>
-
-<script src="https://d3js.org/d3.v4.0.0-alpha.40.min.js"></script>
 
 <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'Survey')" id="surveyButton">Survey</button>
@@ -59,8 +60,39 @@
 </div>
 
 <div id="Survey" class="tabcontent">
-  <h3>London</h3>
-  <p>London is the capital city of England.</p>
+  <h1 style="font-size:34px;">2024 Republican Primary Drop Out Prediction</h1>
+  <ul class="sortableGuide">
+    <li class="ui-state-default">2024 Republican Nominee</li>
+    <li class="ui-state-default">Last to drop out</li>
+    <li class="ui-state-default">&nbsp;</li>
+    <li class="ui-state-default">&nbsp;</li>
+    <li class="ui-state-default">&nbsp;</li>
+    <li class="ui-state-default">&nbsp;</li>
+    <li class="ui-state-default">&nbsp;</li>
+    <li class="ui-state-default">&nbsp;</li>
+    <li class="ui-state-default">&nbsp;</li>
+    <li class="ui-state-default">&nbsp;</li>
+    <li class="ui-state-default">&nbsp;</li>
+    <li class="ui-state-default">&nbsp;</li>
+    <li class="ui-state-default">Second to drop out</li>
+    <li class="ui-state-default">First to drop out</li>
+  </ul>
+  <ul id="sortable" class="sortable">
+    <li class="ui-state-default">Joe Biden</li>
+    <li class="ui-state-default">Bernie Sanders</li>
+    <li class="ui-state-default">Tulsi Gabbard</li>
+    <li class="ui-state-default">Elizabeth Warren</li>
+    <li class="ui-state-default">Michael Bloomberg</li>
+    <li class="ui-state-default">Amy Klobuchar</li>
+    <li class="ui-state-default">Pete Buttigieg</li>
+    <li class="ui-state-default">Tom Steyer</li>
+    <li class="ui-state-default">Deval Patrick</li>
+    <li class="ui-state-default">Michael Bennet</li>
+    <li class="ui-state-default">Andrew Yang</li>
+    <li class="ui-state-default">John Delaney</li>
+    <li class="ui-state-default">Cory Booker</li>
+    <li class="ui-state-default">Marianne Williamson</li>
+  </ul>
 </div>
 
 <div id="Leaderboard" class="tabcontent">
