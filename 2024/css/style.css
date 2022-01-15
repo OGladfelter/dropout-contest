@@ -1,0 +1,384 @@
+/*--------------------
+Body
+--------------------*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 450px;
+  height: 200vh;
+  margin: 0;
+  background: linear-gradient(to right,  #333399, #8181df, #333399);
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+  font-size: 22px;
+  color: #e1e1e1;
+  padding: 12px 13px 18px;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
+}
+
+.tabcontent {
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/*--------------------
+Leaderboard
+--------------------*/
+.leaderboard {
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-75%, -50%);
+  width: 285px;
+  height: 408px;
+  background: linear-gradient(to bottom, #3a404d, #181c26);
+  border-radius: 10px;
+  box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
+}
+
+.leaderboard ol {
+  counter-reset: leaderboard;
+}
+.leaderboard ol li {
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+  counter-increment: leaderboard;
+  padding: 18px 10px 18px 50px;
+  cursor: pointer;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transform: translateZ(0) scale(1, 1);
+          transform: translateZ(0) scale(1, 1);
+}
+.leaderboard ol li::before {
+  content: counter(leaderboard);
+  position: absolute;
+  z-index: 2;
+  top: 15px;
+  left: 15px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  color: #01019c;
+  background: #fff;
+  border-radius: 20px;
+  text-align: center;
+}
+.leaderboard ol li mark {
+  position: absolute;
+  font-size: 18px;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 18px 10px 18px 50px;
+  margin: 0;
+  background: none;
+  color: #fff;
+}
+.leaderboard ol li mark.special {
+  position: absolute;
+  font-size: 17px;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 18px 10px 18px 50px;
+  margin: 0;
+  background: none;
+  color: #fff;
+  font-style: italic;
+}
+
+.leaderboard ol li a {
+  position: absolute;
+  font-size: 18px;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 18px 10px 18px 50px;
+  margin: 0;
+  background: none;
+  color: #fff;
+  text-decoration: none;
+}
+
+.leaderboard ol li small {
+  position: relative;
+  z-index: 2;
+  display: block;
+  text-align: right;
+}
+.leaderboard ol li::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #181c26;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
+  transition: all .3s ease-in-out;
+  opacity: 0;
+}
+
+
+.leaderboard ol li {
+  background: #4da6ff;
+  cursor: default;
+}
+
+.leaderboard ol li:hover {
+  z-index: 1;
+  overflow: visible;
+}
+
+.leaderboard ol li:hover::after {
+  opacity: 1;
+  -webkit-transform: scaleX(1.06) scaleY(1.03);
+          transform: scaleX(1.06) scaleY(1.03);
+}
+.leaderboard ol li:hover mark::before, .leaderboard ol li:hover mark::after {
+  opacity: 1;
+  transition: all .35s ease-in-out;
+}
+
+mark.header{
+  background-color: #3a404d;
+}
+
+
+/*--------------------
+Predctions Box
+--------------------*/
+
+.predictions {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 285px;
+  background: linear-gradient(to bottom, #3a404d, #181c26);
+  border-radius: 10px;
+  box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
+  visibility: hidden;
+}
+
+
+.predictions p {
+  /* text-align: center; */
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
+
+th, td {
+  padding: 5px;
+  text-align: center;
+}
+
+
+/*--------------------
+Instructions Box -- border color options: #333399, #8181df, 
+--------------------*/
+.instructions {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 285px;
+  background: #181c26;
+  border-radius: 10px;
+  box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
+  visibility: visible;
+  cursor: pointer;
+  border: 3px #333399 solid;
+  z-index: 2;
+}
+
+
+/*--------------------
+Analysis Box
+--------------------*/
+
+.analysis {
+  position: fixed;
+  top: 50%;
+  left: 75%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-25%, -50%);
+  width: 285px;
+  height: 500px;
+  background: linear-gradient(to bottom, #3a404d, #181c26);
+  border-radius: 10px;
+  box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
+  overflow: auto;
+  text-align: center;
+}
+
+.analysis img{
+  padding: 10px;
+}
+
+.analysis ul {
+  text-align: left;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
+
+.analysis p {
+  text-align: left;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
+
+::-webkit-scrollbar {
+  width: 13px;
+}
+.analysis::-webkit-scrollbar {
+  width: 11px;
+}
+::-webkit-scrollbar-track {
+  background: #181c26;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG) ;
+  border-radius: 10px;
+  border: 2px solid #8181df;
+}
+
+/* collapsible */
+.collapsible {
+  background-color: #181c26;
+  color: #e1e1e1;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 22px;
+  text-align: center; 
+  font-weight: bold; 
+  margin-top: 0px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.active, .collapsible:hover {
+  background-color: #3a404d;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: #e1e1e1;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.collapsible.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-out;
+  background: linear-gradient(to bottom, #3a404d, #181c26);
+}
+
+/*--------------------
+Mobile
+--------------------*/
+
+@media screen and (max-width: 600px) {
+  .leaderboard {
+    position: absolute;
+    /* top: 1000px; */
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 5%;
+    margin-top: 70%;
+    -webkit-transform: translate(0%, 0%);
+          transform: translate(0%, 0%);
+  }
+
+  .analysis {
+    margin-top: 5%;
+    position: static;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    -webkit-transform: translate(0%, 0%);
+          transform: translate(0%, 0%);
+  }
+
+  .predictions {
+    visibility: hidden;
+    z-index: -1;
+  }
+
+  .instructions {
+    visibility: hidden;
+  }
+}

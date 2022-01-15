@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146824308-1"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-146824308-1');
+  </script>
+
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta charset="UTF-8">
+  <title>Dropout Predictions Leaderboard</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <!-- Favicons -->
+	<link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+    <link rel="manifest" href="../favicon/site.webmanifest">
+
+  <!-- Facebook Opengraph -->
+  <meta property="og:url" content="https://cultureplot.com/dem-drop-out-contest/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="2020 Democratic Primary Drop Out Predictions Leaderboard" />
+  <meta property="og:description" content="Who Will The Nomination? And More Importantly...Who Will Win The iPad?!"/>
+
+  <meta property="og:image" content="http://cultureplot.com/img/leaderboardPicture.png" />
+  <meta property="og:image:alt" content="2020 Dem Drop Out Predictions Leaderboard" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="677" />
+  <meta property="og:image:height" content="583" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="http://cultureplot.com/img/leaderboardPicture.png" />
+  <meta name="twitter:image:alt" content="2020 Dem Drop Out Predictions Leaderboard" />
+  <meta name="twitter:description" content="Who Will The Nomination? And More Importantly...Who Will Win The iPad?!"/>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'><link rel="stylesheet" href="css/style.css">
+  <!-- Add icon library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+<script src="https://d3js.org/d3.v4.0.0-alpha.40.min.js"></script>
+
+<!-- <div id="banner" class="navbar">
+  <a href="https://cultureplot.com">Cultureplot</a>
+</div> -->
+
+
+<!-- partial:index.partial.html -->
+<div class="leaderboard">
+  <h1 style='text-align: center; font-weight: bold;'>Leaderboard</h1>
+  <span>
+    <h3 style='display:inline; margin-left: 5%;'>Player Name</h3>
+    <h3 style='float: right; margin-right: 5%;'>Accuracy %</h3>
+  </span>
+  <h4 style='color: #3a404d'>-</h4>
+  <ol id="orderedList"></ol>
+</div>
+<!-- partial -->
+
+<!-- partial:index.partial.html -->
+<div id="instructions" class="instructions">
+  <p style='text-align: right; margin-right: 5%; margin-top: 5%;'>⦻</p>
+  <h1 style="text-align: center; font-weight: bold;">Welcome!</h1>
+  <p style="margin: 5%; font-size: 18px;">🡄🡄🡄 Place your cursor over any player's name to see their predictions</p>
+  <p style="margin: 5%; font-size: 18px;">Scroll down in the right box for contest resources and more 🡆🡆🡆</p>
+  <p style="margin: 5%; font-size: 18px;">Click this box to hide it</p>
+</div>
+
+<!-- partial:index.partial.html -->
+<div id="aggregatePredictions" class="predictions">
+    <h1 style='text-align: center; font-weight: bold;'>Average Prediction</h1>
+    <p>This is not any one player. Rather, it is the average of all players. For many questions, the average of several different guesses is often the most accurate, so beating the <i>Wisdom of the collective</i> might be tough!</p>
+    <p>Here’s the aggregated drop out order:</p>
+
+    <table style="width:90%; margin: auto;">
+      <tr>
+        <td>Joe Biden</td>
+        <td>Winner</td>
+      </tr> 
+      <tr>
+        <td>Elizabeth Warren</td>
+      </tr> 
+      <tr>
+        <td>Bernie Sanders</td>
+      </tr>
+      <tr>
+        <td>Pete Buttigieg</td>
+      </tr>
+      <tr>
+        <td>Michael Bloomberg</td>
+      </tr> 
+      <tr>
+        <td>Andrew Yang</td>
+      </tr>
+      <tr>
+        <td>Amy Klobuchar</td>
+      </tr>   
+      <tr>
+        <td>Tulsi Gabbard</td>
+      </tr>
+      <tr>
+        <td>Tom Steyer</td>
+      </tr>
+      <tr>
+        <td>Cory Booker</td>
+      </tr>
+      <tr>
+        <td>Marianne Williamson</td>
+      </tr>
+      <tr>
+        <td>John Delaney</td>
+      </tr>
+      <tr>
+        <td>Deval Patrick</td>
+      </tr>
+      <tr>
+        <td>Michael Bennet</td>
+        <td>1st drop</td>
+      </tr>
+    </table>
+</div>
+<!-- partial -->
+
+<!-- <p style="position: fixed; text-anchor: middle; left: 50%; top: 10%;">Hover &#8681</p> -->
+
+<!-- partial:index.partial.html -->
+<div id="playerPredictions" class="predictions">
+    <h1 id="playerHeader" style='text-align: center; font-weight: bold;'>Prediction</h1>
+
+    <table id="playerTable" style="width:90%; margin: auto;">
+      <tr>
+        <td id="winner" style="font-weight:bold">Joe Biden</td>
+        <td>Winner</td>
+      </tr>
+      <tr>
+        <td id="13thDrop">Elizabeth Warren</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="12thDrop">Bernie Sanders</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="11thDrop">Pete Buttigieg</td>
+        <td></td>
+      </tr>        
+      <tr>
+        <td id="10thDrop">Michael Bloomberg</td>
+        <td></td>
+      </tr>   
+      <tr>
+        <td id="9thDrop">Andrew Yang</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="8thDrop">Tulsi Gabbard</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td  id="7thDrop">Amy Klobuchar</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="6thDrop">Tom Steyer</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="5thDrop">Cory Booker</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="4thDrop">Marianne Williamson</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="3rdDrop">John Delaney</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="2ndDrop">Deval Patrick</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="1stDrop">Michael Bennet</td>
+        <td>1st drop</td>
+      </tr>
+    </table>
+</div>
+<!-- partial -->
+
+<!-- partial:index.partial.html -->
+<div class="analysis">
+  <h1 style='text-align: center; font-weight: bold;'>Contest Hosts</h1>
+  <a href="https://cultureplot.com/" target="_blank"><img src="https://pbs.twimg.com/profile_images/1167532065191026689/59AUzgaI_400x400.jpg" style="width:100px;height:100px;"></a>
+  <a href="https://bellwetheranalytics.com/" target="_blank"><img src="https://media.licdn.com/dms/image/C4D0BAQHxIW7fZH0DHw/company-logo_200_200/0?e=2159024400&v=beta&t=vYaJzzGwYSdOwHYJ--z36D3-RpBmAjNNrDEPJMZRvSE" style="width:100px;height:100px;"></a>
+
+  <h1 style='text-align: center; font-weight: bold; margin-top: 30px;'>Last Updated</h1>
+  <h4 style='text-align: center;'>April 8, 2020</h4>
+
+  <h1 style='text-align: center; font-weight: bold; margin-top: 30px;'>🏆 Prizes 🏆</h1>
+  <h4 style='text-align: center; margin-bottom: 10px;'>1st Place: Apple iPad</h4>
+  <h4 style='text-align: center; margin-bottom: 10px;'>2nd Place: $100</h4>
+  <h4 style='text-align: center;'>3rd Place: $50</h4>
+
+  <button class="collapsible" style='margin-top: 30px;'>Bonus Content</button>
+  <div class="content">
+    <a href="../heatmap" target="_blank"><img width = "100%" src="heatmapPicture.png" alt="all drop out predictions in one chart"></a>
+    <a href="../contest-scores-over-time" target="_blank"><img width = "100%" src="timeline_thumbnail_2.png" alt="see how players have moved up and down in rank each round"></a>
+    <a href="../contest-score-calc" target="_blank"><img width = "100%" src="../img/sankeyWinScope.png" alt="interactive win scope calc, based on remaining possible outcomes"></a>
+  </div>
+
+  <button class="collapsible">Actual Order</button>
+  <div class="content">
+    <table style="width:90%; margin: auto;">
+      <tr>
+        <td>Joe Biden</td>
+        <td>Winner</td>
+      </tr> 
+      <tr>
+        <td>Bernie Sanders</td>
+      </tr> 
+      <tr>
+        <td>Tulsi Gabbard</td>
+      </tr>
+      <tr>
+        <td>Elizabeth Warren</td>
+      </tr>
+      <tr>
+        <td>Michael Bloomberg</td>
+      </tr> 
+      <tr>
+        <td>Amy Klobuchar</td>
+      </tr>
+      <tr>
+        <td>Pete Buttigieg</td>
+      </tr>   
+      <tr>
+        <td>Tom Steyer</td>
+      </tr>
+      <tr>
+        <td>Deval Patrick</td>
+      </tr>
+      <tr>
+        <td>Michael Bennet</td>
+      </tr>
+      <tr>
+        <td>Andrew Yang</td>
+      </tr>
+      <tr>
+        <td>John Delaney</td>
+      </tr>
+      <tr>
+        <td>Cory Booker</td>
+      </tr>
+      <tr>
+        <td>Marianne Williamson</td>
+        <td>1st drop</td>
+      </tr>
+    </table>
+  </div>
+
+  <button class="collapsible">Fun Facts</button>
+  <div class="content">
+    <ul style='text-align: left; pointer-events: none;'>
+      <li>Marianne Williamson was the first candidate to drop out after January 7th. 14% of contestants accurately predicted that. Most others thought she would drop out 3rd or 4th.</li>
+      <li style='text-align: center;'>⚬</li>
+      <li>45% of participants predict Biden will be the eventual nominee. Warren (25%) and Bernie (23%) are the next most common guesses.</li>
+      <li style='text-align: center;'>⚬</li>
+      <li>Michael Bennet is by far the most popular guess for first-to-drop (30% of submissions). John Delaney is next, with 15% predicting he'll be out first.</li>
+      <li style='text-align: center;'>⚬</li>
+      <li>69% of participants predict Bennet will be among the first 3 candidates to drop out. Delaney (48%), Deval Patrick (45%), and Cory Booker (38%) are all also common 'first 3' picks.</li>
+      <li style='text-align: center;'>⚬</li>
+      <li>Contest participants disagree the most over Cory Booker's chances - it's common to see him all over the place in guesses. Participants also often disagreed about Tusli Gabbard.</li>
+      <li style='text-align: center;'>⚬</li>
+      <li>Tom Steyer left 7 candidates still running when he dropped out on Feb 29th. 49% of contestants predicted Tulsi Gabbard would drop out before any of the other candidates still running. Meanwhile, 34% of contestants predicted Amy Klobuchar would be the first out of the remaining bunch. Compare this to 11% for Bloomberg, 2% for Pete, 1% for Bernie, and no one for Warren or Biden. In the end, the sole 2% who predicted Pete Buttigieg would go before the other final 7 were correct - the former Mayor dropped out March 1st.</li>
+      <li style='text-align: center;'>⚬</li>
+      <li>As of March 2nd, the four candidates expected to win delegates on Super Tuesday are Bernie Sanders, Joe Biden, Elizabeth Warren, and Michael Bloomberg. Just over 40% of contestants accurately predicted those four would be among the final five candidates running.</li>
+      <li style='text-align: center;'>⚬</li>
+      <li>Also as of March 2nd, Tulsi Gabbard is the fifth candidate still running, defying the expectations of 90% of contestants. Just 2 players accurately predicted the final five candidates.</li>
+    </ul>  
+  </div>
+
+  <button class="collapsible">Contest Scoring</button>
+  <div class="content">
+    <p>Between December 3rd and January 7th, contest participants were asked to predict the order in which the remaining 14 Democratic primary candidates would drop out. Because players were guessing drop out order and not actual primary performance, they had to consider factors such as candidates’ finances, desire to preserve their reputations, or even how stubborn they are.</p>
+    <p>Scoring is calculated using Kendall tau distance, which compares how similar any two ranked lists are. For example, I predicted the candidates would drop out in this order:  Sanders 1st, Biden 2nd, Warren 3rd, but let’s say they actually end up dropping out in this order: Biden 1st, Sanders 2nd, Warren 3rd. In that case, my Kendall tau score would be 1, because 1 swap would be needed to make my rank order match reality’s rank order. The number of swaps needed to make a player’s list match reality is their Kendall tau score.</p>
+    <p>The lowest possible Kendall tau score is 0 (perfectly predicting reality); the highest possible score in this case is 91 (perfectly failing). I converted all scores to a 0-1 scale (where 0 is still the most similar and 1 is the least similar) using the formula: Kendall tau score / (14 candidates * (14 candidates - 1) / 2.</p>
+    <p>Your accuracy percentage represents how close you are to a perfect score. It is calculated by: 100 - 100 * your (0-1 scaled) Kendall tau score.</p>
+  </div>
+
+</div>
+<!-- partial -->
+  
+<script src='js/script.js'></script>
+
+</body>
+</html>
