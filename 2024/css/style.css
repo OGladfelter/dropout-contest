@@ -8,12 +8,15 @@ Body
 }
 
 body {
-  min-height: 450px;
-  height: 200vh;
   margin: 0;
-  background: #8181df;
   color: #fff;
   font-family: 'Open Sans', sans-serif;
+}
+
+#Survey, #Scoring {
+  margin-top: 150px;
+  text-align: center;
+  line-height: 175%;
 }
 
 h1 {
@@ -21,11 +24,22 @@ h1 {
   padding: 12px 13px 18px;
 }
 
+p { 
+  font-size: 20px;
+  margin: 20px;
+}
+
+article {
+  text-align: left;
+  width: 50%;
+  margin: auto;
+}
+
 /* Style the tab */
 .tab {
   overflow: hidden;
   border: 1px solid #ccc;
-  background-color: #f1f1f1;
+  background-color: white;
 }
 
 /* Style the buttons inside the tab */
@@ -39,13 +53,9 @@ h1 {
   transition: 0.3s;
   font-size: 17px;
 }
-
-/* Change background color of buttons on hover */
 .tab button:hover {
   background-color: #ddd;
 }
-
-/* Create an active/current tablink class */
 .tab button.active {
   background-color: #ccc;
 }
@@ -53,7 +63,6 @@ h1 {
 /* Style the tab content */
 .tabcontent {
   display: none;
-  padding: 6px 12px;
   border-top: none;
 }
 
@@ -67,21 +76,17 @@ h1 {
   to {opacity: 1;}
 }
 
-#Survey {
-  text-align: center;
-}
-
 .sortable { 
   list-style-type: none; 
   margin: 0; 
   padding: 0; 
-  width: 40%; 
+  width: 30%; 
   display: inline-block;
 }
 .sortable li {
-  margin: 10px; 
+  margin: 5px; 
   padding: 10px; 
-  font-size: 20px; 
+  font-size: 18px; 
   background: white;
   color: black;
   border: black 1px solid;
@@ -93,11 +98,11 @@ h1 {
   display: inline-block;
 }
 .sortableGuide li {
-  margin: 10px; 
+  margin: 5px; 
   padding: 10px; 
-  font-size: 20px; 
+  font-size: 18px; 
   background: none;
-  color: black;
+  color: white;
   text-align: right;
   border: 1px transparent solid;
 }

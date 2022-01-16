@@ -443,6 +443,13 @@ jsgradient = {
 
 }
 
+// contest entry form
 $( function() {
-    $( "#sortable" ).sortable();
-  } );
+    $( "#sortable" ).sortable({
+        stop: function( ) {
+            var order = $("#sortable li")[0];
+            document.getElementById("sortable").querySelectorAll("li").forEach(li => li.innerHTML = li.id); // reset inner html for all items
+            order.innerHTML = '<i class="fas fa-crown" aria-hidden="true"></i> ' + order.innerHTML + ' <i class="fas fa-crown" aria-hidden="true"></i>'; // add crowns to top list item
+        }
+    });
+} );
