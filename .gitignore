@@ -2,3 +2,4 @@
 *.DS_Store
 /2020/data
 /2024/data
+.ipynb_checkpoints/

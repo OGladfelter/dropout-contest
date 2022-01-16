@@ -9,29 +9,52 @@ Body
 
 body {
   margin: 0;
-  color: #fff;
+  color: white;
   font-family: 'Open Sans', sans-serif;
 }
 
 #Survey, #Scoring {
-  margin-top: 150px;
+  margin-top: 100px;
   text-align: center;
   line-height: 175%;
 }
 
 h1 {
   font-size: 22px;
-  padding: 12px 13px 18px;
+  margin-bottom: 10px;
+  margin-top: 45px;
+}
+h2 {
+  font-size: 32px;
+  margin-top: 10vh;
 }
 
 p { 
-  font-size: 20px;
+  font-size: 18px;
   margin: 20px;
+}
+
+
+#Scoring ol {
+  display: block;
+  list-style-type: decimal;
+  margin-top: 1em;
+  margin-bottom: 0em;
+  margin-left: 1.5em;
+  margin-right: 0;
+  padding-left: 40px;
+}
+#Scoring li {
+  display: list-item;
+}
+
+i, em {
+  font-style: italic;
 }
 
 article {
   text-align: left;
-  width: 50%;
+  width: 40%;
   margin: auto;
 }
 
@@ -138,6 +161,7 @@ Leaderboard
           backface-visibility: hidden;
   -webkit-transform: translateZ(0) scale(1, 1);
           transform: translateZ(0) scale(1, 1);
+  list-style: none;
 }
 .leaderboard ol li::before {
   content: counter(leaderboard);

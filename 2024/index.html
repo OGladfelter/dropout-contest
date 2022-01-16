@@ -56,13 +56,13 @@
 
 <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'Survey', '#312e2b')" id="surveyButton">Contest Entry Form</button>
-  <button class="tablinks" onclick="openTab(event, 'Scoring', '#312e2b')">Scoring</button>
+  <button class="tablinks" onclick="openTab(event, 'Scoring', '#312e2b')">Rules</button>
   <button class="tablinks" onclick="openTab(event, 'Leaderboard', '#8181df')">Leaderboard</button>
 </div>
 
 <div id="Survey" class="tabcontent">
   <h1 style="font-size:42px;">2024 Republican Primary Drop Out Prediction</h1>
-  <h3>- A contest hosted by Oliver Gladfelter -</h3>
+  <h3 style="margin-top:20px;">- A contest hosted by Oliver Gladfelter -</h3>
   <article>
     <p>N Republican candidates have entered the presidential race. N-1 candidates will concede to the party's eventual nominee. Can you correctly predict the order in which these candidates will drop out?</p>
     <p>Complete this form by January 2024 to enter the contest. Any candidates who drop out before then will be removed from the scoring formula, so you won't be penalized if you've already submitted your entry form.</p>
@@ -104,11 +104,43 @@
 </div>
 
 <div id="Scoring" class="tabcontent">
-  <h1 style="font-size:42px;">Scoring</h1>
+  <h2>Scoring</h2>
   <article>
-      <p>Scoring is calculated using Kendall tau distance, which compares how similar any two ranked lists are. For example, I predicted the candidates would drop out in this order:  Sanders 1st, Biden 2nd, Warren 3rd, but let’s say they actually end up dropping out in this order: Biden 1st, Sanders 2nd, Warren 3rd. In that case, my Kendall tau score would be 1, because 1 swap would be needed to make my rank order match reality’s rank order. The number of swaps needed to make a player’s list match reality is their Kendall tau score.</p>
-      <p>The lowest possible Kendall tau score is 0 (perfectly predicting reality); the highest possible score in this case is 91 (perfectly failing). I converted all scores to a 0-1 scale (where 0 is still the most similar and 1 is the least similar) using the formula: Kendall tau score / (14 candidates * (14 candidates - 1) / 2.</p>
-      <p>Your accuracy percentage represents how close you are to a perfect score. It is calculated by: 100 - 100 * your (0-1 scaled) Kendall tau score.</p>
+      <p>The player with the lowest Kendall tau distance wins.</p>
+      <p>Kendall tau distance compares how similar any two ordered lists are: the number of <i>adjacent</i> swaps needed to make a player's prediction match the real order equals their Kendall tau distance. For example, let's say the 2020 Democratic had just consisted of four candidates: Joe Biden, Bernie Sanders, Elizabeth Warren, and Amy Klobuchar and I predicted the drop out order as such:</p>
+      <p>In that case, my Kendall tau distance would be 1, because just one swap (Sanders and Warren) would be needed to make my order match reality's order.</p>
+      <p>By contrast, had my predictions been a complete reversal of reality, my Kendall tau distance would be 6, due to needing six adjacent swaps to correct my list:</p>
+      <ol>
+        <li>Swap Klobuchar and Warren</li>
+        <li>Swap Klobuchar and Sanders</li>
+        <li>Swap Klobuchar and Biden</li>
+        <li>Swap Warren and Sanders</li>
+        <li>Swap Warren and Biden</li>
+        <li>Swap Sanders and Biden</li>
+      </ol>
+  </article>
+  <h2>The Leaderboard</h2>
+  <article>
+      <p>A second metric you may be interested in is your accuracy percentage: how close you are to a perfect prediction, in other words.</p>
+      <p>A player's accuracy percentage is derived by first converting your Kendall tau distance to a number between 0-1 using the formula Kendall tau distance / (14 candidates * (14 candidates - 1) / 2.</p>
+      <p>In the case of a normalized Kendaull tau distance, 0 means perfectly predicting reality and 1 means perfectly predicting the opposite of reality.</p>
+      <p>These accuracy percentage is then calculated using the formula (100 - 100 * your normalized Kendall tau distance).</p>
+      <p>Because accuracy scores are much easier to read and interpret to understand, they will be shown on the leaderboard instead of the Kendall tau distances. But don't worry: players cannot win by one metric and lose by the other.</p>
+  </article>
+  <h2>Tie Breaker</h2>
+  <article>
+      <p>Final scoring will be calculated once the final drop out order and 2024 Republican nominee are known. If there is a tie for 1st, 2nd, or 3rd place, ties will be broken by omitting the first candidate who dropped out and rerunning the scoring algorithm. The player with the lower Kendall tau distance from that will be awarded the better final placement. If their Kendall tau distances continue to match, this process will be repeated iteratively until we reach a decisive outcome.</p>
+      <p>In other words, ties are broken by determining which player more accurately predicted the drop out positions of the final N - X candidates, where N is the number of candidates and X is the number of early-drop-out candidates needed to omit in order to break the tie. So accurate predictions closer to the end of the drop out order are more important than correctly guessing the earlier drop outs for a tie breaker.</p>
+  </article>
+  <h2>Brokered Convention</h2>
+  <article>
+      <p>A brokered convention occurs when no single candidate wins a majority of delegates through the standard primary process, flinging the nomination process into a series of deals and revotes. In this rare scenario, we could have multiple candidates actively campaigning right up to the end.</p>
+      <p>A candidate may suspend their campaign <em>during</em> a brokered convention, in between convention votes. In this event, their withdraw from the primary is considered a standard drop out for the purposes of this contest and they are simply added to their place in the drop out order.</p>
+      <p>However, if a candidate may also decide to fight all the way to the bitter end and eventually lose the nomination through a vote. In this case, their campaign is considered over and they are added to the drop out order. If multiple candidates meet this fate, the candidate receiving fewer final delegates is considered the earlier drop out. This rule may apply even in the absence of a brokered convention if there is a protest candidate whom refuses to concede during the primary.</p>
+  </article>
+  <h2>The “Gary Hart” Affair</h2>
+  <article>
+      <p>If someone leaves then re-enters the primary, the scoring algorithm will only account for their <i>first</i> drop out - unless they go on to win the nomination, in which case the scoring algorithm will consider the candidate as never having dropped out.</p>
   </article>
 </div>
 
@@ -138,7 +170,7 @@
   <div id="aggregatePredictions" class="predictions">
       <h1 style='text-align: center; font-weight: bold;'>Average Prediction</h1>
       <p>This is not any one player. Rather, it is the average of all players. For many questions, the average of several different guesses is often the most accurate, so beating the <i>Wisdom of the collective</i> might be tough!</p>
-      <p>Here’s the aggregated drop out order:</p>
+      <p>Here's the aggregated drop out order:</p>
 
       <table style="width:90%; margin: auto;">
         <tr>
@@ -350,8 +382,8 @@
 
     <!-- <button class="collapsible">Contest Scoring</button>
     <div class="content">
-      <p>Between December 3rd and January 7th, contest participants were asked to predict the order in which the remaining 14 Democratic primary candidates would drop out. Because players were guessing drop out order and not actual primary performance, they had to consider factors such as candidates’ finances, desire to preserve their reputations, or even how stubborn they are.</p>
-      <p>Scoring is calculated using Kendall tau distance, which compares how similar any two ranked lists are. For example, I predicted the candidates would drop out in this order:  Sanders 1st, Biden 2nd, Warren 3rd, but let’s say they actually end up dropping out in this order: Biden 1st, Sanders 2nd, Warren 3rd. In that case, my Kendall tau score would be 1, because 1 swap would be needed to make my rank order match reality’s rank order. The number of swaps needed to make a player’s list match reality is their Kendall tau score.</p>
+      <p>Between December 3rd and January 7th, contest participants were asked to predict the order in which the remaining 14 Democratic primary candidates would drop out. Because players were guessing drop out order and not actual primary performance, they had to consider factors such as candidates' finances, desire to preserve their reputations, or even how stubborn they are.</p>
+      <p>Scoring is calculated using Kendall tau distance, which compares how similar any two ranked lists are. For example, I predicted the candidates would drop out in this order:  Sanders 1st, Biden 2nd, Warren 3rd, but let's say they actually end up dropping out in this order: Biden 1st, Sanders 2nd, Warren 3rd. In that case, my Kendall tau score would be 1, because 1 swap would be needed to make my rank order match reality's rank order. The number of swaps needed to make a player's list match reality is their Kendall tau score.</p>
       <p>The lowest possible Kendall tau score is 0 (perfectly predicting reality); the highest possible score in this case is 91 (perfectly failing). I converted all scores to a 0-1 scale (where 0 is still the most similar and 1 is the least similar) using the formula: Kendall tau score / (14 candidates * (14 candidates - 1) / 2.</p>
       <p>Your accuracy percentage represents how close you are to a perfect score. It is calculated by: 100 - 100 * your (0-1 scaled) Kendall tau score.</p>
     </div> -->
