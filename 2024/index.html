@@ -25,13 +25,13 @@
     <link rel="manifest" href="../favicon/site.webmanifest">
 
   <!-- Facebook Opengraph -->
-  <meta property="og:url" content="https://cultureplot.com/dem-drop-out-contest/" />
+  <meta property="og:url" content="https://cultureplot.com/rep-drop-out-contest/" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="2020 Democratic Primary Drop Out Predictions Leaderboard" />
+  <meta property="og:title" content="2024 Republican Drop Out Prediction Contest" />
   <meta property="og:description" content="Who Will The Nomination? And More Importantly...Who Will Win The iPad?!"/>
 
   <meta property="og:image" content="http://cultureplot.com/img/leaderboardPicture.png" />
-  <meta property="og:image:alt" content="2020 Dem Drop Out Predictions Leaderboard" />
+  <meta property="og:image:alt" content="2024 Republican Drop Out Prediction Contest" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="677" />
   <meta property="og:image:height" content="583" />
@@ -39,8 +39,8 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="http://cultureplot.com/img/leaderboardPicture.png" />
-  <meta name="twitter:image:alt" content="2020 Dem Drop Out Predictions Leaderboard" />
-  <meta name="twitter:description" content="Who Will The Nomination? And More Importantly...Who Will Win The iPad?!"/>
+  <meta name="twitter:image:alt" content="2024 Republican Drop Out Prediction Contest" />
+  <meta name="twitter:description" content="Can you predict the field's drop out order?"/>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'><link rel="stylesheet" href="css/style.css">
@@ -56,8 +56,8 @@
 
 <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'Survey', '#312e2b')" id="surveyButton">Contest Entry Form</button>
-  <button class="tablinks" onclick="openTab(event, 'Leaderboard', '#8181df')">Leaderboard</button>
   <button class="tablinks" onclick="openTab(event, 'Scoring', '#312e2b')">Scoring</button>
+  <button class="tablinks" onclick="openTab(event, 'Leaderboard', '#8181df')">Leaderboard</button>
 </div>
 
 <div id="Survey" class="tabcontent">
@@ -101,6 +101,15 @@
     <li class="ui-state-default" id="Cory Booker">Cory Booker</li>
     <li class="ui-state-default" id="Marianne Williamson">Marianne Williamson</li>
   </ul>
+</div>
+
+<div id="Scoring" class="tabcontent">
+  <h1 style="font-size:42px;">Scoring</h1>
+  <article>
+      <p>Scoring is calculated using Kendall tau distance, which compares how similar any two ranked lists are. For example, I predicted the candidates would drop out in this order:  Sanders 1st, Biden 2nd, Warren 3rd, but let’s say they actually end up dropping out in this order: Biden 1st, Sanders 2nd, Warren 3rd. In that case, my Kendall tau score would be 1, because 1 swap would be needed to make my rank order match reality’s rank order. The number of swaps needed to make a player’s list match reality is their Kendall tau score.</p>
+      <p>The lowest possible Kendall tau score is 0 (perfectly predicting reality); the highest possible score in this case is 91 (perfectly failing). I converted all scores to a 0-1 scale (where 0 is still the most similar and 1 is the least similar) using the formula: Kendall tau score / (14 candidates * (14 candidates - 1) / 2.</p>
+      <p>Your accuracy percentage represents how close you are to a perfect score. It is calculated by: 100 - 100 * your (0-1 scaled) Kendall tau score.</p>
+  </article>
 </div>
 
 <div id="Leaderboard" class="tabcontent">
@@ -349,15 +358,6 @@
 
   </div>
   <!-- partial -->
-</div>
-
-<div id="Scoring" class="tabcontent">
-  <h1 style="font-size:42px;">Scoring</h1>
-  <article>
-      <p>Scoring is calculated using Kendall tau distance, which compares how similar any two ranked lists are. For example, I predicted the candidates would drop out in this order:  Sanders 1st, Biden 2nd, Warren 3rd, but let’s say they actually end up dropping out in this order: Biden 1st, Sanders 2nd, Warren 3rd. In that case, my Kendall tau score would be 1, because 1 swap would be needed to make my rank order match reality’s rank order. The number of swaps needed to make a player’s list match reality is their Kendall tau score.</p>
-      <p>The lowest possible Kendall tau score is 0 (perfectly predicting reality); the highest possible score in this case is 91 (perfectly failing). I converted all scores to a 0-1 scale (where 0 is still the most similar and 1 is the least similar) using the formula: Kendall tau score / (14 candidates * (14 candidates - 1) / 2.</p>
-      <p>Your accuracy percentage represents how close you are to a perfect score. It is calculated by: 100 - 100 * your (0-1 scaled) Kendall tau score.</p>
-  </article>
 </div>
 
 <script>
