@@ -56,7 +56,7 @@
 
 <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'Survey', '#312e2b')" id="surveyButton">Contest Entry Form</button>
-  <button class="tablinks" onclick="openTab(event, 'Scoring', '#312e2b')">Rules</button>
+  <button class="tablinks" onclick="openTab(event, 'Rules', '#312e2b')">Rules</button>
   <button class="tablinks" onclick="openTab(event, 'Leaderboard', '#8181df')">Leaderboard</button>
 </div>
 
@@ -66,7 +66,7 @@
   <article>
     <p>N Republican candidates have entered the presidential race. N-1 candidates will concede to the party's eventual nominee. Can you correctly predict the order in which these candidates will drop out?</p>
     <p>Complete this form by January 2024 to enter the contest. Any candidates who drop out before then will be removed from the scoring formula, so you won't be penalized if you've already submitted your entry form.</p>
-    <p>Competition ends no later than June 2024. See scoring details here.</p>
+    <p>Competition ends no later than June 2024. See <span onclick="goToScoring(event)" class="fauxLink">scoring details here</span>.</p>
     <p>Remember, you're predicting candidate drop out order. Contest scoring will not consider final delegate counts unless multiple candidates have not ended their campaigns going into the 2024 convention. Recall Marco Rubio won more delegates than John Kasich in the 2016 Republican primary, but still ended his campaign earlier - so try to consider how stubborn each candidate might be!</p>
   </article>
   <ul class="sortableGuide">
@@ -103,8 +103,8 @@
   </ul>
 </div>
 
-<div id="Scoring" class="tabcontent">
-  <h2>Scoring</h2>
+<div id="Rules" class="tabcontent">
+  <h2 id="scoring">Scoring</h2>
   <article>
       <p>The player with the lowest Kendall tau distance wins.</p>
       <p>Kendall tau distance compares how similar any two ordered lists are: the number of <i>adjacent</i> swaps needed to make a player's prediction match the real order equals their Kendall tau distance. For example, let's say the 2020 Democratic had just consisted of four candidates: Joe Biden, Bernie Sanders, Elizabeth Warren, and Amy Klobuchar and I predicted the drop out order as such:</p>

@@ -453,3 +453,13 @@ $( function() {
         }
     });
 } );
+
+function goToScoring(event) {
+    console.log(event);
+    openTab(event, 'Rules', '#312e2b');
+    $(document).ready(function () {
+        $('html, body').animate({
+            scrollTop: $('#scoring').offset().top
+        }, 'slow');
+    });
+}
