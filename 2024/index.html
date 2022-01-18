@@ -65,7 +65,7 @@
   <h3 style="margin-top:20px;">- A contest hosted by Oliver Gladfelter -</h3>
   <article>
     <p>N Republican candidates have entered the presidential race. N-1 candidates will concede to the party's eventual nominee. Can you correctly predict the order in which these candidates will drop out?</p>
-    <p>Complete this form by January 2024 to enter the contest. Any candidates who drop out before then will be removed from the scoring formula, so you won't be penalized if you've already submitted your entry form.</p>
+    <p>Complete this form by November 15th, 2023 to enter the contest. Any candidates who drop out before then will be removed from the scoring formula, so you won't be penalized if you've already submitted your entry form.</p>
     <p>Competition ends no later than June 2024. See <span onclick="goToScoring(event)" class="fauxLink">scoring details here</span>.</p>
     <p>Remember, you're predicting candidate drop out order. Contest scoring will not consider final delegate counts unless multiple candidates have not ended their campaigns going into the 2024 convention. Recall Marco Rubio won more delegates than John Kasich in the 2016 Republican primary, but still ended his campaign earlier - so try to consider how stubborn each candidate might be!</p>
   </article>
@@ -108,25 +108,140 @@
   <article>
       <p>The player with the lowest Kendall tau distance wins.</p>
       <p>Kendall tau distance compares how similar any two ordered lists are: the number of <i>adjacent</i> swaps needed to make a player's prediction match the real order equals their Kendall tau distance. For example, let's say the 2020 Democratic had just consisted of four candidates: Joe Biden, Bernie Sanders, Elizabeth Warren, and Amy Klobuchar and I predicted the drop out order as such:</p>
-      <p>In that case, my Kendall tau distance would be 1, because just one swap (Sanders and Warren) would be needed to make my order match reality's order.</p>
-      <p>By contrast, had my predictions been a complete reversal of reality, my Kendall tau distance would be 6, due to needing six adjacent swaps to correct my list:</p>
-      <ol>
+      <div class="example_row" style="width:50%;">
+        <div style="padding: 5px;">
+          <table>
+            <tr><td>Nominee</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>1st drop out</td></tr>
+          </table>
+        </div>
+        <div class="example_column">
+          <table class="example_table">
+            <tr><td>Sanders</td></tr>
+            <tr><td>Biden</td></tr>
+            <tr><td>Warren</td></tr>
+            <tr><td>Klobuchar</td></tr>
+          </table>
+        </div>
+      </div>
+      <p>In that case, my Kendall tau distance would be 1, because just one swap (Sanders and Biden) would be needed to make my order match reality's order:</p>
+      <div class="example_row">
+        <div class="example_column">
+          <table class="example_table">
+            <tr><td>Sanders</td></tr>
+            <tr><td>Biden</td></tr>
+            <tr><td>Warren</td></tr>
+            <tr><td>Klobuchar</td></tr>
+          </table>
+        </div>
+        <div class="arrow_container">
+          <span>&rarr;</span>
+        </div>
+        <div class="example_column">
+          <table class="example_table">
+            <tr><td>Biden</td></tr>
+            <tr><td>Sanders<sup>1</sup></td></tr>
+            <tr><td>Warren</td></tr>
+            <tr><td>Klobuchar</td></tr>
+          </table>
+        </div>
+      </div>
+      <p>By contrast, had my predictions been a complete reversal of reality, my Kendall tau distance would be 6, due to needing six swaps to correct my list:</p>
+      <!-- <ol>
         <li>Swap Klobuchar and Warren</li>
         <li>Swap Klobuchar and Sanders</li>
         <li>Swap Klobuchar and Biden</li>
         <li>Swap Warren and Sanders</li>
         <li>Swap Warren and Biden</li>
         <li>Swap Sanders and Biden</li>
-      </ol>
+      </ol> -->
   </article>
-  <h2>The Leaderboard</h2>
+  <div class="example_row">
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Klobuchar</td></tr>
+        <tr><td>Warren</td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Warren</td></tr>
+        <tr><td>Klobuchar<sup>1</sup></td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Warren</td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Klobuchar<sup>2</sup></td></tr>
+        <tr><td>Biden</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Warren</td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+        <tr><td>Klobuchar<sup>3</sup></td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Sanders</td></tr>
+        <tr><td>Warren<sup>4</sup></td></tr>
+        <tr><td>Biden</td></tr>
+        <tr><td>Klobuchar</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+        <tr><td>Warren<sup>5</sup></td></tr>
+        <tr><td>Klobuchar</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Biden</td></tr>
+        <tr><td>Sanders<sup>6</sup></td></tr>
+        <tr><td>Warren</td></tr>
+        <tr><td>Klobuchar</td></tr>
+      </table>
+    </div>
+  </div>
+  <!-- <h2>The Leaderboard</h2>
   <article>
       <p>A second metric you may be interested in is your accuracy percentage: how close you are to a perfect prediction, in other words.</p>
-      <p>A player's accuracy percentage is derived by first converting your Kendall tau distance to a number between 0-1 using the formula Kendall tau distance / (14 candidates * (14 candidates - 1) / 2.</p>
+      <p>A player's accuracy percentage is derived by first converting your Kendall tau distance to a number between 0-1 using the formula Kendall tau distance / (N candidates * (N candidates - 1) / 2.</p>
       <p>In the case of a normalized Kendaull tau distance, 0 means perfectly predicting reality and 1 means perfectly predicting the opposite of reality.</p>
       <p>These accuracy percentage is then calculated using the formula (100 - 100 * your normalized Kendall tau distance).</p>
       <p>Because accuracy scores are much easier to read and interpret to understand, they will be shown on the leaderboard instead of the Kendall tau distances. But don't worry: players cannot win by one metric and lose by the other.</p>
-  </article>
+  </article> -->
   <h2>Tie Breaker</h2>
   <article>
       <p>Final scoring will be calculated once the final drop out order and 2024 Republican nominee are known. If there is a tie for 1st, 2nd, or 3rd place, ties will be broken by omitting the first candidate who dropped out and rerunning the scoring algorithm. The player with the lower Kendall tau distance from that will be awarded the better final placement. If their Kendall tau distances continue to match, this process will be repeated iteratively until we reach a decisive outcome.</p>

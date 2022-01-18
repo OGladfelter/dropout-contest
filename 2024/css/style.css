@@ -41,6 +41,12 @@ p {
   text-decoration: underline;
   cursor: pointer;
 }
+sup {
+  vertical-align: super;
+  font-size: smaller;
+  color: cyan;
+  float: right;
+}
 
 
 #Rules ol {
@@ -139,6 +145,37 @@ article {
   color: white;
   text-align: right;
   border: 1px transparent solid;
+}
+
+.example_row {
+  display: flex;
+  width: 75%;
+  margin: auto;
+  margin-top: 30px;
+}
+.example_column {
+  flex: 10%;
+  padding: 5px;
+}
+.example_table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+.example_ th, td {
+  text-align: left;
+  padding: 16px;
+}
+.arrow_container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+.arrow_container span {
+  text-align: center;
+  font-size: 20px;
 }
 
 
