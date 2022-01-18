@@ -517,11 +517,13 @@ function drawHeatmap() {
         
         candidates.sort((a, b) => a - b);
 
+        var padding = 0.1;
+
         // Build X scales and axis:
         var x = d3.scaleBand()
             .range([ 0, width ])
             .domain(dropOutPositions)
-            .padding(0.01);
+            .padding(padding);
             svg.append("g")
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
@@ -531,7 +533,7 @@ function drawHeatmap() {
         var y = d3.scaleBand()
             .range([ 0, height ])
             .domain(candidates)
-            .padding(0.01);
+            .padding(padding);
             svg.append("g")
             .attr("class", "axis")
             .attr('transform', 'translate(0, 0)')
@@ -553,10 +555,10 @@ function drawHeatmap() {
         // Three function that change the tooltip when user hover / move / leave a cell
         var mouseover = function(d) {
             tooltip
-            .style("opacity", 1)
+                .style("opacity", 1)
             d3.select(this)
-            .style("stroke", "black")
-            .style("stroke-width", 2)
+                .style("stroke", "black")
+                .style("stroke-width", 2);
         }
         var mousemove = function(d) {
 

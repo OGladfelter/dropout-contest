@@ -421,6 +421,14 @@ Analysis Box
 
 .axis { font: 16px sans-serif; }
 
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+  stroke-width: 2px;
+}
+
 div.tooltip {	
   position: absolute;			
   text-align: center;			
