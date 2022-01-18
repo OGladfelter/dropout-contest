@@ -74,22 +74,25 @@
     
       <div>
         <div class="form-control" style="display:inline-block; width:40%;">
-          <label for="name" id="label-name">First name</label>
-          <input type="text" id="name" placeholder="Oliver" />
+          <label for="name" id="first-name">First name</label>
+          <input type="text" id="firstName" placeholder="Oliver" oninput="changeLeaderboardOptions()"/>
         </div>
         <div class="form-control" style="display:inline-block; width:40%;">
-          <label for="lastName" id="label-name">Last name</label>
-          <input type="text" id="lastName" placeholder="Gladfelter" />
+          <label for="lastName" id="ast-name">Last name</label>
+          <input type="text" id="lastName" placeholder="Gladfelter" oninput="changeLeaderboardOptions()"/>
         </div>
       </div>
       <div class="form-control">
           <label>What should we call you on the leaderboard?</label>
 
+          <label for="leaderboard-name-3">
+            <input type="radio" id="leaderboardNameOption1" name="leaderboard-name" checked><span id="option1">First name last name</span></input>
+          </label>
           <label for="leaderboard-name-1">
-              <input type="radio" id="leaderboard-name-1" name="leaderboard-name-1" checked> Oliver G</input>
+              <input type="radio" id="leaderboardNameOption2" name="leaderboard-name"><span id="option2">First name last initial</span></input>
           </label>
           <label for="leaderboard-name-2">
-              <input type="radio" id="leaderboard-name-2" name="leaderboard-name-2"> Other: &nbsp;
+              <input type="radio" id="leaderboardNameOption3" name="leaderboard-name"> Other: &nbsp;
                   <input style="display:inline; width:40%;" placeholder="Your alias here"></input>
               </input>
           </label>

@@ -463,3 +463,8 @@ function goToScoring(event) {
         }, 'slow');
     });
 }
+
+function changeLeaderboardOptions() {
+    document.getElementById("option1").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value; 
+    document.getElementById("option2").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value.charAt(0); 
+}
