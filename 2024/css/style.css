@@ -14,7 +14,7 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-#Survey, #Rules {
+#Survey, #Rules, #analysis {
   margin-top: 100px;
   text-align: center;
   line-height: 175%;
@@ -42,28 +42,8 @@ p {
   cursor: pointer;
 }
 sup {
-  vertical-align: super;
-  font-size: smaller;
   color: cyan;
   float: right;
-}
-
-
-#Rules ol {
-  display: block;
-  list-style-type: decimal;
-  margin-top: 1em;
-  margin-bottom: 0em;
-  margin-left: 1.5em;
-  margin-right: 0;
-  padding-left: 40px;
-}
-#Rules li {
-  display: list-item;
-}
-
-i, em {
-  font-style: italic;
 }
 
 article {
@@ -181,7 +161,7 @@ article {
  /* Styling the Form (Color, Padding, Shadow) */
  form {
   background-color: #fff;
-  width: 100%;
+  width: 90%;
   margin: 50px auto;
   padding: 30px 20px;
   box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
@@ -388,26 +368,6 @@ th, td {
 
 
 /*--------------------
-Instructions Box -- border color options: #333399, #8181df, 
---------------------*/
-.instructions {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  width: 285px;
-  background: #181c26;
-  border-radius: 10px;
-  box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
-  visibility: visible;
-  cursor: pointer;
-  border: 3px #333399 solid;
-  z-index: 2;
-}
-
-
-/*--------------------
 Analysis Box
 --------------------*/
 
@@ -459,44 +419,19 @@ Analysis Box
   border: 2px solid #8181df;
 }
 
-/* collapsible */
-.collapsible {
-  background-color: #181c26;
-  color: #e1e1e1;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  outline: none;
-  font-size: 22px;
-  text-align: center; 
-  font-weight: bold; 
-  margin-top: 0px;
-  font-family: 'Open Sans', sans-serif;
-}
+.axis { font: 16px sans-serif; }
 
-.active, .collapsible:hover {
-  background-color: #3a404d;
-}
-
-.collapsible:after {
-  content: '\002B';
-  color: #e1e1e1;
-  font-weight: bold;
-  float: right;
-  margin-left: 5px;
-}
-
-.collapsible.active:after {
-  content: "\2212";
-}
-
-.content {
-  padding: 0 18px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease-out;
-  background: linear-gradient(to bottom, #3a404d, #181c26);
+div.tooltip {	
+  position: absolute;			
+  text-align: center;			
+  padding: 2px;				
+  font: 16px sans-serif;		
+  background: white;	
+  border: solid;
+  border: 2px solid black;		
+  border-radius: 5px;			
+  pointer-events: none;		
+  color: black;	
 }
 
 /*--------------------

@@ -468,3 +468,204 @@ function changeLeaderboardOptions() {
     document.getElementById("option1").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value; 
     document.getElementById("option2").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value.charAt(0); 
 }
+
+function drawHeatmap() {
+    // set the dimensions and margins of the graph
+    var margin = {top: 30, right: 30, bottom: 160, left: 160},
+        width = screen.height -100 - margin.left - margin.right,
+        height = screen.height - 100 - margin.top - margin.bottom;
+
+    if (screen.width < 600){
+        margin = {top: 30, right: 30, bottom: 70, left: 70},
+        width = screen.width - 40 - margin.left - margin.right,
+        height = screen.width - 40 - margin.top - margin.bottom;
+    }
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#heatmap")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    // Labels of rows and columns
+    names = ["Joe Biden", "Elizabeth Warren", "Bernie Sanders", "Pete Buttigieg", "Michael Bloomberg", "Andrew Yang", "Amy Klobuchar", "Tulsi Gabbard", "Tom Steyer", "Cory Booker", "Marianne Williamson", "John Delaney", "Deval Patrick", "Michael Bennet"]
+
+    if (screen.width < 600){
+        names = ["Biden", "Warren", "Sanders", "Buttigieg", "Bloomberg", "Yang", "Klobuchar", "Gabbard", "Steyer", "Booker", "Williamson", "Delaney", "Patrick", "Bennet"]
+    }
+
+    columnLabels = [1,2,3,4,5,6,7,8,9,10,11,12,13,"Win"];
+
+    // Build color scale for cells
+    var myColor = d3.scaleLinear()
+        .range(["white", "blue"])
+        .domain([0,35])
+    // Build color scale for text
+    var textColor = d3.scaleLinear()
+        .range(["black", "white"])
+        .domain([0,35])
+
+    //Read the data
+    d3.csv("data/heatmapLongData.csv", function(data) {
+
+        // create arrays of unique values in both index and dropoutposition columns
+        candidates = data.map(function(d) { return d.index }).filter((v, i, a) => a.indexOf(v) === i);
+        dropOutPositions = data.map(function(d) { return d.dropOutPosition }).filter((v, i, a) => a.indexOf(v) === i);
+        
+        candidates.sort((a, b) => a - b);
+
+        // Build X scales and axis:
+        var x = d3.scaleBand()
+            .range([ 0, width ])
+            .domain(dropOutPositions)
+            .padding(0.01);
+            svg.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x).tickFormat(function(d, i){return columnLabels[i]}));
+        
+        // Build Y scales and axis:
+        var y = d3.scaleBand()
+            .range([ 0, height ])
+            .domain(candidates)
+            .padding(0.01);
+            svg.append("g")
+            .attr("class", "axis")
+            .attr('transform', 'translate(0, 0)')
+            .call(d3.axisLeft(y).tickFormat(function(d, i){return names[i]}));
+
+        if (screen.width < 600){
+            d3.selectAll(".axis>.tick>text")
+            .each(function(d, i){
+                d3.select(this).style("font-size","12px");
+            });
+        }
+        
+        // create a tooltip
+        var tooltip = d3.select("body")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+
+        // Three function that change the tooltip when user hover / move / leave a cell
+        var mouseover = function(d) {
+            tooltip
+            .style("opacity", 1)
+            d3.select(this)
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+        }
+        var mousemove = function(d) {
+
+            var player;
+            var statement;
+
+            if (d.value == 0){
+                player = "No one predicts "
+            }
+            else if (d.value == 1) {
+                player = "1 respondent predicts "
+            }
+            else {
+                player = d.value + " players predict "
+            }
+
+            if (d.dropOutPosition == 1){
+                statement = " will drop out 1st"
+            }
+            else if (d.dropOutPosition == 2){
+                statement = " will drop out 2nd"
+            } 
+            else if (d.dropOutPosition == 3){
+                statement = " will drop out 3rd"
+            }
+            else if (d.dropOutPosition < 14){
+                statement = " will drop out " + d.dropOutPosition + "th"
+            } 
+            else{
+                statement = " will win"
+            }
+
+            var matrix = this.getScreenCTM()
+                .translate(+ this.getAttribute("cx"), + this.getAttribute("cy"));
+
+                tooltip
+                    .html(player + "<br>" + names[d.index-1] + statement)
+                    .style("left", (d3.event.pageX) + 40 + "px")
+                    .style("top", (d3.event.pageY) + "px")
+            
+        }
+        var mouseleave = function(d) {
+            tooltip
+            .style("opacity", 0)
+            d3.select(this)
+            .style("stroke", "none")
+        }
+
+        // draw and color the cells
+        svg.selectAll()
+            .data(data, function(d) {return d.index+':'+d.dropOutPosition;})
+            .enter()
+            .append("rect")
+            .attr("y", function(d) { return y(d.index) })
+            .attr("x", function(d) { return x(d.dropOutPosition) })
+            .attr("width", width / 14 )
+            .attr("height", height / 14 )
+            .style("fill", function(d) {return myColor(d.value)} )
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+
+
+        squareLabelFontSize = '18px'
+        if (screen.width < 600){
+            squareLabelFontSize = '10px'
+        }
+
+        // labels for squares
+        var texts = svg.selectAll("text")
+            .data(data, function(d) {return d.index+':'+d.dropOutPosition;})
+            .enter();
+        texts.append("text")
+                .text(function(d){return d.value;})
+                .attr("y", function(d) { return y(d.index) + (height/14/2) })
+                .attr("x", function(d) { return x(d.dropOutPosition) + (width/14/2) })
+                .style("text-anchor", "middle")
+                .attr("dominant-baseline", "central")
+                .attr('font-size', squareLabelFontSize)
+                .style("fill", function(d) {if (d.value > 14){return 'white'} else if (d.value > 9){return 'black'} else{return "none"}})
+                .attr('pointer-events', 'none');
+                
+        // text label for the x axis
+        svg.append("text")             
+            .attr("transform",
+                    "translate(" + (width/2) + " ," + 
+                                (height + margin.top + 10) + ")")
+            .style("text-anchor", "middle")
+            .attr('font-size', squareLabelFontSize)
+            .text("Predicted Drop Out Position");
+
+        chartTitleFontSize = '26px'
+        if (screen.width < 600){
+            chartTitleFontSize = '14px'
+        }
+
+        // Heading 
+        svg.append("g")
+            //.attr("transform","translate(0,30)")
+            .append("text")
+            .attr("x",(width)/2)
+            .attr('y', 0-margin.top+20)
+            .attr('font-weight', 'bold')
+            .attr('font-size', chartTitleFontSize)
+            .attr('font-family', 'Segoe UI bold')
+            .style("text-anchor", "middle")
+            .text("74 Predictions Of Candidate Drop Out Order")
+
+    });
+}
+        
+drawHeatmap();
