@@ -67,6 +67,53 @@
     <p>N Republican candidates have entered the presidential race. N-1 candidates will concede to the party's eventual nominee. Can you correctly predict the order in which these candidates will drop out?</p>
     <p>Complete this form by November 15th, 2023 to enter the contest. Any candidates who drop out before then will be removed from the scoring formula, so you won't be penalized if you've already submitted your entry form.</p>
     <p>Competition ends no later than June 2024. See <span onclick="goToScoring(event)" class="fauxLink">scoring details here</span>.</p>
+    
+
+    <!-- Create Form -->
+    <form id="form">
+    
+      <div>
+        <div class="form-control" style="display:inline-block; width:40%;">
+          <label for="name" id="label-name">First name</label>
+          <input type="text" id="name" placeholder="Oliver" />
+        </div>
+        <div class="form-control" style="display:inline-block; width:40%;">
+          <label for="lastName" id="label-name">Last name</label>
+          <input type="text" id="lastName" placeholder="Gladfelter" />
+        </div>
+      </div>
+      <div class="form-control">
+          <label>What should we call you on the leaderboard?</label>
+
+          <label for="leaderboard-name-1">
+              <input type="radio" id="leaderboard-name-1" name="leaderboard-name-1" checked> Oliver G</input>
+          </label>
+          <label for="leaderboard-name-2">
+              <input type="radio" id="leaderboard-name-2" name="leaderboard-name-2"> Other: &nbsp;
+                  <input style="display:inline; width:40%;" placeholder="Your alias here"></input>
+              </input>
+          </label>
+      </div>
+      <br>
+      <div class="form-control">
+          <label for="email" id="label-email">Email</label>
+          <input type="email" id="email" placeholder="Enter your email" />
+      </div>
+      <div class="form-control">
+          <label for="role" id="label-role">How often can we email you?</label>
+          <!-- Dropdown options -->
+          <select name="role" id="role">
+              <option value="1">Whenever a candidate drops out and there are leaderboard updates</option>
+              <option value="2">Only at the end of the contest regardless of the outcome</option>
+              <option value="3">Only at the end of the contest if I win a prize</option>
+          </select>
+      </div>
+
+    </form>
+
+
+
+
     <p>Remember, you're predicting candidate drop out order. Contest scoring will not consider final delegate counts unless multiple candidates have not ended their campaigns going into the 2024 convention. Recall Marco Rubio won more delegates than John Kasich in the 2016 Republican primary, but still ended his campaign earlier - so try to consider how stubborn each candidate might be!</p>
   </article>
   <ul class="sortableGuide">
@@ -104,6 +151,11 @@
 </div>
 
 <div id="Rules" class="tabcontent">
+  <h2>General Rules</h2>
+  <article>
+    <p>1. One entry per player</p>
+    <p>2. Calling every single candidate and asking them when approximately they might drop out is allowed</p>
+  </article>
   <h2 id="scoring">Scoring</h2>
   <article>
       <p>The player with the lowest Kendall tau distance wins.</p>
