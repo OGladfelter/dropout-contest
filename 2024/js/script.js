@@ -50,7 +50,13 @@ function changeLeaderboardOptions() {
 ////////////////////////////////////
 
 // functions for leaderboard
-function addRow(rank, name, kendallDistance, accuracy, rowColor) {
+function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
+
+    // make aggregate row stand out
+    if (name == "Wisdom of the crowd") {
+        rowColor = "#008b8b";
+    }
+
     var table = document.getElementById("leaderboardTable");
     var row = table.insertRow(-1);
     row.style.backgroundColor = rowColor;
@@ -66,6 +72,26 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor) {
     nameCell.style.textAlign = 'left';
     nameCell.style.fontSize = '18px';
 
+    row.addEventListener("mouseover", function() {
+        document.getElementById("playerHeader").innerHTML = d.name + " Prediction"; // customize title
+            
+        // change the order to match the player represented by the li moused over
+        document.getElementById("1stDrop").innerHTML = d["1"];
+        document.getElementById("2ndDrop").innerHTML = d["2"];
+        document.getElementById("3rdDrop").innerHTML = d["3"];
+        document.getElementById("4thDrop").innerHTML = d["4"];
+        document.getElementById("5thDrop").innerHTML = d["5"];
+        document.getElementById("6thDrop").innerHTML = d["6"];
+        document.getElementById("7thDrop").innerHTML = d["7"];
+        document.getElementById("8thDrop").innerHTML = d["8"];
+        document.getElementById("9thDrop").innerHTML = d["9"];
+        document.getElementById("10thDrop").innerHTML = d["10"];
+        document.getElementById("11thDrop").innerHTML = d["11"];
+        document.getElementById("12thDrop").innerHTML = d["12"];
+        document.getElementById("13thDrop").innerHTML = d["13"];
+        document.getElementById("winner").innerHTML = d["14"];
+    });
+
     // if (name == "Wisdom of the crowd"){
     //     var a = document.createElement("a");
     //     a.href = "https://en.wikipedia.org/wiki/Wisdom_of_the_crowd";
@@ -77,56 +103,13 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor) {
 
 function readData() { // reads data
   
-    list = []; // used later on to count how many participants there are
-
     // import data from csv
     d3.csv("data/scoreboardDataApril8.csv", function(data) {
 
         var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]);
 
-        for (i=0;i<data.length;i++) {
-            list.push(data[i].name);
-            addRow(i, data[i].name, data[i].score, Number(data[i].percentage).toFixed(1), distanceToColorScale(i)); // add one row for each participant
-        }
-      
-        return;
-        document.getElementById("aggregate").style.backgroundColor = "#008b8b"; // make aggregate row unique
-
-        d3.select("#Leaderboard").selectAll("li").on("mouseover", function() { // on li mouse over, show predictions div
-            return;
-            if (IsMobileCard()){
-                return;
-            }
-
-            liId = d3.select(this).attr("id") // get list item ID
-
-            if (typeof d3.select(this).select('a')["_groups"][0][0] !== "undefined"){
-                d3.select(this).select('mark')["_groups"][0][0].style.textDecoration = "underline";
-            }
-
-            console.log(data[liId]);
-            document.getElementById("playerHeader").innerHTML = (data[liId]["name"]) + " Prediction"; // customize title
-            
-            // change the order to match the player represented by the li moused over
-            document.getElementById("1stDrop").innerHTML = data[liId]["1"];
-            document.getElementById("2ndDrop").innerHTML = data[liId]["2"];
-            document.getElementById("3rdDrop").innerHTML = data[liId]["3"];
-            document.getElementById("4thDrop").innerHTML = data[liId]["4"];
-            document.getElementById("5thDrop").innerHTML = data[liId]["5"];
-            document.getElementById("6thDrop").innerHTML = data[liId]["6"];
-            document.getElementById("7thDrop").innerHTML = data[liId]["7"];
-            document.getElementById("8thDrop").innerHTML = data[liId]["8"];
-            document.getElementById("9thDrop").innerHTML = data[liId]["9"];
-            document.getElementById("10thDrop").innerHTML = data[liId]["10"];
-            document.getElementById("11thDrop").innerHTML = data[liId]["11"];
-            document.getElementById("12thDrop").innerHTML = data[liId]["12"];
-            document.getElementById("13thDrop").innerHTML = data[liId]["13"];
-            document.getElementById("winner").innerHTML = data[liId]["14"];
-            
-            document.getElementById("playerPredictions").style.visibility = 'visible';
-            
-        }).on("mouseout", function() { 
-            d3.select(this).select('mark')["_groups"][0][0].style.textDecoration = "none";
+        data.forEach((d, i) => {
+            addRow(i, d.name, d.score, Number(d.percentage).toFixed(1), distanceToColorScale(i), d);
         });
     }); 
 }
