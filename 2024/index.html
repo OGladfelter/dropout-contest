@@ -57,7 +57,7 @@
 <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'Survey', '#312e2b')" id="surveyButton">Contest Entry Form</button>
   <button class="tablinks" onclick="openTab(event, 'Rules', '#312e2b')">Rules</button>
-  <button class="tablinks" onclick="openTab(event, 'Leaderboard', '#8181df')">Leaderboard</button>
+  <button class="tablinks" onclick="openTab(event, 'Leaderboard', '#312e2b')">Leaderboard</button>
   <button class="tablinks" onclick="openTab(event, 'analysis', 'whitesmoke')">Analysis</button>
 </div>
 
@@ -115,9 +115,6 @@
 
     </form>
 
-
-
-
     <p>Remember, you're predicting candidate drop out order. Contest scoring will not consider final delegate counts unless multiple candidates have not ended their campaigns going into the 2024 convention. Recall Marco Rubio won more delegates than John Kasich in the 2016 Republican primary, but still ended his campaign earlier - so try to consider how stubborn each candidate might be!</p>
   </article>
   <ul class="sortableGuide">
@@ -162,6 +159,10 @@
     <p>1. One entry per player</p>
     <p>2. Calling every single candidate and asking them when they're planning to drop out is allowed</p>
   </article>
+  <h2>🏆 Prizes 🏆</h2>
+    <h3 style='text-align: center; margin-bottom: 10px;'>1st Place: TBD</h3>
+    <h3 style='text-align: center; margin-bottom: 10px;'>2nd Place: TBD</h3>
+    <h3 style='text-align: center;'>3rd Place: TBD</h3>
   <h2 id="scoring">Scoring</h2>
   <article>
       <p>The player with the lowest Kendall tau distance wins.</p>
@@ -296,7 +297,7 @@
   <article>
       <p>A second metric you may be interested in is your accuracy percentage: how close you are to a perfect prediction, in other words.</p>
       <p>A player's accuracy percentage is derived by first converting your Kendall tau distance to a number between 0-1 using the formula Kendall tau distance / (N candidates * (N candidates - 1) / 2.</p>
-      <p>In the case of a normalized Kendaull tau distance, 0 means perfectly predicting reality and 1 means perfectly predicting the opposite of reality.</p>
+      <p>In the case of a normalized Kendall tau distance, 0 means perfectly predicting reality and 1 means perfectly predicting the opposite of reality.</p>
       <p>These accuracy percentage is then calculated using the formula (100 - 100 * your normalized Kendall tau distance).</p>
       <p>Because accuracy scores are much easier to read and interpret to understand, they will be shown on the leaderboard instead of the Kendall tau distances. But don't worry: players cannot win by one metric and lose by the other.</p>
   </article> -->
@@ -320,68 +321,14 @@
 
 <!-- THE LEADERBOARD -->
 <div id="Leaderboard" class="tabcontent">
-  <div class="leaderboard">
-    <h1 style='text-align: center; font-weight: bold;'>Leaderboard</h1>
-    <span>
-      <h3 style='display:inline; margin-left: 5%;'>Player Name</h3>
-      <h3 style='float: right; margin-right: 5%;'>Accuracy %</h3>
-    </span>
-    <h4 style='color: #3a404d'>-</h4>
-    <ol id="orderedList"></ol>
-  </div>
-
-  <div id="aggregatePredictions" class="predictions">
-      <h1 style='text-align: center; font-weight: bold;'>Average Prediction</h1>
-      <p>This is not any one player. Rather, it is the average of all players. For many questions, the average of several different guesses is often the most accurate, so beating the <i>Wisdom of the collective</i> might be tough!</p>
-      <p>Here's the aggregated drop out order:</p>
-
-      <table style="width:90%; margin: auto;">
-        <tr>
-          <td>Joe Biden</td>
-          <td>Winner</td>
-        </tr> 
-        <tr>
-          <td>Elizabeth Warren</td>
-        </tr> 
-        <tr>
-          <td>Bernie Sanders</td>
-        </tr>
-        <tr>
-          <td>Pete Buttigieg</td>
-        </tr>
-        <tr>
-          <td>Michael Bloomberg</td>
-        </tr> 
-        <tr>
-          <td>Andrew Yang</td>
-        </tr>
-        <tr>
-          <td>Amy Klobuchar</td>
-        </tr>   
-        <tr>
-          <td>Tulsi Gabbard</td>
-        </tr>
-        <tr>
-          <td>Tom Steyer</td>
-        </tr>
-        <tr>
-          <td>Cory Booker</td>
-        </tr>
-        <tr>
-          <td>Marianne Williamson</td>
-        </tr>
-        <tr>
-          <td>John Delaney</td>
-        </tr>
-        <tr>
-          <td>Deval Patrick</td>
-        </tr>
-        <tr>
-          <td>Michael Bennet</td>
-          <td>1st drop</td>
-        </tr>
-      </table>
-  </div>
+  <table id="leaderboardTable" class="leaderboard">
+    <tr>
+      <th></th>
+      <th></th>
+      <th>Kendall Tau Distance</th>
+      <th>Accuracy</th>
+    </tr>
+  </table>
 
   <div id="playerPredictions" class="predictions">
       <h1 id="playerHeader" style='text-align: center; font-weight: bold;'>Prediction</h1>
@@ -446,20 +393,10 @@
       </table>
   </div>
 
-  <div class="contestInfo">
-    <h1 style='text-align: center; font-weight: bold;'>Contest Hosts</h1>
-    <a href="https://cultureplot.com/" target="_blank"><img src="https://pbs.twimg.com/profile_images/1167532065191026689/59AUzgaI_400x400.jpg" style="width:100px;height:100px;"></a>
-    <a href="https://bellwetheranalytics.com/" target="_blank"><img src="https://media.licdn.com/dms/image/C4D0BAQHxIW7fZH0DHw/company-logo_200_200/0?e=2159024400&v=beta&t=vYaJzzGwYSdOwHYJ--z36D3-RpBmAjNNrDEPJMZRvSE" style="width:100px;height:100px;"></a>
-
+  <!-- <div class="contestInfo">
     <h1 style='text-align: center; font-weight: bold; margin-top: 30px;'>Last Updated</h1>
     <h4 style='text-align: center;'>April 8, 2020</h4>
-
-    <h1 style='text-align: center; font-weight: bold; margin-top: 30px;'>🏆 Prizes 🏆</h1>
-    <h4 style='text-align: center; margin-bottom: 10px;'>1st Place: Apple iPad</h4>
-    <h4 style='text-align: center; margin-bottom: 10px;'>2nd Place: $100</h4>
-    <h4 style='text-align: center;'>3rd Place: $50</h4>
-
-  </div>
+  </div> -->
 </div>
 <!-- end leaderboard -->
 

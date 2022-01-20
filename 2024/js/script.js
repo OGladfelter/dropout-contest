@@ -50,74 +50,50 @@ function changeLeaderboardOptions() {
 ////////////////////////////////////
 
 // functions for leaderboard
-function addRow(number, name, score, twitterLink) {
-    ol = document.querySelector("#orderedList");
+function addRow(rank, name, kendallDistance, accuracy, rowColor) {
+    var table = document.getElementById("leaderboardTable");
+    var row = table.insertRow(-1);
+    row.style.backgroundColor = rowColor;
+    var rankCell = row.insertCell(0);
+    var nameCell = row.insertCell(1);
+    var distanceCell = row.insertCell(2);
+    var accuracyCell = row.insertCell(3);
+    rankCell.innerHTML = '<span class="circle">' + rank + '</span>';
+    nameCell.innerHTML = name;
+    distanceCell.innerHTML = kendallDistance;
+    accuracyCell.innerHTML = accuracy;
 
-    li = document.createElement('li'); // create new li
+    nameCell.style.textAlign = 'left';
+    nameCell.style.fontSize = '18px';
 
-    var mark = document.createElement("mark");
-
-    if (name == "Wisdom of the crowd"){ // making appear italic
-        mark.classList.add("special");
-    }
-    
-    var t = document.createTextNode(name); // add participant's name to mark tag
-    mark.appendChild(t)
-
-    var small = document.createElement("small");
-    var s = document.createTextNode(score); // add participant's score to small tag
-    small.appendChild(s)
-
-    li.appendChild(mark); // append mark tag to li tag
-    li.appendChild(small); // append small tag to li tag
-    li.setAttribute("id", number); // give id
-
-    if (twitterLink != ""){ // if they gave us a twitter, hyperlink
-        
-        var a = document.createElement("a"); // create anchor
-        a.href = "https://twitter.com/" + twitterLink; 
-        a.target = "_blank";
-        li.appendChild(a); // append hyperlinked anchor to the li
-    }
-    if (name == "Wisdom of the crowd"){
-        var a = document.createElement("a");
-        a.href = "https://en.wikipedia.org/wiki/Wisdom_of_the_crowd";
-        a.target = "_blank";
-        li.appendChild(a);
-        li.setAttribute("id", "aggregate"); // overwrite id
-    }
-
-    ol.appendChild(li); // append li tag to ol
+    // if (name == "Wisdom of the crowd"){
+    //     var a = document.createElement("a");
+    //     a.href = "https://en.wikipedia.org/wiki/Wisdom_of_the_crowd";
+    //     a.target = "_blank";
+    //     li.appendChild(a);
+    //     li.setAttribute("id", "aggregate"); // overwrite id
+    // }
 }
 
-function colorListItems(){
-    listItems = document.getElementById("Leaderboard").querySelectorAll("li"); // select all list items
-
-    colors = (jsgradient.generateGradient('#004d99', '#4da6ff', list.length)); // generate colors list
-
-    for (i=0;i<list.length;i++){
-        listItems[i].style.backgroundColor = colors[i]; //"rgb(0, 30, " + i*(225/list.length) + ")"; 
-    }
-}
-
-function readData() { // reads csv, save all to a dictionary for later use
+function readData() { // reads data
   
     list = []; // used later on to count how many participants there are
 
     // import data from csv
-    d3.csv("data/scoreboardDataApril8.csv", function(data){
-        for (i=0;i<data.length;i++){
-        
-        list.push(data[i].name);
-        addRow(i, data[i].name, Number(data[i].percentage).toFixed(1), data[i].twitter); // add one row for each participant
+    d3.csv("data/scoreboardDataApril8.csv", function(data) {
 
+        var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]);
+
+        for (i=0;i<data.length;i++) {
+            list.push(data[i].name);
+            addRow(i, data[i].name, data[i].score, Number(data[i].percentage).toFixed(1), distanceToColorScale(i)); // add one row for each participant
         }
       
-        colorListItems(); // color each list item
+        return;
         document.getElementById("aggregate").style.backgroundColor = "#008b8b"; // make aggregate row unique
 
         d3.select("#Leaderboard").selectAll("li").on("mouseover", function() { // on li mouse over, show predictions div
-            
+            return;
             if (IsMobileCard()){
                 return;
             }
@@ -128,38 +104,26 @@ function readData() { // reads csv, save all to a dictionary for later use
                 d3.select(this).select('mark')["_groups"][0][0].style.textDecoration = "underline";
             }
 
-            if (liId == 'aggregate'){ // show special aggregatesPredictions div
-                document.getElementById("playerPredictions").style.visibility = 'hidden';
-                document.getElementById("aggregatePredictions").style.visibility = 'visible';
-            }
-            else if (data[liId]["showAnswers"] == 'No, keep my answers private') {
-                document.getElementById("aggregatePredictions").style.visibility = 'hidden';
-                document.getElementById("playerPredictions").style.visibility = 'hidden';
-            }
-            else { // show generic playerPredictions div
-
-                document.getElementById("aggregatePredictions").style.visibility = 'hidden';
-
-                document.getElementById("playerHeader").innerHTML = (data[liId]["name"]) + " Prediction"; // customize title
-                
-                // change the order to match the player represented by the li moused over
-                document.getElementById("1stDrop").innerHTML = data[liId]["1"];
-                document.getElementById("2ndDrop").innerHTML = data[liId]["2"];
-                document.getElementById("3rdDrop").innerHTML = data[liId]["3"];
-                document.getElementById("4thDrop").innerHTML = data[liId]["4"];
-                document.getElementById("5thDrop").innerHTML = data[liId]["5"];
-                document.getElementById("6thDrop").innerHTML = data[liId]["6"];
-                document.getElementById("7thDrop").innerHTML = data[liId]["7"];
-                document.getElementById("8thDrop").innerHTML = data[liId]["8"];
-                document.getElementById("9thDrop").innerHTML = data[liId]["9"];
-                document.getElementById("10thDrop").innerHTML = data[liId]["10"];
-                document.getElementById("11thDrop").innerHTML = data[liId]["11"];
-                document.getElementById("12thDrop").innerHTML = data[liId]["12"];
-                document.getElementById("13thDrop").innerHTML = data[liId]["13"];
-                document.getElementById("winner").innerHTML = data[liId]["14"];
-                
-                document.getElementById("playerPredictions").style.visibility = 'visible';
-            }
+            console.log(data[liId]);
+            document.getElementById("playerHeader").innerHTML = (data[liId]["name"]) + " Prediction"; // customize title
+            
+            // change the order to match the player represented by the li moused over
+            document.getElementById("1stDrop").innerHTML = data[liId]["1"];
+            document.getElementById("2ndDrop").innerHTML = data[liId]["2"];
+            document.getElementById("3rdDrop").innerHTML = data[liId]["3"];
+            document.getElementById("4thDrop").innerHTML = data[liId]["4"];
+            document.getElementById("5thDrop").innerHTML = data[liId]["5"];
+            document.getElementById("6thDrop").innerHTML = data[liId]["6"];
+            document.getElementById("7thDrop").innerHTML = data[liId]["7"];
+            document.getElementById("8thDrop").innerHTML = data[liId]["8"];
+            document.getElementById("9thDrop").innerHTML = data[liId]["9"];
+            document.getElementById("10thDrop").innerHTML = data[liId]["10"];
+            document.getElementById("11thDrop").innerHTML = data[liId]["11"];
+            document.getElementById("12thDrop").innerHTML = data[liId]["12"];
+            document.getElementById("13thDrop").innerHTML = data[liId]["13"];
+            document.getElementById("winner").innerHTML = data[liId]["14"];
+            
+            document.getElementById("playerPredictions").style.visibility = 'visible';
             
         }).on("mouseout", function() { 
             d3.select(this).select('mark')["_groups"][0][0].style.textDecoration = "none";
@@ -169,7 +133,6 @@ function readData() { // reads csv, save all to a dictionary for later use
 
 d3.select("#playerPredictions").on("mouseover", function() {
     tds = d3.select("#playerTable").selectAll("td")._groups[0]
-    console.log(tds[0])
     for (i=0; i < tds.length; i++){
         if (tds[i].innerText == 'Marianne Williamson'){
             scoreEffect = Math.abs(13 - (i/2))
@@ -392,88 +355,6 @@ d3.select("#playerPredictions").on("mouseover", function() {
 //   });
 // }
 
-// code for making the color gradient list
-jsgradient = {
-    inputA : '',
-    inputB : '',
-    inputC : '',
-    gradientElement : '',
-    
-    // Convert a hex color to an RGB array e.g. [r,g,b]
-    // Accepts the following formats: FFF, FFFFFF, #FFF, #FFFFFF
-    hexToRgb : function(hex){
-        var r, g, b, parts;
-        // Remove the hash if given
-        hex = hex.replace('#', '');
-        // If invalid code given return white
-        if(hex.length !== 3 && hex.length !== 6){
-            return [255,255,255];
-        }
-        // Double up charaters if only three suplied
-        if(hex.length == 3){
-            hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-        }
-        // Convert to [r,g,b] array
-        r = parseInt(hex.substr(0, 2), 16);
-        g = parseInt(hex.substr(2, 2), 16);
-        b = parseInt(hex.substr(4, 2), 16);
-
-        return [r,g,b];
-    },
-    
-    // Converts an RGB color array e.g. [255,255,255] into a hexidecimal color value e.g. 'FFFFFF'
-    rgbToHex : function(color){
-        // Set boundries of upper 255 and lower 0
-        color[0] = (color[0] > 255) ? 255 : (color[0] < 0) ? 0 : color[0];
-        color[1] = (color[1] > 255) ? 255 : (color[1] < 0) ? 0 : color[1];
-        color[2] = (color[2] > 255) ? 255 : (color[2] < 0) ? 0 : color[2];
-        
-        return this.zeroFill(color[0].toString(16), 2) + this.zeroFill(color[1].toString(16), 2) + this.zeroFill(color[2].toString(16), 2);
-    },
-    
-    // Pads a number with specified number of leading zeroes
-    zeroFill : function( number, width ){
-        width -= number.toString().length;
-        if ( width > 0 ){
-            return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
-        }
-        return number;
-    },
-
-    // Generates an array of color values in sequence from 'colorA' to 'colorB' using the specified number of steps
-    generateGradient : function(colorA, colorB, steps){
-        var result = [], rInterval, gInterval, bInterval;
-        
-        colorA = this.hexToRgb(colorA); // [r,g,b]
-        colorB = this.hexToRgb(colorB); // [r,g,b]
-        steps -= 1; // Reduce the steps by one because we're including the first item manually
-        
-        // Calculate the intervals for each color
-        rStep = ( Math.max(colorA[0], colorB[0]) - Math.min(colorA[0], colorB[0]) ) / steps;
-        gStep = ( Math.max(colorA[1], colorB[1]) - Math.min(colorA[1], colorB[1]) ) / steps;
-        bStep = ( Math.max(colorA[2], colorB[2]) - Math.min(colorA[2], colorB[2]) ) / steps;
-    
-        result.push( '#'+this.rgbToHex(colorA) );
-        
-        // Set the starting value as the first color value
-        var rVal = colorA[0],
-            gVal = colorA[1],
-            bVal = colorA[2];
-    
-        // Loop over the steps-1 because we're includeing the last value manually to ensure it's accurate
-        for (var i = 0; i < (steps-1); i++) {
-            // If the first value is lower than the last - increment up otherwise increment down
-            rVal = (colorA[0] < colorB[0]) ? rVal + Math.round(rStep) : rVal - Math.round(rStep);
-            gVal = (colorA[1] < colorB[1]) ? gVal + Math.round(gStep) : gVal - Math.round(gStep);
-            bVal = (colorA[2] < colorB[2]) ? bVal + Math.round(bStep) : bVal - Math.round(bStep);
-            result.push( '#'+this.rgbToHex([rVal, gVal, bVal]) );
-        };
-        
-        result.push( '#'+this.rgbToHex(colorB) );
-        
-        return result;
-    },
-}
 //////////////////////////
 
 // functions for analysis section

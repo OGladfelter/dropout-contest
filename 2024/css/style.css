@@ -199,145 +199,38 @@ sup {
 /*--------------------
 Leaderboard CSS
 --------------------*/
+
 .leaderboard {
-  position: absolute;
-  top: 50%;
-  left: 25%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-75%, -50%);
-  width: 285px;
-  height: 408px;
-  background: linear-gradient(to bottom, #3a404d, #181c26);
-  border-radius: 10px;
-  box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
+  width: 40%;
+  border: 1px white solid;
+  margin: 50px auto;
+  border-collapse: collapse;
 }
-
-.leaderboard ol {
-  counter-reset: leaderboard;
+.leaderboard th {
+  background-color:rgba(62, 9, 11, 0.3);
+  padding: 20px;
 }
-.leaderboard ol li {
-  position: relative;
-  z-index: 1;
-  font-size: 14px;
-  counter-increment: leaderboard;
-  padding: 18px 10px 18px 50px;
-  cursor: pointer;
-  -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
-  -webkit-transform: translateZ(0) scale(1, 1);
-          transform: translateZ(0) scale(1, 1);
-  list-style: none;
+.leaderboard tr {
+  border: collapse;
 }
-.leaderboard ol li::before {
-  content: counter(leaderboard);
-  position: absolute;
-  z-index: 2;
-  top: 15px;
-  left: 15px;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  color: #01019c;
-  background: #fff;
-  border-radius: 20px;
-  text-align: center;
+.leaderboard td {
+  padding: 15px;
+  font-size: 15px;
 }
-.leaderboard ol li mark {
-  position: absolute;
-  font-size: 18px;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 18px 10px 18px 50px;
-  margin: 0;
-  background: none;
-  color: #fff;
-}
-.leaderboard ol li mark.special {
-  position: absolute;
-  font-size: 17px;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 18px 10px 18px 50px;
-  margin: 0;
-  background: none;
-  color: #fff;
-  font-style: italic;
-}
-
-.leaderboard ol li a {
-  position: absolute;
-  font-size: 18px;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 18px 10px 18px 50px;
-  margin: 0;
-  background: none;
-  color: #fff;
-  text-decoration: none;
-}
-
-.leaderboard ol li small {
-  position: relative;
-  z-index: 2;
-  display: block;
-  text-align: right;
-}
-.leaderboard ol li::after {
-  content: '';
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #181c26;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
-  transition: all .3s ease-in-out;
-  opacity: 0;
-}
-
-
-.leaderboard ol li {
-  background: #4da6ff;
-  cursor: default;
-}
-
-.leaderboard ol li:hover {
-  z-index: 1;
-  overflow: visible;
-}
-
-.leaderboard ol li:hover::after {
-  opacity: 1;
-  -webkit-transform: scaleX(1.06) scaleY(1.03);
-          transform: scaleX(1.06) scaleY(1.03);
-}
-.leaderboard ol li:hover mark::before, .leaderboard ol li:hover mark::after {
-  opacity: 1;
-  transition: all .35s ease-in-out;
-}
-
-mark.header{
-  background-color: #3a404d;
+.circle{
+  background-color: white;
+  display:block;
+  height:25px;
+  width:25px;
+  border-radius:50%;
+  margin:auto;
+  color:black;
+  line-height:25px;
+  text-align:center;
 }
 
 /* Predctions Box */
 .predictions {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  width: 285px;
   background: linear-gradient(to bottom, #3a404d, #181c26);
   border-radius: 10px;
   box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
