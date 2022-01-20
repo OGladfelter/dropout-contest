@@ -1,5 +1,5 @@
 /*--------------------
-Body
+General CSS
 --------------------*/
 *,
 *::before,
@@ -11,6 +11,7 @@ body {
   margin: 0;
   margin-bottom: 200px;
   color: white;
+  background-color: #312e2b;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -34,17 +35,6 @@ p {
   font-size: 18px;
   margin: 20px;
 }
-.fauxLink {
-  color: cyan;
-}
-.fauxLink:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-sup {
-  color: cyan;
-  float: right;
-}
 
 article {
   text-align: left;
@@ -52,14 +42,14 @@ article {
   margin: auto;
 }
 
-/* Style the tab */
+/*--------------------
+Tabs CSS
+--------------------*/
 .tab {
   overflow: hidden;
   border: 1px solid #ccc;
   background-color: white;
 }
-
-/* Style the buttons inside the tab */
 .tab button {
   background-color: inherit;
   float: left;
@@ -76,21 +66,61 @@ article {
 .tab button.active {
   background-color: #ccc;
 }
-
-/* Style the tab content */
 .tabcontent {
   display: none;
   border-top: none;
 }
-
 .tabcontent {
   animation: fadeEffect 1s; /* Fading effect takes 1 second */
 }
-
 /* Go from zero to full opacity */
 @keyframes fadeEffect {
   from {opacity: 0;}
   to {opacity: 1;}
+}
+
+/*--------------------
+Contest Entry Form CSS
+--------------------*/
+.fauxLink {
+  color: cyan;
+}
+.fauxLink:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+form {
+  background-color: #fff;
+  width: 90%;
+  margin: 50px auto;
+  padding: 30px 20px;
+  box-shadow: 2px 5px 10px rgba(255, 255, 255, 0.25);
+  color: black;
+}
+.form-control {
+  text-align: left;
+  margin-bottom: 25px;
+}
+.form-control label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form-control input,
+.form-control select,
+.form-control textarea {
+  border: 1px solid #777;
+  border-radius: 2px;
+  font-family: inherit;
+  padding: 10px;
+  display: block;
+  width: 95%;
+}
+.form-control input[type="radio"],
+.form-control input[type="checkbox"] {
+  display: inline-block;
+  width: auto;
 }
 
 .sortable { 
@@ -127,6 +157,14 @@ article {
   border: 1px transparent solid;
 }
 
+/*--------------------
+Contest Rules CSS
+--------------------*/
+sup {
+  color: cyan;
+  float: right;
+}
+
 .example_row {
   display: flex;
   width: 75%;
@@ -158,51 +196,8 @@ article {
   font-size: 20px;
 }
 
- /* Styling the Form (Color, Padding, Shadow) */
- form {
-  background-color: #fff;
-  width: 90%;
-  margin: 50px auto;
-  padding: 30px 20px;
-  box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
-  color: black;
-}
-
-/* Styling form-control Class */
-.form-control {
-  text-align: left;
-  margin-bottom: 25px;
-}
-
-/* Styling form-control Label */
-.form-control label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-/* Styling form-control input,
-select, textarea */
-.form-control input,
-.form-control select,
-.form-control textarea {
-  border: 1px solid #777;
-  border-radius: 2px;
-  font-family: inherit;
-  padding: 10px;
-  display: block;
-  width: 95%;
-}
-
-/* Styling form-control Radio
-button and Checkbox */
-.form-control input[type="radio"],
-.form-control input[type="checkbox"] {
-  display: inline-block;
-  width: auto;
-}
-
 /*--------------------
-Leaderboard
+Leaderboard CSS
 --------------------*/
 .leaderboard {
   position: absolute;
@@ -335,11 +330,7 @@ mark.header{
   background-color: #3a404d;
 }
 
-
-/*--------------------
-Predctions Box
---------------------*/
-
+/* Predctions Box */
 .predictions {
   position: fixed;
   top: 50%;
@@ -352,62 +343,38 @@ Predctions Box
   box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
   visibility: hidden;
 }
-
-
 .predictions p {
-  /* text-align: center; */
   margin-left: 5%;
   margin-right: 5%;
   margin-bottom: 5%;
 }
-
 th, td {
   padding: 5px;
   text-align: center;
 }
 
-
-/*--------------------
-Analysis Box
---------------------*/
-
-.analysis {
+/* contest info box */
+.contestInfo {
   position: fixed;
   top: 50%;
   left: 75%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-25%, -50%);
   width: 285px;
-  height: 500px;
   background: linear-gradient(to bottom, #3a404d, #181c26);
   border-radius: 10px;
   box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
   overflow: auto;
   text-align: center;
 }
-
-.analysis img{
+.contestInfo img {
   padding: 10px;
 }
 
-.analysis ul {
-  text-align: left;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 5%;
-}
-
-.analysis p {
-  text-align: left;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 5%;
-}
-
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 13px;
 }
-.analysis::-webkit-scrollbar {
+.contestInfo::-webkit-scrollbar {
   width: 11px;
 }
 ::-webkit-scrollbar-track {
@@ -417,7 +384,11 @@ Analysis Box
   background-color: var(--thumbBG) ;
   border-radius: 10px;
   border: 2px solid #8181df;
-}
+} */
+
+/*--------------------
+Analysis CSS
+--------------------*/
 
 .axis { font: 16px sans-serif; }
 
@@ -473,9 +444,5 @@ Mobile
   .predictions {
     visibility: hidden;
     z-index: -1;
-  }
-
-  .instructions {
-    visibility: hidden;
   }
 }

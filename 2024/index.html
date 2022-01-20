@@ -2,14 +2,14 @@
 <html lang="en" >
 <head>
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146824308-1"></script>
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146824308-1"></script>
   <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'UA-146824308-1');
-  </script>
+  </script> -->
 
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <meta charset="UTF-8">
@@ -61,7 +61,8 @@
   <button class="tablinks" onclick="openTab(event, 'analysis', 'whitesmoke')">Analysis</button>
 </div>
 
-<div id="Survey" class="tabcontent">
+<!-- ENTRY FORM -->
+<div id="Survey" class="tabcontent" style="display:block;">
   <h1 style="font-size:42px;">2024 Republican Primary Drop Out Prediction</h1>
   <h3 style="margin-top:20px;">- A contest hosted by Oliver Gladfelter -</h3>
   <article>
@@ -152,7 +153,9 @@
     <li class="ui-state-default" id="Marianne Williamson">Marianne Williamson</li>
   </ul>
 </div>
+<!-- end entry form--> 
 
+<!-- RULES & CONTEST INFO -->
 <div id="Rules" class="tabcontent">
   <h2>General Rules</h2>
   <article>
@@ -313,9 +316,10 @@
       <p>If someone leaves then re-enters the primary, the scoring algorithm will only account for their <i>first</i> drop out - unless they go on to win the nomination, in which case the scoring algorithm will consider the candidate as never having dropped out.</p>
   </article>
 </div>
+<!-- end rules & contest info -->
 
+<!-- THE LEADERBOARD -->
 <div id="Leaderboard" class="tabcontent">
-  <!-- partial:index.partial.html -->
   <div class="leaderboard">
     <h1 style='text-align: center; font-weight: bold;'>Leaderboard</h1>
     <span>
@@ -325,9 +329,7 @@
     <h4 style='color: #3a404d'>-</h4>
     <ol id="orderedList"></ol>
   </div>
-  <!-- partial -->
 
-  <!-- partial:index.partial.html -->
   <div id="aggregatePredictions" class="predictions">
       <h1 style='text-align: center; font-weight: bold;'>Average Prediction</h1>
       <p>This is not any one player. Rather, it is the average of all players. For many questions, the average of several different guesses is often the most accurate, so beating the <i>Wisdom of the collective</i> might be tough!</p>
@@ -380,11 +382,7 @@
         </tr>
       </table>
   </div>
-  <!-- partial -->
 
-  <!-- <p style="position: fixed; text-anchor: middle; left: 50%; top: 10%;">Hover &#8681</p> -->
-
-  <!-- partial:index.partial.html -->
   <div id="playerPredictions" class="predictions">
       <h1 id="playerHeader" style='text-align: center; font-weight: bold;'>Prediction</h1>
 
@@ -447,10 +445,8 @@
         </tr>
       </table>
   </div>
-  <!-- partial -->
 
-  <!-- partial:index.partial.html -->
-  <div class="analysis">
+  <div class="contestInfo">
     <h1 style='text-align: center; font-weight: bold;'>Contest Hosts</h1>
     <a href="https://cultureplot.com/" target="_blank"><img src="https://pbs.twimg.com/profile_images/1167532065191026689/59AUzgaI_400x400.jpg" style="width:100px;height:100px;"></a>
     <a href="https://bellwetheranalytics.com/" target="_blank"><img src="https://media.licdn.com/dms/image/C4D0BAQHxIW7fZH0DHw/company-logo_200_200/0?e=2159024400&v=beta&t=vYaJzzGwYSdOwHYJ--z36D3-RpBmAjNNrDEPJMZRvSE" style="width:100px;height:100px;"></a>
@@ -464,30 +460,14 @@
     <h4 style='text-align: center;'>3rd Place: $50</h4>
 
   </div>
-  <!-- partial -->
 </div>
+<!-- end leaderboard -->
 
+<!-- ANALYSIS & FUN FACTS -->
 <div id="analysis" class="tabcontent">
   <div id="heatmap"></div>
 </div>
-
-<script>
-function openTab(evt, cityName, bgColor) {
-  document.body.style.background = bgColor;
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
-}
-document.getElementById("surveyButton").click();
-</script>
+<!-- end analysis and fun facts -->
   
 <script src='js/script.js'></script>
 
