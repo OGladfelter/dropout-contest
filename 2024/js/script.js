@@ -52,14 +52,9 @@ function changeLeaderboardOptions() {
 // functions for leaderboard
 function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 
-    // make aggregate row stand out
-    if (name == "Wisdom of the crowd") {
-        rowColor = "#008b8b";
-    }
-
     var table = document.getElementById("leaderboardTable");
     var row = table.insertRow(-1);
-    row.style.backgroundColor = rowColor;
+
     var rankCell = row.insertCell(0);
     var nameCell = row.insertCell(1);
     var distanceCell = row.insertCell(2);
@@ -68,6 +63,18 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
     nameCell.innerHTML = name;
     distanceCell.innerHTML = kendallDistance;
     accuracyCell.innerHTML = accuracy;
+
+    // make aggregate row stand out
+    if (name == "Wisdom of the crowd") {
+        rowColor = "#008b8b";
+        row.addEventListener("click", function() {
+            window.open("https://en.wikipedia.org/wiki/Wisdom_of_the_crowd", '_blank').focus();
+        });
+        row.style.cursor = 'pointer';
+        nameCell.style.fontStyle = 'italic';
+    }
+
+    row.style.backgroundColor = rowColor;
 
     nameCell.style.textAlign = 'left';
     nameCell.style.fontSize = '18px';
@@ -92,18 +99,9 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
         document.getElementById("winner").innerHTML = d["14"];
     });
 
-    // if (name == "Wisdom of the crowd"){
-    //     var a = document.createElement("a");
-    //     a.href = "https://en.wikipedia.org/wiki/Wisdom_of_the_crowd";
-    //     a.target = "_blank";
-    //     li.appendChild(a);
-    //     li.setAttribute("id", "aggregate"); // overwrite id
-    // }
 }
 
-function readData() { // reads data
-  
-    // import data from csv
+function readData() { 
     d3.csv("data/scoreboardDataApril8.csv", function(data) {
 
         var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]);
@@ -321,22 +319,6 @@ d3.select("#playerPredictions").on("mouseover", function() {
         }
     }
 });
-
-// code for opening/closing collapsible sections
-// var coll = document.getElementsByClassName("collapsible");
-// var i;
-
-// for (i = 0; i < coll.length; i++) {
-//   coll[i].addEventListener("click", function() {
-//     this.classList.toggle("active");
-//     var content = this.nextElementSibling;
-//     if (content.style.maxHeight){
-//       content.style.maxHeight = null;
-//     } else {
-//       content.style.maxHeight = content.scrollHeight + "px";
-//     } 
-//   });
-// }
 
 //////////////////////////
 

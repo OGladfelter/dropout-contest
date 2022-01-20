@@ -236,6 +236,9 @@ Leaderboard CSS
 
 /* Predctions Box */
 .predictions {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 85px;
   width: 300px;
   display: inline-block;
   background: linear-gradient(to bottom, #3a404d, #181c26);
