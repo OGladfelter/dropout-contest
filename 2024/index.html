@@ -77,11 +77,11 @@
       <div>
         <div class="form-control" style="display:inline-block; width:40%;">
           <label for="name" id="first-name">First name</label>
-          <input type="text" id="firstName" placeholder="Oliver" oninput="changeLeaderboardOptions()"/>
+          <input type="text" id="firstName" placeholder="Joe" oninput="changeLeaderboardOptions()"/>
         </div>
         <div class="form-control" style="display:inline-block; width:40%;">
           <label for="lastName" id="ast-name">Last name</label>
-          <input type="text" id="lastName" placeholder="Gladfelter" oninput="changeLeaderboardOptions()"/>
+          <input type="text" id="lastName" placeholder="Biden" oninput="changeLeaderboardOptions()"/>
         </div>
       </div>
       <div class="form-control">
@@ -99,7 +99,6 @@
               </input>
           </label>
       </div>
-      <br>
       <div class="form-control">
           <label for="email" id="label-email">Email</label>
           <input type="email" id="email" placeholder="Enter your email" />
@@ -150,20 +149,23 @@
     <li class="ui-state-default" id="Cory Booker">Cory Booker</li>
     <li class="ui-state-default" id="Marianne Williamson">Marianne Williamson</li>
   </ul>
+
+  <br>
+  <button class="submit">Submit Entry Form</button>
 </div>
 <!-- end entry form--> 
 
 <!-- RULES & CONTEST INFO -->
 <div id="Rules" class="tabcontent">
+  <h2>🏆 Prizes 🏆</h2>
+  <h3 style='text-align: center; margin-bottom: 10px;'>1st Place: TBD</h3>
+  <h3 style='text-align: center; margin-bottom: 10px;'>2nd Place: TBD</h3>
+  <h3 style='text-align: center;'>3rd Place: TBD</h3>
   <h2>General Rules</h2>
   <article>
     <p>1. One entry per player</p>
     <p>2. Calling every single candidate and asking them when they're planning to drop out is allowed</p>
   </article>
-  <h2>🏆 Prizes 🏆</h2>
-    <h3 style='text-align: center; margin-bottom: 10px;'>1st Place: TBD</h3>
-    <h3 style='text-align: center; margin-bottom: 10px;'>2nd Place: TBD</h3>
-    <h3 style='text-align: center;'>3rd Place: TBD</h3>
   <h2 id="scoring">Scoring</h2>
   <article>
       <p>The player with the lowest Kendall tau distance wins.</p>
@@ -209,14 +211,6 @@
         </div>
       </div>
       <p>By contrast, had my predictions been a complete reversal of reality, my Kendall tau distance would be 6, due to needing six swaps to correct my list:</p>
-      <!-- <ol>
-        <li>Swap Klobuchar and Warren</li>
-        <li>Swap Klobuchar and Sanders</li>
-        <li>Swap Klobuchar and Biden</li>
-        <li>Swap Warren and Sanders</li>
-        <li>Swap Warren and Biden</li>
-        <li>Swap Sanders and Biden</li>
-      </ol> -->
   </article>
   <div class="example_row">
     <div class="example_column">
@@ -431,7 +425,23 @@
 
 <!-- ANALYSIS & FUN FACTS -->
 <div id="analysis" class="tabcontent">
-  <div id="heatmap"></div>
+  <article style="color:black;">
+    <h1>The Predictions</h1>
+    <p>Joe Biden, Bernie Sanders, and Elizabeth Warren are undoubtedly the candidates the collective feel the most common in: an incredible 93% of players put one of these three candidates as their eventual nominee. 45% of players predicted Biden will win the nomination, making him the most popular choice for the final slot. Warren (25%) and Bernie (23%) are the next most common guesses.</p>
+    <p>Michael Bennet is by far the most popular guess for first-to-drop (30% of submissions). John Delaney is next, with 15% predicting he'll be out first.</p>
+    <h1>Heatmap</h1>
+    <p>This heatmap shows the distribution of all players' predictions for all candidates:</p>
+  </article>
+  <div id="heatmap" style="margin-top:40px;"></div>
+  <article style="color:black;">
+    <p>69% of participants predict Bennet will be among the first 3 candidates to drop out. Delaney (48%), Deval Patrick (45%), and Cory Booker (38%) are all also common 'first 3' picks.</p>
+    <p>Contest participants disagree the most over Cory Booker's chances - it's common to see him all over the place in guesses. Participants also often disagreed about Tusli Gabbard.</p>
+    <h1>How Are These Predictions Panning Out?</h1>
+    <p>Marianne Williamson was the first candidate to drop out after January 7th. 14% of contestants accurately predicted that. Most others thought she would drop out 3rd or 4th.</p>
+    <p>Tom Steyer left 7 candidates still running when he dropped out on Feb 29th. 49% of contestants predicted Tulsi Gabbard would drop out before any of the other candidates still running. Meanwhile, 34% of contestants predicted Amy Klobuchar would be the first out of the remaining bunch. Compare this to 11% for Bloomberg, 2% for Pete, 1% for Bernie, and no one for Warren or Biden. In the end, the sole 2% who predicted Pete Buttigieg would go before the other final 7 were correct - the former Mayor dropped out March 1st.</p>
+    <p>As of March 2nd, the four candidates expected to win delegates on Super Tuesday are Bernie Sanders, Joe Biden, Elizabeth Warren, and Michael Bloomberg. Just over 40% of contestants accurately predicted those four would be among the final five candidates running.</p>
+    <p>Also as of March 2nd, Tulsi Gabbard is the fifth candidate still running, defying the expectations of 90% of contestants. Just 2 players accurately predicted the final five candidates.</p>
+  </article>
 </div>
 <!-- end analysis and fun facts -->
   

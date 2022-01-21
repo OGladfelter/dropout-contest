@@ -899,12 +899,12 @@ function mobileSelectFunction(value){
 // functions for analysis section
 function drawHeatmap() {
     // set the dimensions and margins of the graph
-    var margin = {top: 30, right: 30, bottom: 160, left: 160},
+    var margin = {top: 40, right: 40, bottom: 100, left: 140},
         width = screen.height -100 - margin.left - margin.right,
         height = screen.height - 100 - margin.top - margin.bottom;
 
     if (screen.width < 600){
-        margin = {top: 30, right: 30, bottom: 70, left: 70},
+        margin = {top: 30, right: 30, bottom: 10, left: 10},
         width = screen.width - 40 - margin.left - margin.right,
         height = screen.width - 40 - margin.top - margin.bottom;
     }
