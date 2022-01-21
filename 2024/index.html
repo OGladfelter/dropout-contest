@@ -58,6 +58,7 @@
   <button class="tablinks" onclick="openTab(event, 'Survey', '#312e2b')" id="surveyButton">Contest Entry Form</button>
   <button class="tablinks" onclick="openTab(event, 'Rules', '#312e2b')">Rules</button>
   <button class="tablinks" onclick="openTab(event, 'Leaderboard', '#312e2b')">Leaderboard</button>
+  <button class="tablinks" onclick="openTab(event, 'scoresLineplot', 'whitesmoke')">Scores Over Time</button>
   <button class="tablinks" onclick="openTab(event, 'analysis', 'whitesmoke')">Analysis</button>
 </div>
 
@@ -332,7 +333,7 @@
     </table>
 
     <div id="playerPredictions" class="predictions">
-        <h1 id="playerHeader" style='text-align: center; font-weight: bold;'>Prediction</h1>
+        <h1 id="playerHeader" style='text-align: center; font-weight: bold;'>Actual Order</h1>
 
         <table id="playerTable" style="width:90%; margin: auto;">
           <tr>
@@ -400,6 +401,33 @@
   </div> -->
 </div>
 <!-- end leaderboard -->
+
+<!-- SCORES OVER TIME LINEPLOT -->
+<div id="scoresLineplot" class="tabcontent">
+  <article style="text-align:center;">
+    <h1>See Each Player's Score Each Round</h1> 
+  </article>
+
+  <div style="display:flex; justify-content:center;">
+    <select multiple size="20" id='select' class="computerSelector"></select>
+    <select id='selectMobile' class="mobileSelector" onchange="mobileSelectFunction(this.value)"></select>
+    
+    <!-- Create a div where the graph will take place -->
+    <div id="lineplot" style="text-align:center; margin:auto;"></div>
+
+    <table class="lineplotMenu">
+        <tr>
+            <td id="alina">Alina P.</td>
+            <td id="andrew">Andrew B.</td>
+        </tr>
+        <tr>
+            <td id="angela">Angela G.</td>
+            <td></td>
+        </tr>
+    </table>
+  </div>
+</div>
+<!-- end scores over time lineplot -->
 
 <!-- ANALYSIS & FUN FACTS -->
 <div id="analysis" class="tabcontent">

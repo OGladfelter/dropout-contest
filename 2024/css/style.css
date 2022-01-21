@@ -24,7 +24,6 @@ body {
 h1 {
   font-size: 22px;
   margin-bottom: 10px;
-  margin-top: 45px;
 }
 h2 {
   font-size: 32px;
@@ -222,7 +221,7 @@ Leaderboard CSS
   padding: 15px;
   font-size: 15px;
 }
-.circle{
+.circle {
   background-color: white;
   display:block;
   height:25px;
@@ -244,6 +243,7 @@ Leaderboard CSS
   background: linear-gradient(to bottom, #3a404d, #181c26);
   border-radius: 10px;
   box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
+  padding: 5px;
   /* visibility: hidden; */
 }
 .predictions p {
@@ -288,6 +288,66 @@ Leaderboard CSS
   border-radius: 10px;
   border: 2px solid #8181df;
 } */
+
+/* -------------------
+Scores over time CSS
+----------------------*/
+
+#scoresLineplot {
+  color: black;
+}
+
+path.scoreLine{
+  visibility: hidden;
+  opacity: 0.8;
+  stroke-width: 3;
+}
+
+.computerSelector {
+  vertical-align: top;
+  font-size: 16px;
+}
+
+select.computerSelector option:disabled {
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
+
+select.computerSelector option:disabled:hover {
+  color: #000;
+  box-shadow: inset 20px 20px white;
+}
+
+select.computerSelector option:hover {
+  color: white; 
+  box-shadow: inset 20px 20px black;
+}
+
+select.computerSelector option:checked {
+  box-shadow: inset 20px 20px slategrey;
+}
+
+.lineplotMenu {
+  display: none;
+  background: white;
+  padding: 20;
+  vertical-align: top;
+  font-weight: bold;
+  font-size: 18px;
+  border: none 1px black;
+  border-collapse: collapse;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.lineplotMenu th, .lineplotMenu td {
+  padding: 5px;
+  text-align: center;
+}
+.lineplotMenu td:hover{
+  background-color: black;
+  cursor: pointer;
+} 
 
 /*--------------------
 Analysis CSS
