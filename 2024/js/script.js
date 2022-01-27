@@ -966,7 +966,7 @@ function mobileSelectFunction(value){
 function drawHeatmap(data, dropOutOrder) {
     // set the dimensions and margins of the graph
     var margin = {top: 40, right: 40, bottom: 100, left: 140},
-        width = screen.height -100 - margin.left - margin.right,
+        width = screen.height - 100 - margin.left - margin.right,
         height = screen.height - 100 - margin.top - margin.bottom;
 
     if (screen.width < 600){
@@ -974,6 +974,8 @@ function drawHeatmap(data, dropOutOrder) {
         width = screen.width - 40 - margin.left - margin.right,
         height = screen.width - 40 - margin.top - margin.bottom;
     }
+
+    var padding = 0.05;
 
     // append the svg object to the body of the page
     var svg = d3.select("#heatmap")
@@ -984,16 +986,10 @@ function drawHeatmap(data, dropOutOrder) {
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    // Labels of rows and columns
-    // names = ["Joe Biden", "Elizabeth Warren", "Bernie Sanders", "Pete Buttigieg", "Michael Bloomberg", "Andrew Yang", "Amy Klobuchar", "Tulsi Gabbard", "Tom Steyer", "Cory Booker", "Marianne Williamson", "John Delaney", "Deval Patrick", "Michael Bennet"]
-
-    // if (screen.width < 600){
-    //     names = ["Biden", "Warren", "Sanders", "Buttigieg", "Bloomberg", "Yang", "Klobuchar", "Gabbard", "Steyer", "Booker", "Williamson", "Delaney", "Patrick", "Bennet"]
-    // }
-
-    var padding = 0.1;
-
-    var dropOutPositions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+    function range(start, end) {
+      return Array(end - start + 1).fill().map((_, idx) => start + idx)
+    }
+    var dropOutPositions = range(1, numberOfCandidates); 
 
     var heatmapData = [];
 
@@ -1017,7 +1013,7 @@ function drawHeatmap(data, dropOutOrder) {
         .domain(dropOutPositions)
         .range([ 0, width ])
         .padding(padding);
-        svg.append("g")
+    svg.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).tickFormat(function(d, i){return i + 1 == numberOfCandidates ? 'Win' : i + 1}));
@@ -1027,10 +1023,10 @@ function drawHeatmap(data, dropOutOrder) {
         .domain(dropOutOrder)
         .range([ 0, height ])
         .padding(padding);
-        svg.append("g")
+    svg.append("g")
         .attr("class", "axis")
         .attr('transform', 'translate(0, 0)')
-        .call(d3.axisLeft(y))//.tickFormat(function(d, i){return names[i]}));
+        .call(d3.axisLeft(y).tickFormat(function(d){return d.split(" ")[1]}));
 
     if (screen.width < 600){
         d3.selectAll(".axis>.tick>text")
