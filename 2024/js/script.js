@@ -1077,8 +1077,8 @@ function drawHeatmap(data, dropOutOrder) {
     }
 
     // Build color scale for cells
-    var myColor = d3.scaleLinear()
-      .domain([0,35]) // update this
+    var heatmapColors = d3.scaleLinear()
+      .domain(d3.extent(heatmapData, function(d) { return (d.value); }))
       .range(["white", "blue"]);
       
     // draw and color the cells
@@ -1090,7 +1090,7 @@ function drawHeatmap(data, dropOutOrder) {
         .attr("x", function(d) { return x(d.dropOutPosition) })
         .attr("width", width / numberOfCandidates )
         .attr("height", height / numberOfCandidates )
-        .style("fill", function(d) {return myColor(d.value)} )
+        .style("fill", function(d) {return heatmapColors(d.value)} )
         .on("mouseover", function() {
           tooltip.style("opacity", 1);
           d3.select(this).style("stroke", "black").style("stroke-width", 2);
@@ -1102,23 +1102,22 @@ function drawHeatmap(data, dropOutOrder) {
         });
 
     // Build color scale for text label
-    var textColor = d3.scaleThreshold()
-        .domain([0, 14])
-        .range(["black", "white"]);
+    var textColor = d3.scaleQuantile()
+      .domain(d3.extent(heatmapData, function(d) { return (d.value); })) // pass only the extreme values to a scaleQuantize’s domain
+      .range(["none", "black", "white"])
 
     // labels for squares
     svg.selectAll("text")
         .data(heatmapData)
         .enter()
         .append("text")
-        .text(function(d){return d.value;})
+        .text(function(d) { return d.value; })
         .attr("y", function(d) { return y(d.name) + (height / numberOfCandidates / 2) })
         .attr("x", function(d) { return x(d.dropOutPosition) + (width / numberOfCandidates / 2) })
         .style("text-anchor", "middle")
         .attr("dominant-baseline", "central")
         .attr('class', 'heatmapLabel')
-        .style("fill", function(d) { return "blue"; textColor(d.value)})
-        //.style("fill", function(d) {if (d.value > 14){return 'white'} else if (d.value > 9){return 'black'} else{return "none"}})
+        .style("fill", function(d) { return textColor(d.value)})
         .attr('pointer-events', 'none');
             
     // text label for the x axis
