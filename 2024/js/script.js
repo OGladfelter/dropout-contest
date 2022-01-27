@@ -1103,7 +1103,7 @@ function drawHeatmap(data, dropOutOrder) {
       .range(["none", "black", "white"])
 
     // labels for squares
-    svg.selectAll("text")
+    svg.selectAll(".heatmapLabel")
         .data(heatmapData)
         .enter()
         .append("text")
