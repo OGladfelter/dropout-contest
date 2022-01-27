@@ -386,6 +386,13 @@ div.tooltip {
   color: black;	
 }
 
+.heatmapHeader {
+  font-size: 26px;
+}
+.heatmapLabel {
+  font-size: 18px;
+}
+
 /*--------------------
 Mobile
 --------------------*/
@@ -417,5 +424,12 @@ Mobile
   .predictions {
     visibility: hidden;
     z-index: -1;
+  }
+
+  .heatmapHeader {
+    font-size: 14px;
+  }
+  .heatmapLabel {
+    font-size: 10px;
   }
 }

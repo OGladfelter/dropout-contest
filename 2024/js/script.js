@@ -985,28 +985,17 @@ function drawHeatmap(data, dropOutOrder) {
             "translate(" + margin.left + "," + margin.top + ")");
 
     // Labels of rows and columns
-    names = ["Joe Biden", "Elizabeth Warren", "Bernie Sanders", "Pete Buttigieg", "Michael Bloomberg", "Andrew Yang", "Amy Klobuchar", "Tulsi Gabbard", "Tom Steyer", "Cory Booker", "Marianne Williamson", "John Delaney", "Deval Patrick", "Michael Bennet"]
+    // names = ["Joe Biden", "Elizabeth Warren", "Bernie Sanders", "Pete Buttigieg", "Michael Bloomberg", "Andrew Yang", "Amy Klobuchar", "Tulsi Gabbard", "Tom Steyer", "Cory Booker", "Marianne Williamson", "John Delaney", "Deval Patrick", "Michael Bennet"]
 
-    if (screen.width < 600){
-        names = ["Biden", "Warren", "Sanders", "Buttigieg", "Bloomberg", "Yang", "Klobuchar", "Gabbard", "Steyer", "Booker", "Williamson", "Delaney", "Patrick", "Bennet"]
-    }
-
-    // Build color scale for cells
-    var myColor = d3.scaleLinear()
-        .range(["white", "blue"])
-        .domain([0,35]); // update this
-
-    // Build color scale for text
-    var textColor = d3.scaleLinear()
-        .range(["black", "white"])
-        .domain([0,35]); // update this
+    // if (screen.width < 600){
+    //     names = ["Biden", "Warren", "Sanders", "Buttigieg", "Bloomberg", "Yang", "Klobuchar", "Gabbard", "Steyer", "Booker", "Williamson", "Delaney", "Patrick", "Bennet"]
+    // }
 
     var padding = 0.1;
 
-    //var dropOutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
-    var dropOutPositions=[1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+    var dropOutPositions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 
-    heatmapData = [];
+    var heatmapData = [];
 
     // populate heatmapData with all possible combinations of candidates and drop out positions - default value is 0 predictions
     dropOutOrder.forEach(c => {
@@ -1054,30 +1043,18 @@ function drawHeatmap(data, dropOutOrder) {
     var tooltip = d3.select("body")
         .append("div")
         .style("opacity", 0)
-        .attr("class", "tooltip")
-
-    var mouseover = function(d) {
-        tooltip
-            .style("opacity", 1)
-        d3.select(this)
-            .style("stroke", "black")
-            .style("stroke-width", 2);
-    }
+        .attr("class", "tooltip");
     var mousemove = function(d) {
-
-        var player;
-        var statement;
-
+        var player, statement;
         if (d.value == 0){
             player = "No one predicts "
         }
         else if (d.value == 1) {
-            player = "1 respondent predicts "
+            player = "1 player predicts "
         }
         else {
             player = d.value + " players predict "
         }
-
         if (d.dropOutPosition == 1){
             statement = " will drop out 1st"
         }
@@ -1093,17 +1070,17 @@ function drawHeatmap(data, dropOutOrder) {
         else{
             statement = " will win"
         }
-
-        var matrix = this.getScreenCTM()
-            .translate(+ this.getAttribute("cx"), + this.getAttribute("cy"));
-
-            tooltip
-                .html(player + "<br>" + names[d.name-1] + statement)
-                .style("left", (d3.event.pageX) + 40 + "px")
-                .style("top", (d3.event.pageY) + "px")
-        
+        tooltip
+            .html(player + "<br>" + d.name + statement)
+            .style("left", (d3.event.pageX) + 40 + "px")
+            .style("top", (d3.event.pageY) + "px");
     }
 
+    // Build color scale for cells
+    var myColor = d3.scaleLinear()
+      .domain([0,35]) // update this
+      .range(["white", "blue"]);
+      
     // draw and color the cells
     svg.selectAll()
         .data(heatmapData)
@@ -1114,32 +1091,35 @@ function drawHeatmap(data, dropOutOrder) {
         .attr("width", width / numberOfCandidates )
         .attr("height", height / numberOfCandidates )
         .style("fill", function(d) {return myColor(d.value)} )
-        .on("mouseover", mouseover)
+        .on("mouseover", function() {
+          tooltip.style("opacity", 1);
+          d3.select(this).style("stroke", "black").style("stroke-width", 2);
+        })
         .on("mousemove", mousemove)
         .on("mouseleave", function() {
           tooltip.style("opacity", 0);
           d3.select(this).style("stroke", "none");
-        })
+        });
 
-
-    squareLabelFontSize = '18px'
-    if (screen.width < 600){
-        squareLabelFontSize = '10px'
-    }
+    // Build color scale for text label
+    var textColor = d3.scaleThreshold()
+        .domain([0, 14])
+        .range(["black", "white"]);
 
     // labels for squares
-    var texts = svg.selectAll("text")
+    svg.selectAll("text")
         .data(heatmapData)
-        .enter();
-    texts.append("text")
-            .text(function(d){return d.value;})
-            .attr("y", function(d) { return y(d.name) + (height/14/2) })
-            .attr("x", function(d) { return x(d.dropOutPosition) + (width/14/2) })
-            .style("text-anchor", "middle")
-            .attr("dominant-baseline", "central")
-            .attr('font-size', squareLabelFontSize)
-            .style("fill", function(d) {if (d.value > 14){return 'white'} else if (d.value > 9){return 'black'} else{return "none"}})
-            .attr('pointer-events', 'none');
+        .enter()
+        .append("text")
+        .text(function(d){return d.value;})
+        .attr("y", function(d) { return y(d.name) + (height / numberOfCandidates / 2) })
+        .attr("x", function(d) { return x(d.dropOutPosition) + (width / numberOfCandidates / 2) })
+        .style("text-anchor", "middle")
+        .attr("dominant-baseline", "central")
+        .attr('class', 'heatmapLabel')
+        .style("fill", function(d) { return "blue"; textColor(d.value)})
+        //.style("fill", function(d) {if (d.value > 14){return 'white'} else if (d.value > 9){return 'black'} else{return "none"}})
+        .attr('pointer-events', 'none');
             
     // text label for the x axis
     svg.append("text")             
@@ -1147,13 +1127,8 @@ function drawHeatmap(data, dropOutOrder) {
                 "translate(" + (width/2) + " ," + 
                             (height + margin.top + 10) + ")")
         .style("text-anchor", "middle")
-        .attr('font-size', squareLabelFontSize)
+        .attr('class', 'heatmapLabel')
         .text("Predicted Drop Out Position");
-
-    chartTitleFontSize = '26px'
-    if (screen.width < 600){
-        chartTitleFontSize = '14px'
-    }
 
     // Heading 
     svg.append("g")
@@ -1161,7 +1136,7 @@ function drawHeatmap(data, dropOutOrder) {
         .attr("x",(width)/2)
         .attr('y', 0-margin.top+20)
         .attr('font-weight', 'bold')
-        .attr('font-size', chartTitleFontSize)
+        .attr('class', 'heatmapHeader')
         .attr('font-family', 'Segoe UI bold')
         .style("text-anchor", "middle")
         .text("74 Predictions Of Candidate Drop Out Order")
@@ -1178,7 +1153,6 @@ function onPageLoad() {
     drawScoresLineplot();
 
     // analysis section
-    //drawHeatmap();
 }
 
 onPageLoad();
