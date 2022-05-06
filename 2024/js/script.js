@@ -54,14 +54,15 @@ function calculateKendallTauDistance(listA, listB){
 var dropoutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
 
 function dataPrep() { 
-  d3.csv("data/scoreboardDataApril8.csv", function(data) {
+  d3.csv("data/submissions.csv", function(data) {
       // compute performance metrics
       data.forEach(d => {
-          d.prediction = [d['1'],d["2"],d["3"],d["4"],d["5"],d["6"],d["7"],d["8"],d["9"],d["10"],d["11"],d["12"],d["13"],d["14"]];
+          d.prediction = d.prediction.split(', ');
           d.kendallDistance = calculateKendallTauDistance(dropoutOrder, d.prediction);
           d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
           d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
       });
+      console.log(data);
       data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
       // compute rank for each player
       for (i = 0; i < data.length; i++) {
@@ -169,20 +170,20 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
         document.getElementById("playerHeader").innerHTML = d.name + " Prediction"; // customize title
             
         // change the order to match the player represented by the li moused over
-        document.getElementById("1stDrop").innerHTML = d["1"];
-        document.getElementById("2ndDrop").innerHTML = d["2"];
-        document.getElementById("3rdDrop").innerHTML = d["3"];
-        document.getElementById("4thDrop").innerHTML = d["4"];
-        document.getElementById("5thDrop").innerHTML = d["5"];
-        document.getElementById("6thDrop").innerHTML = d["6"];
-        document.getElementById("7thDrop").innerHTML = d["7"];
-        document.getElementById("8thDrop").innerHTML = d["8"];
-        document.getElementById("9thDrop").innerHTML = d["9"];
-        document.getElementById("10thDrop").innerHTML = d["10"];
-        document.getElementById("11thDrop").innerHTML = d["11"];
-        document.getElementById("12thDrop").innerHTML = d["12"];
-        document.getElementById("13thDrop").innerHTML = d["13"];
-        document.getElementById("winner").innerHTML = d["14"];
+        document.getElementById("1stDrop").innerHTML = d["prediction"][0];
+        document.getElementById("2ndDrop").innerHTML = d["prediction"][1];
+        document.getElementById("3rdDrop").innerHTML = d["prediction"][2];
+        document.getElementById("4thDrop").innerHTML = d["prediction"][3];
+        document.getElementById("5thDrop").innerHTML = d["prediction"][4];
+        document.getElementById("6thDrop").innerHTML = d["prediction"][5];
+        document.getElementById("7thDrop").innerHTML = d["prediction"][6];
+        document.getElementById("8thDrop").innerHTML = d["prediction"][7];
+        document.getElementById("9thDrop").innerHTML = d["prediction"][8];
+        document.getElementById("10thDrop").innerHTML = d["prediction"][9];
+        document.getElementById("11thDrop").innerHTML = d["prediction"][10];
+        document.getElementById("12thDrop").innerHTML = d["prediction"][11];
+        document.getElementById("13thDrop").innerHTML = d["prediction"][12];
+        document.getElementById("winner").innerHTML = d["prediction"][13];
     });
 
 }
@@ -1003,7 +1004,7 @@ function drawHeatmap(data, dropOutOrder) {
     // add every single prediction (player x candidate combo) to heatmapData's value counts
     data.forEach(d => {
       dropOutPositions.forEach(p => {
-        var relevantRow = heatmapData.find(h => {return h.name == d[p] && h.dropOutPosition == p});
+        var relevantRow = heatmapData.find(h => {return h.name == d['prediction'][p-1] && h.dropOutPosition == p});
         relevantRow['value'] += 1;
       })
     });
