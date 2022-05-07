@@ -111,6 +111,11 @@ function dataPrep() {
 // functions for entry form
 // make interactive section on entry form sortable
 $( function() {
+
+    $(".draggableNames").each(function(index) {
+        $(this)[0].style.top = 30 * index + "px";
+    });
+
     $("#sortable").sortable({
         stop: function(event, ui) {
             $("#sortable li").each(function(index) {
