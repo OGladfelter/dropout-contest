@@ -112,11 +112,11 @@ function dataPrep() {
 // make interactive section on entry form sortable
 $( function() {
     $("#sortable").sortable({
-        stop: function() {
-            var order = $("#sortable li")[0];
-            document.getElementById("sortable").querySelectorAll("li").forEach(li => li.innerHTML = li.id); // reset inner html for all items
-            order.innerHTML = '<i class="fas fa-crown" aria-hidden="true"></i> ' + order.innerHTML + ' <i class="fas fa-crown" aria-hidden="true"></i>'; // add crowns to top list item
-        }
+        // stop: function() {
+        //     var order = $("#sortable li")[0];
+        //     document.getElementById("sortable").querySelectorAll("li").forEach(li => li.innerHTML = li.id); // reset inner html for all items
+        //     order.innerHTML = '<i class="fas fa-crown" aria-hidden="true"></i> ' + order.innerHTML + ' <i class="fas fa-crown" aria-hidden="true"></i>'; // add crowns to top list item
+        // }
     });
 
     $(".draggableNames").draggable({
@@ -124,23 +124,38 @@ $( function() {
         helper: 'clone',
         start: function(event, ui) {
           var movingName = event.target;
-          movingName.style.display = 'none';
+          movingName.style.visibility = 'hidden';
+          $("#sortable li").each(function() {
+              if ($(this)[0].id == '') {
+                  $(this)[0].style.boxShadow = 'rgba(17, 177, 177, 0.1) 0px 4px 16px, rgba(17, 177, 177, 0.1) 0px 8px 24px, rgba(17, 177, 177, 0.1) 0px 16px 56px';
+              }
+          });
         },
         stop: function (event, ui) {
           var movingName = event.target;
-          movingName.style.display = 'inline';
+          movingName.style.visibility = 'visible';
+          $("#sortable li").each(function() {
+            $(this)[0].style.boxShadow = 'none';
+        });
         },
     });
 
     $("#sortable li").droppable({
-      over: function(event) {
-        event.target.style.backgroundColor = 'whitesmoke';
-      },
-      out: function(event) {
-        event.target.style.backgroundColor = 'rgba(245, 245, 245, 0.1)';
+      accept: function(d) { // check if a piece can be dropped here
+        if (this.id == '') { 
+            return true;
+        }
+        return false;
       },
       drop: function(event, ui) {
-        console.log(ui);
+        if (ui.draggable[0].classList.contains('draggableNames')) {
+            ui.draggable[0].style.display = 'none';
+            event.target.style.backgroundColor = 'whitesmoke';
+            event.target.style.border = '1px black solid';
+            event.target.style.color = 'black';
+            event.target.innerHTML = ui.draggable[0].innerHTML;
+            event.target.id = ui.draggable[0].innerHTML;
+        }
       }
     });
 } );

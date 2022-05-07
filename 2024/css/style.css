@@ -144,8 +144,8 @@ form {
   padding: 8px; 
   font-size: 16px; 
   background: rgba(245, 245, 245, 0.1);
-  color: black;
-  border: black 1px solid;
+  color: gray;
+  border: gray 1px dashed;
 }
 .sortable li:hover {
   cursor: move;
