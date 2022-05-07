@@ -116,8 +116,11 @@ $( function() {
     shuffle(candidates);
 
     $(".draggableNames").each(function(index) {
-        $(this)[0].style.top = 30 * index + "px";
+        $(this)[0].style.top = 25 * index + "px";
+        $(this)[0].style.left = 5 * index + "px"; // make this effect work conditionally, so it's 3 rows of left-moving cards
         $(this)[0].innerHTML = candidates[index];
+        d3.select($(this)[0]).lower();
+        //d3.select($(this)[0]).on("mouseover", function() { d3.select(this).raise(); })
     });
 
     $("#sortable").sortable({
