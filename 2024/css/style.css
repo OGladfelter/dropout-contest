@@ -143,7 +143,7 @@ form {
   margin: 5px; 
   padding: 8px; 
   font-size: 16px; 
-  background: whitesmoke;
+  background: rgba(245, 245, 245, 0.1);
   color: black;
   border: black 1px solid;
 }
@@ -358,6 +358,19 @@ select.computerSelector option:checked {
   background-color: black;
   cursor: pointer;
 } 
+
+/*--------------------
+formsection
+--------------------*/
+
+.draggableNames {
+  background-color: whitesmoke;
+  color: black;
+  padding: 10px;
+  border: black;
+  cursor: move;
+  margin: 10px;
+}
 
 /*--------------------
 Analysis CSS

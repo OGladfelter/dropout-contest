@@ -111,14 +111,40 @@ function dataPrep() {
 // functions for entry form
 // make interactive section on entry form sortable
 $( function() {
-    $( "#sortable" ).sortable({
-        stop: function( ) {
+    $("#sortable").sortable({
+        stop: function() {
             var order = $("#sortable li")[0];
             document.getElementById("sortable").querySelectorAll("li").forEach(li => li.innerHTML = li.id); // reset inner html for all items
             order.innerHTML = '<i class="fas fa-crown" aria-hidden="true"></i> ' + order.innerHTML + ' <i class="fas fa-crown" aria-hidden="true"></i>'; // add crowns to top list item
         }
     });
+
+    $(".draggableNames").draggable({
+        refreshPositions: true,
+        helper: 'clone',
+        start: function(event, ui) {
+          var movingName = event.target;
+          movingName.style.display = 'none';
+        },
+        stop: function (event, ui) {
+          var movingName = event.target;
+          movingName.style.display = 'inline';
+        },
+    });
+
+    $("#sortable li").droppable({
+      over: function(event) {
+        event.target.style.backgroundColor = 'whitesmoke';
+      },
+      out: function(event) {
+        event.target.style.backgroundColor = 'rgba(245, 245, 245, 0.1)';
+      },
+      drop: function(event, ui) {
+        console.log(ui);
+      }
+    });
 } );
+
 
 // send user to rules tab then smooth scroll to scoring section
 function goToScoring(event) {
