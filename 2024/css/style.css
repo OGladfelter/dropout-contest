@@ -132,6 +132,16 @@ form {
   width: auto;
 }
 
+.sorterContainer {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display:flex;
+  justify-content:flex-start;
+}
+
 .sortable { 
   list-style-type: none; 
   margin: 0; 

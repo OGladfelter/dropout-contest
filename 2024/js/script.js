@@ -113,9 +113,6 @@ function dataPrep() {
 $( function() {
     $("#sortable").sortable({
         stop: function(event, ui) {
-            // var order = $("#sortable li")[0];
-            // document.getElementById("sortable").querySelectorAll("li").forEach(li => li.innerHTML = li.id); // reset inner html for all items
-            // order.innerHTML = '<i class="fas fa-crown" aria-hidden="true"></i> ' + order.innerHTML + ' <i class="fas fa-crown" aria-hidden="true"></i>'; // add crowns to top list item
             $("#sortable li").each(function(index) {
                 if (index == 0 && this.id == '') { // if first sortable li element is still blank, make sure it says 'drop nominee here'
                     this.innerHTML = 'Place 2024 nominee here';
