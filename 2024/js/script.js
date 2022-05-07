@@ -112,11 +112,28 @@ function dataPrep() {
 // make interactive section on entry form sortable
 $( function() {
     $("#sortable").sortable({
-        // stop: function() {
-        //     var order = $("#sortable li")[0];
-        //     document.getElementById("sortable").querySelectorAll("li").forEach(li => li.innerHTML = li.id); // reset inner html for all items
-        //     order.innerHTML = '<i class="fas fa-crown" aria-hidden="true"></i> ' + order.innerHTML + ' <i class="fas fa-crown" aria-hidden="true"></i>'; // add crowns to top list item
-        // }
+        stop: function(event, ui) {
+            // var order = $("#sortable li")[0];
+            // document.getElementById("sortable").querySelectorAll("li").forEach(li => li.innerHTML = li.id); // reset inner html for all items
+            // order.innerHTML = '<i class="fas fa-crown" aria-hidden="true"></i> ' + order.innerHTML + ' <i class="fas fa-crown" aria-hidden="true"></i>'; // add crowns to top list item
+            $("#sortable li").each(function(index) {
+                if (index == 0 && this.id == '') { // if first sortable li element is still blank, make sure it says 'drop nominee here'
+                    this.innerHTML = 'Place 2024 nominee here';
+                }
+                else if (index == 1 && this.id == '') { // if second sortable li element is still blank, make sure it says 'drop last to drop here'
+                    this.innerHTML = 'Place last to drop out here';
+                }
+                else if ($("#sortable li").length - index == 1 && this.id == '') {
+                    this.innerHTML = 'Place first to drop out here';
+                }
+                else if ($("#sortable li").length - index == 2 && this.id == '') {
+                    this.innerHTML = 'Place second to drop out here';
+                }
+                else if (this.id == '') { // middle items that haven't been spoken for yet should just be blank
+                    this.innerHTML = '&nbsp;'
+                }
+            });
+        }
     });
 
     $(".draggableNames").draggable({

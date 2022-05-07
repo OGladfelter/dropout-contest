@@ -166,6 +166,15 @@ form {
   border: 1px transparent solid;
 }
 
+.draggableNames {
+  background-color: whitesmoke;
+  color: black;
+  padding: 10px;
+  border: black;
+  cursor: move;
+  margin: 10px;
+}
+
 /*--------------------
 Contest Rules CSS
 --------------------*/
@@ -358,19 +367,6 @@ select.computerSelector option:checked {
   background-color: black;
   cursor: pointer;
 } 
-
-/*--------------------
-formsection
---------------------*/
-
-.draggableNames {
-  background-color: whitesmoke;
-  color: black;
-  padding: 10px;
-  border: black;
-  cursor: move;
-  margin: 10px;
-}
 
 /*--------------------
 Analysis CSS
