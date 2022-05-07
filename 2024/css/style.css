@@ -188,6 +188,9 @@ form {
   left: 0;
   width: 100%;
 }
+.draggableNames:hover {
+  background-color: rgb(209, 255, 255);
+}
 
 /*--------------------
 Contest Rules CSS
