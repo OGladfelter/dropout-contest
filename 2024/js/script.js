@@ -112,8 +112,12 @@ function dataPrep() {
 // make interactive section on entry form sortable
 $( function() {
 
+    var candidates = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
+    shuffle(candidates);
+
     $(".draggableNames").each(function(index) {
         $(this)[0].style.top = 30 * index + "px";
+        $(this)[0].innerHTML = candidates[index];
     });
 
     $("#sortable").sortable({
