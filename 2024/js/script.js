@@ -111,6 +111,17 @@ function dataPrep() {
 // functions for entry form
 // make interactive section on entry form sortable
 $( function() {
+
+    var candidates = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
+    shuffle(candidates);
+
+    $(".draggableNames").each(function(index) {
+        $(this)[0].style.top = 25 * index + "px";
+        $(this)[0].innerHTML = candidates[index];
+        d3.select($(this)[0]).lower();
+        //d3.select($(this)[0]).on("mouseover", function() { d3.select(this).raise(); })
+    });
+
     $("#sortable").sortable({
         stop: function(event, ui) {
             $("#sortable li").each(function(index) {

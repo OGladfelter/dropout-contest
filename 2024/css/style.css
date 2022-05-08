@@ -180,9 +180,17 @@ form {
   background-color: whitesmoke;
   color: black;
   padding: 10px;
-  border: black;
+  border: black 1px solid;
   cursor: move;
   margin: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.draggableNames:hover {
+  background-color: rgb(209, 255, 255);
+  z-index: 2;
 }
 
 /*--------------------
