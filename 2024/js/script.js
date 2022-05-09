@@ -7,7 +7,7 @@ function IsMobileCard() {
 }
 
 // for tab navigation
-function openTab(evt, cityName, bgColor) {
+function openTab(evt, tabID, bgColor = "#312e2b") {
   document.body.style.background = bgColor;
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -18,7 +18,7 @@ function openTab(evt, cityName, bgColor) {
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
-  document.getElementById(cityName).style.display = "block";
+  document.getElementById(tabID).style.display = "block";
   evt.currentTarget.className += " active";
 }
 
