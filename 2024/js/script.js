@@ -295,8 +295,10 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 }
 
 d3.text('data/droppedCandidates.csv', function(text) {
-  var dropOutOrder = text.split(",");
-  d3.select("#playerPredictions").on("mouseover", function() {
+    var dropOutOrder = text.split(",");
+    d3.select("#playerPredictions").on("mouseover", function() {
+        document.getElementById("winnerColumn2").innerHTML = '';
+        document.getElementById("1stDropColumn2").innerHTML = '';
         $("#playerTable tr").each(function(index) {
             var columns = this.querySelectorAll('td');
             if (dropOutOrder.includes(columns[0].innerHTML)) {
@@ -310,52 +312,12 @@ d3.text('data/droppedCandidates.csv', function(text) {
         });
     })
     .on("mouseout", function() {
-        tds = d3.select("#playerTable").selectAll("td")._groups[0]
-        
-        for (i=0; i < tds.length; i++){
-            if (tds[i].innerText == 'Marianne Williamson'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Cory Booker'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'John Delaney'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Andrew Yang'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Michael Bennet'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Deval Patrick'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Tom Steyer'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Pete Buttigieg'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Amy Klobuchar'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Michael Bloomberg'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Elizabeth Warren'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Tulsi Gabbard'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Bernie Sanders'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-            else if (tds[i].innerText == 'Joe Biden'){
-                tds[i+1].innerText = tds[i+1].id;
-            }
-        }
+        $("#playerTable tr").each(function(index) {
+          var columns = this.querySelectorAll('td');
+          columns[1].innerHTML = "";
+          document.getElementById("winnerColumn2").innerHTML = 'Winner';
+          document.getElementById("1stDropColumn2").innerHTML = '1st drop';
+        });
     });
 });
 
