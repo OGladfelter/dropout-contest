@@ -81,7 +81,8 @@ function partialScoring(dropOutOrder, playerPredictionsArray) {
   return calculateKendallTauDistance(dropOutOrder,playerPredictionsArray);
 }
 
-// from first to last 
+// from first to last
+//Marianne Williamson,Cory Booker,John Delaney,Andrew Yang,Michael Bennet,Deval Patrick,Tom Steyer,Pete Buttigieg,Amy Klobuchar,Michael Bloomberg,Elizabeth Warren,Tulsi Gabbard,Bernie Sanders,Joe Biden
 //var dropoutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
 
 function dataPrep() { 
