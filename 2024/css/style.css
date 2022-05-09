@@ -180,17 +180,9 @@ form {
   background-color: whitesmoke;
   color: black;
   padding: 10px;
-  border: black 1px solid;
+  border: black;
   cursor: move;
   margin: 10px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-.draggableNames:hover {
-  background-color: rgb(209, 255, 255);
-  z-index: 2;
 }
 
 /*--------------------
@@ -296,11 +288,9 @@ Leaderboard CSS
 /* contest info box */
 .contestInfo {
   position: fixed;
-  top: 50%;
-  left: 75%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-25%, -50%);
-  width: 285px;
+  bottom: 2.5%;
+  right: 2.5%;
+  padding: 20px;
   background: linear-gradient(to bottom, #3a404d, #181c26);
   border-radius: 10px;
   box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
