@@ -294,212 +294,69 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 
 }
 
-d3.select("#playerPredictions").on("mouseover", function() {
-    tds = d3.select("#playerTable").selectAll("td")._groups[0]
-    for (i=0; i < tds.length; i++){
-        if (tds[i].innerText == 'Marianne Williamson'){
-            scoreEffect = Math.abs(13 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
+d3.text('data/droppedCandidates.csv', function(text) {
+  var dropOutOrder = text.split(",");
+  d3.select("#playerPredictions").on("mouseover", function() {
+        $("#playerTable tr").each(function(index) {
+            var columns = this.querySelectorAll('td');
+            if (dropOutOrder.includes(columns[0].innerHTML)) {
+                var scoreEffect = Math.abs(numberOfCandidates - 1 - dropOutOrder.indexOf(columns[0].innerHTML) - index);
+                if (scoreEffect == 0) {
+                    columns[1].innerHTML = "✔";
+                } else {
+                    columns[1].innerHTML = "-" + scoreEffect;
+                }
             }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
+        });
+    })
+    .on("mouseout", function() {
+        tds = d3.select("#playerTable").selectAll("td")._groups[0]
+        
+        for (i=0; i < tds.length; i++){
+            if (tds[i].innerText == 'Marianne Williamson'){
+                tds[i+1].innerText = tds[i+1].id;
             }
-        }
-        else if (tds[i].innerText == 'Cory Booker'){
-            scoreEffect = Math.abs(12 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
+            else if (tds[i].innerText == 'Cory Booker'){
+                tds[i+1].innerText = tds[i+1].id;
             }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
+            else if (tds[i].innerText == 'John Delaney'){
+                tds[i+1].innerText = tds[i+1].id;
             }
-        }
-        else if (tds[i].innerText == 'John Delaney'){
-            scoreEffect = Math.abs(11 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
+            else if (tds[i].innerText == 'Andrew Yang'){
+                tds[i+1].innerText = tds[i+1].id;
             }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
+            else if (tds[i].innerText == 'Michael Bennet'){
+                tds[i+1].innerText = tds[i+1].id;
             }
-        }
-        else if (tds[i].innerText == 'Andrew Yang'){
-            scoreEffect = Math.abs(10 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
+            else if (tds[i].innerText == 'Deval Patrick'){
+                tds[i+1].innerText = tds[i+1].id;
             }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
+            else if (tds[i].innerText == 'Tom Steyer'){
+                tds[i+1].innerText = tds[i+1].id;
             }
-        }
-        else if (tds[i].innerText == 'Michael Bennet'){
-            scoreEffect = Math.abs(9 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
+            else if (tds[i].innerText == 'Pete Buttigieg'){
+                tds[i+1].innerText = tds[i+1].id;
             }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
+            else if (tds[i].innerText == 'Amy Klobuchar'){
+                tds[i+1].innerText = tds[i+1].id;
             }
-        }
-        else if (tds[i].innerText == 'Deval Patrick'){
-            scoreEffect = Math.abs(8 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
+            else if (tds[i].innerText == 'Michael Bloomberg'){
+                tds[i+1].innerText = tds[i+1].id;
             }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
+            else if (tds[i].innerText == 'Elizabeth Warren'){
+                tds[i+1].innerText = tds[i+1].id;
+            }
+            else if (tds[i].innerText == 'Tulsi Gabbard'){
+                tds[i+1].innerText = tds[i+1].id;
+            }
+            else if (tds[i].innerText == 'Bernie Sanders'){
+                tds[i+1].innerText = tds[i+1].id;
+            }
+            else if (tds[i].innerText == 'Joe Biden'){
+                tds[i+1].innerText = tds[i+1].id;
             }
         }
-        else if (tds[i].innerText == 'Tom Steyer'){
-            scoreEffect = Math.abs(7 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
-            }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
-            }
-        }
-        else if (tds[i].innerText == 'Pete Buttigieg'){
-            scoreEffect = Math.abs(6 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
-            }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
-            }
-        }
-        else if (tds[i].innerText == 'Amy Klobuchar'){
-            scoreEffect = Math.abs(5 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
-            }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
-            }
-        }
-        else if (tds[i].innerText == 'Michael Bloomberg'){
-            scoreEffect = Math.abs(4 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
-            }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
-            }
-        }
-        else if (tds[i].innerText == 'Elizabeth Warren'){
-            scoreEffect = Math.abs(3 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
-            }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
-            }
-        }
-        else if (tds[i].innerText == 'Tulsi Gabbard'){
-            scoreEffect = Math.abs(2 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
-            }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
-            }
-        }
-        else if (tds[i].innerText == 'Bernie Sanders'){
-            scoreEffect = Math.abs(1 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
-            }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
-            }
-        }
-        else if (tds[i].innerText == 'Joe Biden'){
-            scoreEffect = Math.abs(0 - (i/2))
-            if (scoreEffect==0){
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "✔"
-            }
-            else{
-                tds[i+1].id = tds[i+1].innerText;
-                tds[i+1].innerText = "-" + scoreEffect
-            }
-        }
-    }
-})
-.on("mouseout", function() {
-    tds = d3.select("#playerTable").selectAll("td")._groups[0]
-    
-    for (i=0; i < tds.length; i++){
-        if (tds[i].innerText == 'Marianne Williamson'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Cory Booker'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'John Delaney'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Andrew Yang'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Michael Bennet'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Deval Patrick'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Tom Steyer'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Pete Buttigieg'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Amy Klobuchar'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Michael Bloomberg'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Elizabeth Warren'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Tulsi Gabbard'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Bernie Sanders'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-        else if (tds[i].innerText == 'Joe Biden'){
-            tds[i+1].innerText = tds[i+1].id;
-        }
-    }
+    });
 });
 
 //////////////////////////
