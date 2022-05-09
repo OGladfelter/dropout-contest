@@ -182,22 +182,22 @@
 <!-- RULES & CONTEST INFO -->
 <div id="Rules" class="tabcontent">
   <h2>🏆 Prizes 🏆</h2>
-  <h3 style='text-align: center; margin-bottom: 10px;'>1st Place: TBD</h3>
-  <h3 style='text-align: center; margin-bottom: 10px;'>2nd Place: TBD</h3>
-  <h3 style='text-align: center;'>3rd Place: TBD</h3>
+  <h3 style='text-align: center; margin-bottom: 10px;'>1st Place: Apple iPad</h3>
+  <h3 style='text-align: center; margin-bottom: 10px;'>2nd Place: $100</h3>
+  <h3 style='text-align: center;'>3rd Place: $25</h3>
   <h2>General Rules</h2>
   <article>
     <p>1. One entry per player</p>
-    <p>2. Calling every single candidate and asking them when they're planning to drop out is allowed</p>
+    <p>2. Calling every single candidate and asking them when they're planning on dropping out is allowed</p>
   </article>
   <h2 id="scoring">Scoring</h2>
   <article>
       <p>The player with the lowest Kendall tau distance wins.</p>
-      <p>Kendall tau distance compares how similar any two ordered lists are: the number of <i>adjacent</i> swaps needed to make a player's prediction match the real order equals their Kendall tau distance. For example, let's say the 2020 Democratic had just consisted of four candidates: Joe Biden, Bernie Sanders, Elizabeth Warren, and Amy Klobuchar and I predicted the drop out order as such:</p>
+      <p>Kendall tau distance compares how similar any two ordered lists are: the number of <i>adjacent</i> swaps needed to make a player's prediction match the real order is their Kendall tau distance. For example, let's say the 2020 Democratic had just four candidates: Joe Biden, Bernie Sanders, Elizabeth Warren, and Amy Klobuchar. I may have predicted they'd drop out in this order:</p>
       <div class="example_row" style="width:50%;">
         <div style="padding: 5px;">
           <table>
-            <tr><td>Nominee</td></tr>
+            <tr><td>Eventual nominee</td></tr>
             <tr><td>&nbsp;</td></tr>
             <tr><td>&nbsp;</td></tr>
             <tr><td>1st drop out</td></tr>
@@ -212,7 +212,7 @@
           </table>
         </div>
       </div>
-      <p>In that case, my Kendall tau distance would be 1, because just one swap (Sanders and Biden) would be needed to make my order match reality's order:</p>
+      <p>In that case, my Kendall tau distance would be 1, because just one swap (Sanders & Biden) would be needed to make my prediction match the actual outcome:</p>
       <div class="example_row">
         <div class="example_column">
           <table class="example_table">
@@ -322,14 +322,14 @@
   </article> -->
   <h2>Tie Breaker</h2>
   <article>
-      <p>Final scoring will be calculated once the final drop out order and 2024 Republican nominee are known. If there is a tie for 1st, 2nd, or 3rd place, ties will be broken by omitting the first candidate who dropped out and rerunning the scoring algorithm. The player with the lower Kendall tau distance from that will be awarded the better final placement. If their Kendall tau distances continue to match, this process will be repeated iteratively until we reach a decisive outcome.</p>
+      <p>Final scoring will be calculated once the final drop out order is known. Ties will be broken by omitting the first candidate who dropped out and rerunning the scoring algorithm. The player with the lower Kendall tau distance from that will be awarded the better final placement. If their Kendall tau distances continue to match, this process will be repeated iteratively until we reach a decisive outcome.</p>
       <p>In other words, ties are broken by determining which player more accurately predicted the drop out positions of the final N - X candidates, where N is the number of candidates and X is the number of early-drop-out candidates needed to omit in order to break the tie. So accurate predictions closer to the end of the drop out order are more important than correctly guessing the earlier drop outs for a tie breaker.</p>
   </article>
   <h2>Brokered Convention</h2>
   <article>
-      <p>A brokered convention occurs when no single candidate wins a majority of delegates through the standard primary process, flinging the nomination process into a series of deals and revotes. In this rare scenario, we could have multiple candidates actively campaigning right up to the end.</p>
-      <p>A candidate may suspend their campaign <em>during</em> a brokered convention, in between convention votes. In this event, their withdraw from the primary is considered a standard drop out for the purposes of this contest and they are simply added to their place in the drop out order.</p>
-      <p>However, if a candidate may also decide to fight all the way to the bitter end and eventually lose the nomination through a vote. In this case, their campaign is considered over and they are added to the drop out order. If multiple candidates meet this fate, the candidate receiving fewer final delegates is considered the earlier drop out. This rule may apply even in the absence of a brokered convention if there is a protest candidate whom refuses to concede during the primary.</p>
+      <p>A brokered convention occurs when no single candidate wins a majority of delegates through the standard primary process. In this rare scenario, we could end up with multiple candidates actively campaigning right up to the end.</p>
+      <p>Usually a brokered convention has multiple rounds of votes and revotes. A candidate might suspend their campaign in between these votes. In this event, their withdrawl from the primary is considered a standard drop out for the purposes of this contest and they are simply added to their place in the drop out order.</p>
+      <p>However, a candidate may also decide to stick around all the way to the final convention vote. In this case, their campaign is considered over as soon as someone else wins the nomination. If multiple candidates meet this fate, the candidate receiving fewer final delegates is considered the earlier drop out. These rules would apply to protest candidates whom refuse to concede during the primary, even in the absence of a brokered convention.</p>
   </article>
   <h2>The “Gary Hart” Affair</h2>
   <article>
