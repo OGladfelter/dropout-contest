@@ -50,59 +50,98 @@ function calculateKendallTauDistance(listA, listB){
   return distance;
 }
 
+function partialScoring(dropOutOrder, playerPredictionsArray) {
+  // I will want to calculate everyone's scores after each candidate drops out
+  // in the beginning stages, this is a challenge as there are lots of unknowns
+  // contest participants scores' should be impacted only by candidates who have already dropped;
+  // candidates still running should essentially be ignored. But removing them does not work
+  // because it messes with the 'weight' of a correct/incorrect prediction. Instead, replace all ? with 'correct' guesses
+  playerPredictionsArray.forEach(function(candidate, i) {
+      if (!dropOutOrder.includes(candidate)) { // candidate hasn't dropped out
+        playerPredictionsArray[i] = ''; // so remove them from the predictions array
+      } 
+  });
+
+  var alphabet1 = ['A','B','C','D','E','F','G','H','I','J','K','L','M']; // needs to equal length of candidates still running
+
+  playerPredictionsArray.forEach(function(d, i) {
+    if (d == '') {
+      playerPredictionsArray[i] = alphabet1.shift();
+    }
+  });
+
+  var alphabet2 = ['A','B','C','D','E','F','G','H','I','J','K','L','M']; // needs to equal length of candidates still running
+
+  dropOutOrder.forEach(function(d, i) {
+    if (d == '') {
+      dropOutOrder[i] = alphabet2.shift();
+    }
+  });
+
+  return calculateKendallTauDistance(dropOutOrder,playerPredictionsArray);
+}
+
 // from first to last 
-var dropoutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
+//var dropoutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
 
 function dataPrep() { 
   d3.csv("data/submissions.csv", function(data) {
-      // compute performance metrics
-      data.forEach(d => {
-          d.prediction = d.prediction.split(', ');
-          d.kendallDistance = calculateKendallTauDistance(dropoutOrder, d.prediction);
-          d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
-          d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
-      });
-      console.log(data);
-      data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
-      // compute rank for each player
-      for (i = 0; i < data.length; i++) {
-        if (i == 0) {
-          data[i].rank = 1;
-        }
-        else if (data[i].kendallDistance == data[i-1].kendallDistance) {
-          data[i].rank = data[i-1].rank;
-        }
-        else {
-          data[i].rank = i + 1;
-        }
-      };
+      d3.text('data/droppedCandidates.csv', function(text) {
+          var dropOutOrder = text.split(",");
+          var numCandidatesStillRunning = numberOfCandidates - dropOutOrder.length
+          for (var i = 0; i < numCandidatesStillRunning; i++) {
+              dropOutOrder.push('');
+          }
+          // compute performance metrics
+          data.forEach(d => {
+              d.prediction = d.prediction.split(', ');
+              //partialScoring(d.prediction);
+              d.kendallDistance = partialScoring(dropOutOrder, JSON.parse(JSON.stringify(d.prediction)));
+              d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
+              d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
+          });
+          console.log(data);
+          data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
+          // compute rank for each player
+          for (i = 0; i < data.length; i++) {
+            if (i == 0) {
+              data[i].rank = 1;
+            }
+            else if (data[i].kendallDistance == data[i-1].kendallDistance) {
+              data[i].rank = data[i-1].rank;
+            }
+            else {
+              data[i].rank = i + 1;
+            }
+          };
 
-      // add each player to leaderboard
-      var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]); // row color
-      data.forEach(d => {
-        addRow(d.rank, d.name, d.kendallDistance, d.accuracy.toFixed(1), distanceToColorScale(d.rank), d);
-      });
+          // add each player to leaderboard
+          var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]); // row color
+          data.forEach(d => {
+            addRow(d.rank, d.name, d.kendallDistance, d.accuracy.toFixed(1), distanceToColorScale(d.rank), d);
+          });
 
-      // get average drop out predictions
-      var candidateScores = {}
-      // find dropout num for each candidate in each guess. Add num to total value for that candidate in the dict.
-      data.forEach(d => {
-        d.prediction.forEach((p, i) => {
-          if (candidateScores[p]) {
-            candidateScores[p] += i;
-          } else { candidateScores[p] = i}
-        });
-      });
-      // calc average by dividing each value by number of participants
-      var averagePredictions = Object.keys(candidateScores).map(function (key) {
-        return {'candidate':key, 'value':candidateScores[key] / data.length};
-      });
-      averagePredictions = averagePredictions.slice().sort((a, b) => d3.ascending(a.value, b.value));
-      var averageOrder = [];
-      averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
+          // get average drop out predictions
+          var candidateScores = {}
+          // find dropout num for each candidate in each guess. Add num to total value for that candidate in the dict.
+          data.forEach(d => {
+            d.prediction.forEach((p, i) => {
+              if (candidateScores[p]) {
+                candidateScores[p] += i;
+              } else { candidateScores[p] = i}
+            });
+          });
+          // calc average by dividing each value by number of participants
+          var averagePredictions = Object.keys(candidateScores).map(function (key) {
+            return {'candidate':key, 'value':candidateScores[key] / data.length};
+          });
+          averagePredictions = averagePredictions.slice().sort((a, b) => d3.ascending(a.value, b.value));
+          var averageOrder = [];
+          averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
 
-      // draw heatmap
-      drawHeatmap(data, averageOrder);
+          // draw heatmap
+          drawHeatmap(data, averageOrder);
+      });
   }); 
 };
 
