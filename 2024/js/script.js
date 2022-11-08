@@ -245,16 +245,33 @@ function dataPrep() {
           averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
 
           // compute scores for each player at each round so far
-          const scoresOverTime = [];
-          data.forEach(d => {
-            for (let roundNum = 1; roundNum <= text.split(",").length; roundNum++) {
-              const partialDrops = text.split(",").slice(0, roundNum).concat(Array.from({length: numberOfCandidates - roundNum}, (_, roundNum) => ''));
+          let scoresOverTime = [];
+          for (let roundNum = 1; roundNum <= text.split(",").length; roundNum++) {
+            const partialDrops = text.split(",").slice(0, roundNum).concat(Array.from({length: numberOfCandidates - roundNum}, (_, roundNum) => ''));
+            let scoresThisRound = [];
+            data.forEach(d => {
               const score = partialScoring(partialDrops, d.prediction);
-              const kendallNormal = (score / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
-              const accuracy = 100 - (kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
-              scoresOverTime.push({'name':d.name, 'score':accuracy, 'round':roundNum});
-            }
-          });
+              // const kendallNormal = (score / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
+              // const accuracy = 100 - (kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
+              scoresThisRound.push({'name':d.name, 'score':score, 'round':roundNum});
+            });
+            // sort the scores for this round of the current loop iteration
+            scoresThisRound = scoresThisRound.slice().sort((a, b) => d3.ascending(a.score, b.score)); // sort data ascending by kendall distance
+            // add rank
+            for (let i = 0; i < scoresThisRound.length; i++) {
+              if (i == 0) {
+                scoresThisRound[i].rank = 1;
+              }
+              else if (scoresThisRound[i].score == scoresThisRound[i-1].score) {
+                scoresThisRound[i].rank = scoresThisRound[i-1].rank;
+              }
+              else {
+                scoresThisRound[i].rank = i + 1;
+              }
+            };
+            // finally, add this round's score data to overall data object
+            scoresOverTime = scoresOverTime.concat(scoresThisRound);
+          }
           drawScoresLineplot(scoresOverTime);
 
           // draw heatmap
@@ -490,8 +507,8 @@ function drawScoresLineplot(data) {
 
   // Add Y axis
   var y = d3.scaleLinear()
-    .domain([0, d3.max(data, function(d) { return +d.score; })])
-    .range([ height, 0 ]);
+    .domain([0, d3.max(data, function(d) { return +d.rank; })])
+    .range([0, height]);
 
   svg.append("g")
     .attr("class", "axis")
@@ -535,7 +552,7 @@ function drawScoresLineplot(data) {
           return d3.line()
             .curve(d3.curveCardinal)
             .x(function(d) { return x(d.round); })
-            .y(function(d) { return y(d.score); })
+            .y(function(d) { return y(d.rank); })
             (d.values)
         });
 
@@ -553,7 +570,7 @@ function drawScoresLineplot(data) {
     .style("opacity", 0)
     .attr("id", function(d) { return d.name.replace(" ", "").replace(".","") + "Scatter"; })
     .attr("cx", function(d) { return x(d.round); })		 
-    .attr("cy", function(d) { return y(d.score); })
+    .attr("cy", function(d) { return y(d.rank); })
     .on("mouseover", function(d) {	
       var line = document.getElementById(d.name);
       line.style.strokeWidth = "10px";	
@@ -562,7 +579,7 @@ function drawScoresLineplot(data) {
         .style("opacity", 1)
         .style("left", (d3.event.pageX + 14) + "px")		
         .style("top", (d3.event.pageY + 14) + "px");		
-      tooltip.html("<b>" + d.name + "</b>" + "<br/>" + "Accuracy: " + d.score.toFixed(1) + "<br/>" + "Round: " + d.round);
+      tooltip.html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round);
       })
     .on("mouseout", function(d){
       var line = document.getElementById(d.name);
