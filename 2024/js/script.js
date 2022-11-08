@@ -166,7 +166,6 @@ function partialScoring(dropOutOrder, playerPredictionsArray) {
   const placeholderValues1 = alpha.map((x) => String.fromCharCode(x)); // needs to equal length of candidates still running - 1
   const placeholderValues2 = alpha.map((x) => String.fromCharCode(x)); // needs to equal length of candidates still running - 1
 
-
   const predictionsWithPlaceHolders = [];
   playerPredictionsArray.forEach(function(candidate) {
     if (!dropOutOrder.includes(candidate)) { // candidate hasn't dropped out
@@ -175,7 +174,6 @@ function partialScoring(dropOutOrder, playerPredictionsArray) {
       predictionsWithPlaceHolders.push(candidate);
     }
   });
-
 
   const dropsWithPlaceHolders = [];
   dropOutOrder.forEach(function(candidate) {
@@ -204,11 +202,10 @@ function dataPrep() {
           // compute performance metrics
           data.forEach(d => {
               d.prediction = d.prediction.split(', ');
-              d.kendallDistance = partialScoring(dropOutOrder, JSON.parse(JSON.stringify(d.prediction)));
+              d.kendallDistance = partialScoring(dropOutOrder, d.prediction);
               d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
               d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
           });
-          console.log(data);
           data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
           // compute rank for each player
           for (i = 0; i < data.length; i++) {
@@ -247,9 +244,13 @@ function dataPrep() {
           var averageOrder = [];
           averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
 
-          // for (i = dropOutOrder.length - 1; i > 0; i--) {
-          //   console.log(dropOutOrder[i]);
-          // }
+          // compute scores for each player at each round so far
+          const oliverGuess = ['Michael Bennet', 'Cory Booker', 'Marianne Williamson', 'Deval Patrick', 'John Delaney', 'Amy Klobuchar', 'Tom Steyer', 'Andrew Yang', 'Pete Buttigieg', 'Michael Bloomberg', 'Bernie Sanders', 'Tulsi Gabbard', 'Joe Biden', 'Elizabeth Warren'];
+          for (i = 1; i <= text.split(",").length; i++) {
+            const partialDrops = text.split(",").slice(0,i).concat(Array.from({length: numberOfCandidates - i}, (_, i) => ''));
+            console.log(text.split(",")[i - 1]);
+            console.log(partialScoring(partialDrops, oliverGuess));
+          }
 
           // draw heatmap
           drawHeatmap(data, averageOrder);
