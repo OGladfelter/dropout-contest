@@ -169,21 +169,27 @@ function partialScoring(dropOutOrder, playerPredictionsArray) {
 
   var alphabet1 = ['A','B','C','D','E','F','G','H','I','J','K','L','M']; // needs to equal length of candidates still running
 
+  const predictionsWithPlaceHolders = [];
   playerPredictionsArray.forEach(function(d, i) {
     if (d == '') {
-      playerPredictionsArray[i] = alphabet1.shift();
+      predictionsWithPlaceHolders.push(alphabet1.shift());
+    } else {
+      predictionsWithPlaceHolders.push(d);
     }
   });
 
   var alphabet2 = ['A','B','C','D','E','F','G','H','I','J','K','L','M']; // needs to equal length of candidates still running
 
+  const dropsWithPlaceHolders = [];
   dropOutOrder.forEach(function(d, i) {
     if (d == '') {
-      dropOutOrder[i] = alphabet2.shift();
+      dropsWithPlaceHolders.push(alphabet2.shift());
+    } else {
+      dropsWithPlaceHolders.push(d);
     }
   });
 
-  return calculateKendallTauDistance(dropOutOrder,playerPredictionsArray);
+  return calculateKendallTauDistance(dropsWithPlaceHolders, predictionsWithPlaceHolders);
 }
 
 // from first to last
@@ -201,7 +207,6 @@ function dataPrep() {
           // compute performance metrics
           data.forEach(d => {
               d.prediction = d.prediction.split(', ');
-              //partialScoring(d.prediction);
               d.kendallDistance = partialScoring(dropOutOrder, JSON.parse(JSON.stringify(d.prediction)));
               d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
               d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
