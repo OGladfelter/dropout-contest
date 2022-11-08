@@ -162,23 +162,25 @@ function partialScoring(dropOutOrder, playerPredictionsArray) {
   // candidates still campaigning should essentially be ignored. But removing them does not work because that would
   // mess with the weight of a correct/incorrect prediction. Instead, replace all unknowns with 'correct' placeholder guesses
 
-  var alphabet1 = ['A','B','C','D','E','F','G','H','I','J','K','L','M']; // needs to equal length of candidates still running
+  const alpha = Array.from(Array(dropOutOrder.length - 1)).map((e, i) => i + 65);
+  const placeholderValues1 = alpha.map((x) => String.fromCharCode(x)); // needs to equal length of candidates still running - 1
+  const placeholderValues2 = alpha.map((x) => String.fromCharCode(x)); // needs to equal length of candidates still running - 1
+
 
   const predictionsWithPlaceHolders = [];
   playerPredictionsArray.forEach(function(candidate) {
     if (!dropOutOrder.includes(candidate)) { // candidate hasn't dropped out
-      predictionsWithPlaceHolders.push(alphabet1.shift()); // so instead add a placeholder
+      predictionsWithPlaceHolders.push(placeholderValues1.shift()); // so instead add a placeholder
     } else {
       predictionsWithPlaceHolders.push(candidate);
     }
   });
 
-  var alphabet2 = ['A','B','C','D','E','F','G','H','I','J','K','L','M']; // needs to equal length of candidates still running
 
   const dropsWithPlaceHolders = [];
   dropOutOrder.forEach(function(candidate) {
     if (candidate == '') {
-      dropsWithPlaceHolders.push(alphabet2.shift());
+      dropsWithPlaceHolders.push(placeholderValues2.shift());
     } else {
       dropsWithPlaceHolders.push(candidate);
     }
