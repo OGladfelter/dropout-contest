@@ -250,10 +250,13 @@ function dataPrep() {
             for (let roundNum = 1; roundNum <= text.split(",").length; roundNum++) {
               const partialDrops = text.split(",").slice(0, roundNum).concat(Array.from({length: numberOfCandidates - roundNum}, (_, roundNum) => ''));
               const score = partialScoring(partialDrops, d.prediction);
-              scoresOverTime.push({'name':d.name, 'score':score, 'round':roundNum});
+              const kendallNormal = (score / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
+              const accuracy = 100 - (kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
+              scoresOverTime.push({'name':d.name, 'score':accuracy, 'round':roundNum});
             }
           });
           console.log(scoresOverTime);
+          drawScoresLineplot(scoresOverTime);
 
           // draw heatmap
           drawHeatmap(data, averageOrder);
@@ -346,8 +349,11 @@ function addInteractionToPredictionsList() {
 
 //////////////////////////
 
-function drawScoresLineplot() {
-  if (IsMobile()){
+function drawScoresLineplot(data) {
+
+  data = data.filter(d => d.name != 'Anonymous');
+  
+  if (IsMobile()) {
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 30, bottom: 30, left: 50},
     width = (screen.height/2) - margin.left - margin.right,
@@ -355,7 +361,7 @@ function drawScoresLineplot() {
     document.getElementById('select').style.display = 'none';
     //d3.select("body").append("p").text("Click any player name to remove their line");
   }
-  else{
+  else {
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 40, bottom: 30, left: 80},
     width = (screen.width * .75) - margin.left - margin.right,
@@ -383,219 +389,215 @@ function drawScoresLineplot() {
   document.querySelector('table').style.height = height + margin.top + margin.bottom;
   document.querySelector('#scoresLineplot select').style.height = height + margin.top + margin.bottom;
 
-  //Read the data
-  d3.csv("data/scoresOverTime.csv", function(data) {
+  // get a dataset of only round 1, for name purposes
+  filtered = data.filter(function(row) {
+    return (row['round'] == 1); 
+  })
 
-    // get a dataset of only round 1, for name purposes
-    filtered = data.filter(function(row) {
-      return (row['round'] == 1); 
-    })
+  // add all names to selector
+  select = document.getElementById('select');
+  selectMobile = document.getElementById('selectMobile');
+  LoL = [];
+  for (row = 0; row < filtered.length; row++){
+      // add each participant's name to name selector
+      var opt = document.createElement('option');
+      opt.value = row;
+      opt.innerHTML = filtered[row]['name'];
+      select.appendChild(opt);
 
-    // add all names to selector
-    select = document.getElementById('select');
-    selectMobile = document.getElementById('selectMobile');
-      LoL = [];
-      for (row = 0; row < filtered.length; row++){
-          // add each participant's name to name selector
-          var opt = document.createElement('option');
-          opt.value = row;
-          opt.innerHTML = filtered[row]['name'];
-          select.appendChild(opt);
+      var optMobile = document.createElement('option');
+      optMobile.value = row;
+      optMobile.innerHTML = filtered[row]['name'];
+      selectMobile.appendChild(optMobile);
+  }
 
-          var optMobile = document.createElement('option');
-          optMobile.value = row;
-          optMobile.innerHTML = filtered[row]['name'];
-          selectMobile.appendChild(optMobile);
-      }
+  // sort selector alphabetically
+  sortSelect(select);
+  sortSelect(selectMobile);
 
-    // sort selector alphabetically
-    sortSelect(select);
-    sortSelect(selectMobile);
+  // add section header for the players
+  opt = document.createElement('option');
+  opt.innerHTML = "Players";
+  opt.disabled = true;
+  select.add(opt,0);
 
-    // add section header for the players
-    opt = document.createElement('option');
-    opt.innerHTML = "Players";
-    opt.disabled = true;
-    select.add(opt,0);
+  // add space to appear after special options
+  opt = document.createElement('option');
+  opt.innerHTML = "";
+  opt.disabled = true;
+  select.add(opt,0);
 
-    // add space to appear after special options
-    opt = document.createElement('option');
-    opt.innerHTML = "";
-    opt.disabled = true;
-    select.add(opt,0);
+  // SPECIAL OPTIONS (reverse order)
+  // add top 10 option
+  opt = document.createElement('option');
+  opt.value = 'top10past';
+  opt.id = 'top10past';
+  opt.innerHTML = "Previous Top 10";
+  select.add(opt,0);
 
-    // SPECIAL OPTIONS (reverse order)
-    // add top 10 option
-    opt = document.createElement('option');
-    opt.value = 'top10past';
-    opt.id = 'top10past';
-    opt.innerHTML = "Previous Top 10";
-    select.add(opt,0);
+  // add top 3 option
+  opt = document.createElement('option');
+  opt.value = 'top3past';
+  opt.id = 'top3past';
+  opt.innerHTML = "Previous Top 3";
+  select.add(opt,0);
 
-    // add top 3 option
-    opt = document.createElement('option');
-    opt.value = 'top3past';
-    opt.id = 'top3past';
-    opt.innerHTML = "Previous Top 3";
-    select.add(opt,0);
+  // add top 10 option
+  opt = document.createElement('option');
+  opt.value = 'top10';
+  opt.id = 'top10';
+  opt.innerHTML = "Current Top 10";
+  select.add(opt,0);
 
-    // add top 10 option
-    opt = document.createElement('option');
-    opt.value = 'top10';
-    opt.id = 'top10';
-    opt.innerHTML = "Current Top 10";
-    select.add(opt,0);
+  // add top 3 option
+  opt = document.createElement('option');
+  opt.value = 'top3';
+  opt.id = 'top3';
+  opt.innerHTML = "Current Top 3";
+  select.add(opt,0);
 
-    // add top 3 option
-    opt = document.createElement('option');
-    opt.value = 'top3';
-    opt.id = 'top3';
-    opt.innerHTML = "Current Top 3";
-    select.add(opt,0);
+  // attach special functions to special options
+  d3.select("#top3").on("click", function(){selectTopNum(this, 3)});
+  d3.select("#top10").on("click", function(){selectTopNum(this, 10)});
+  d3.select("#top3past").on("click", function(){selectTopNumPreviousRound(this, 3)});
+  d3.select("#top10past").on("click", function(){selectTopNumPreviousRound(this, 10)});
+  ////////////////////////////////////////////////////
 
-    // attach special functions to special options
-    d3.select("#top3").on("click", function(){selectTopNum(this, 3)});
-    d3.select("#top10").on("click", function(){selectTopNum(this, 10)});
-    d3.select("#top3past").on("click", function(){selectTopNumPreviousRound(this, 3)});
-    d3.select("#top10past").on("click", function(){selectTopNumPreviousRound(this, 10)});
-    ////////////////////////////////////////////////////
+  // group the data: I want to draw one line per group
+  var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
+    .key(function(d) { return d.name;})
+    .entries(data);
+  sumstatCopy = sumstat;
 
-    // group the data: I want to draw one line per group
-    var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
-      .key(function(d) { return d.name;})
-      .entries(data);
-    sumstatCopy = sumstat;
+  if (IsMobile()){ // update when candidate drops out
+    yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"];
+    xTicks = ["MW", "CB", "JD", "AY", "MB", "DP", "TS", "PB", "AK", "MB", "EW", "TG", "BS"];
+  }
+  else{ // update when candidate drops out
+    yTicks = ["1st Place", "10th", 20, 30, 40, 50, 60, 70, "80"];
+    xTicks = ["Williamson", "Booker", "Delaney", "Yang", "Bennet", "Patrick", "Steyer", "Buttigieg", "Klobuchar", "Bloomberg", "Warren", "Gabbard", "Sanders"];
+  }
 
-    if (IsMobile()){ // update when candidate drops out
-      yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"];
-      xTicks = ["MW", "CB", "JD", "AY", "MB", "DP", "TS", "PB", "AK", "MB", "EW", "TG", "BS"];
-    }
-    else{ // update when candidate drops out
-      yTicks = ["1st Place", "10th", 20, 30, 40, 50, 60, 70, "80"];
-      xTicks = ["Williamson", "Booker", "Delaney", "Yang", "Bennet", "Patrick", "Steyer", "Buttigieg", "Klobuchar", "Bloomberg", "Warren", "Gabbard", "Sanders"];
-    }
+  // Add X axis
+  var x = d3.scaleLinear()
+    .domain(d3.extent(data, function(d) { return Number(d.round); }))
+    .range([ 0, width ]);
+  svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x).ticks(11).tickFormat(function(d, i){return xTicks[i]}));
 
-    // Add X axis
-    var x = d3.scaleLinear()
-      .domain(d3.extent(data, function(d) { return Number(d.round); }))
-      .range([ 0, width ]);
-    svg.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).ticks(11).tickFormat(function(d, i){return xTicks[i]}));
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, d3.max(data, function(d) { return +d.score; })])
+    .range([ height, 0 ]);
 
-    // Add Y axis
-    var y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.rank; })])
-      .range([ 0, height ]);
+  svg.append("g")
+    .attr("class", "axis")
+    .call(d3.axisLeft(y).tickFormat(function(d, i){return yTicks[i]}));
 
-    svg.append("g")
-      .attr("class", "axis")
-      .call(d3.axisLeft(y).tickFormat(function(d, i){return yTicks[i]}));
+  // alphabetize sumstat
+  sumstat.sort(alphabetize);
 
-    // alphabetize sumstat
-    sumstat.sort(alphabetize);
+  // generate random array of colors
+  hues = [];
+  for (i=0; i < 361; i++){hues.push(i)};
+  // remove 'yellows'
+  // hues = hues.filter(function(d) {
+  //   return (d < 41) || (d > 70); 
+  // });
+  shuffle(hues); // randomize the list
+  hues = hues.splice(0, sumstat.length); // grab the first 80 in the list
+  
+  brightness = [];
+  for (i = 0; i < sumstat.length; i++){
+    brightness.push(randomRange(40,90));
+  };
 
-    // generate random array of colors
-    hues = [];
-    for (i=0; i < 361; i++){hues.push(i)};
-    // remove 'yellows'
-    hues = hues.filter(function(d) {
-      return (d < 41) || (d > 70); 
-    });
-    shuffle(hues); // randomize the list
-    hues = hues.splice(0,80); // grab the first 80 in the list
-    
-    brightness = [];
-    for (i=0; i<80; i++){
-      brightness.push(randomRange(30,70));
-    };
+  // recolor pre-populated names in legend table
+  document.getElementById('alina').style.color = "hsl("+hues[1]+",100%,"+brightness[1]+"%)";
+  document.getElementById('andrew').style.color = "hsl("+hues[2]+",100%,"+brightness[2]+"%)";
+  document.getElementById('angela').style.color = "hsl("+hues[5]+",100%,"+brightness[5]+"%)";
 
-    // recolor pre-populated names in legend table
-    document.getElementById('alina').style.color = "hsl("+hues[1]+",100%,"+brightness[1]+"%)";
-    document.getElementById('andrew').style.color = "hsl("+hues[2]+",100%,"+brightness[2]+"%)";
-    document.getElementById('angela').style.color = "hsl("+hues[5]+",100%,"+brightness[5]+"%)";
+  // Draw the line
+  svg.selectAll(".line")
+      .data(sumstat)
+      .enter()
+      .append("path")
+        .attr("fill", "none")
+        .attr("class", "scoreLine")
+        .attr("id", function(d) { return d.key; })
+        .style("stroke",function(d,i){return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"})
+        .attr("d", function(d){
+          return d3.line()
+            .curve(d3.curveCardinal)
+            .x(function(d) { return x(d.round); })
+            .y(function(d) { return y(d.score); })
+            (d.values)
+        });
 
-    // Draw the line
-    svg.selectAll(".line")
-        .data(sumstat)
-        .enter()
-        .append("path")
-          .attr("fill", "none")
-          .attr("class", "scoreLine")
-          .attr("id", function(d) { return d.key; })
-          .style("stroke",function(d,i){return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"})
-          .attr("d", function(d){
-            return d3.line()
-              .curve(d3.curveCardinal)
-              .x(function(d) { return x(d.round); })
-              .y(function(d) { return y(d.rank); })
-              (d.values)
-          });
+  // Define the div for the tooltip
+  var tooltip = d3.select("body").append("div")	
+  .attr("class", "tooltip")				
+  .style("opacity", 0);
 
-    // Define the div for the tooltip
-    var tooltip = d3.select("body").append("div")	
-    .attr("class", "tooltip")				
-    .style("opacity", 0);
-
-    // add circles for tooltip
-    svg.selectAll("dot")	
-      .data(data)			
-      .enter().append("circle")								
-      .attr("r", 10)
-      .style("visibility", "hidden")	
-      .style("opacity", 0)
-      .attr("id", function(d) { return d.name.replace(" ", "").replace(".","") + "Scatter"; })
-      .attr("cx", function(d) { return x(d.round); })		 
-      .attr("cy", function(d) { return y(d.rank); })
-      .on("mouseover", function(d) {	
-        var line = document.getElementById(d.name);
-        line.style.strokeWidth = "10px";	
-        tooltip.transition()		
-          .duration(550)		
-          .style("opacity", 1)
-          .style("left", (d3.event.pageX + 14) + "px")		
-          .style("top", (d3.event.pageY + 14) + "px");		
-        tooltip.html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round);
-        })
-      .on("mouseout", function(d){
-        var line = document.getElementById(d.name);
-        line.style.strokeWidth = "3px";	
-        tooltip.transition()		
-          .duration(550)		
-          .style("opacity", 0);
-      });
-
-    // give lines raising property
-    d3.selectAll(".scoreLine").on("mouseover", function(){
-      d3.select(this).raise(); 
-      d3.select(this).style("stroke-width", "10px");
-      d3.selectAll("#" + this.id.replace(" ", "").replace(".","")+"Scatter").raise(); // get scatter dots and make top
-    })
-    .on("mouseout",function(){
-      d3.select(this).style("stroke-width", "3px");
+  // add circles for tooltip
+  svg.selectAll("dot")	
+    .data(data)			
+    .enter().append("circle")								
+    .attr("r", 10)
+    .style("visibility", "hidden")	
+    .style("opacity", 0)
+    .attr("id", function(d) { return d.name.replace(" ", "").replace(".","") + "Scatter"; })
+    .attr("cx", function(d) { return x(d.round); })		 
+    .attr("cy", function(d) { return y(d.score); })
+    .on("mouseover", function(d) {	
+      var line = document.getElementById(d.name);
+      line.style.strokeWidth = "10px";	
+      tooltip.transition()		
+        .duration(550)		
+        .style("opacity", 1)
+        .style("left", (d3.event.pageX + 14) + "px")		
+        .style("top", (d3.event.pageY + 14) + "px");		
+      tooltip.html("<b>" + d.name + "</b>" + "<br/>" + "Accuracy: " + d.score.toFixed(1) + "<br/>" + "Round: " + d.round);
+      })
+    .on("mouseout", function(d){
+      var line = document.getElementById(d.name);
+      line.style.strokeWidth = "3px";	
+      tooltip.transition()		
+        .duration(550)		
+        .style("opacity", 0);
     });
 
-    // add styling to each selector option
-    addColorToSelectOptions();
-
-    // pre-select some names
-    select = document.getElementById("select");
-    select.options[7].selected = true; // magic number
-    select.options[8].selected = true; // magic number
-    select.options[11].selected = true; // magic number
-
-    // get array of selected values
-    var selectedValues = $("#select").val();
-
-    // for each selected value, locate its line and make visible
-    for (i=0; i<selectedValues.length; i++){
-      var nameID = $('select option[value=' + selectedValues[i] + ']')[0].text // find option with matching value and get text
-      var line = document.getElementById(nameID); // use text to find line with matching ID
-      line.style.visibility = "visible"; // reveal
-      d3.selectAll("#" + nameID.replace(" ", "").replace(".","")+"Scatter").style("visibility", "visible");; // get scatter dots and make visible
-    }
+  // give lines raising property
+  d3.selectAll(".scoreLine").on("mouseover", function(){
+    d3.select(this).raise(); 
+    d3.select(this).style("stroke-width", "10px");
+    d3.selectAll("#" + this.id.replace(" ", "").replace(".","")+"Scatter").raise(); // get scatter dots and make top
+  })
+  .on("mouseout",function(){
+    d3.select(this).style("stroke-width", "3px");
   });
+
+  // add styling to each selector option
+  addColorToSelectOptions();
+
+  // pre-select some names
+  select = document.getElementById("select");
+  select.options[7].selected = true; // magic number
+  select.options[8].selected = true; // magic number
+  select.options[11].selected = true; // magic number
+
+  // get array of selected values
+  var selectedValues = $("#select").val();
+
+  // for each selected value, locate its line and make visible
+  for (i=0; i<selectedValues.length; i++){
+    var nameID = $('select option[value=' + selectedValues[i] + ']')[0].text // find option with matching value and get text
+    var line = document.getElementById(nameID); // use text to find line with matching ID
+    line.style.visibility = "visible"; // reveal
+    d3.selectAll("#" + nameID.replace(" ", "").replace(".","")+"Scatter").style("visibility", "visible");; // get scatter dots and make visible
+  }
 
   // when selector is clicked
   $("#select").on('click',function () {
@@ -1098,7 +1100,10 @@ function main() {
     addInteractionToPredictionsList();
 
     // scores lineplot
-    drawScoresLineplot();
+    //Read the data
+    // d3.csv("data/scoresOverTime.csv", function(data) {
+    //   drawScoresLineplot(data);
+    // });
 }
 
 main();
