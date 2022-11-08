@@ -245,12 +245,15 @@ function dataPrep() {
           averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
 
           // compute scores for each player at each round so far
-          const oliverGuess = ['Michael Bennet', 'Cory Booker', 'Marianne Williamson', 'Deval Patrick', 'John Delaney', 'Amy Klobuchar', 'Tom Steyer', 'Andrew Yang', 'Pete Buttigieg', 'Michael Bloomberg', 'Bernie Sanders', 'Tulsi Gabbard', 'Joe Biden', 'Elizabeth Warren'];
-          for (i = 1; i <= text.split(",").length; i++) {
-            const partialDrops = text.split(",").slice(0,i).concat(Array.from({length: numberOfCandidates - i}, (_, i) => ''));
-            console.log(text.split(",")[i - 1]);
-            console.log(partialScoring(partialDrops, oliverGuess));
-          }
+          const scoresOverTime = [];
+          data.forEach(d => {
+            for (let roundNum = 1; roundNum <= text.split(",").length; roundNum++) {
+              const partialDrops = text.split(",").slice(0, roundNum).concat(Array.from({length: numberOfCandidates - roundNum}, (_, roundNum) => ''));
+              const score = partialScoring(partialDrops, d.prediction);
+              scoresOverTime.push({'name':d.name, 'score':score, 'round':roundNum});
+            }
+          });
+          console.log(scoresOverTime);
 
           // draw heatmap
           drawHeatmap(data, averageOrder);
