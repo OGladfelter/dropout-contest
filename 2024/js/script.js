@@ -158,15 +158,14 @@ function calculateKendallTauDistance(listA, listB){
 function partialScoring(dropOutOrder, playerPredictionsArray) {
   // I will want to calculate everyone's scores after each candidate drops out
   // in the beginning stages, this is a challenge as there are lots of unknowns
-  // contest participants scores' should be impacted only by candidates who have already dropped;
-  // candidates still running should essentially be ignored. But removing them does not work
-  // because it messes with the 'weight' of a correct/incorrect prediction. Instead, replace all ? with 'correct' guesses
+  // contest participants scores' should be impacted only by candidates who have already dropped
+  // candidates still campaigning should essentially be ignored. But removing them does not work because that would
+  // mess with the weight of a correct/incorrect prediction. Instead, replace all unknowns with 'correct' placeholder guesses
 
   var alphabet1 = ['A','B','C','D','E','F','G','H','I','J','K','L','M']; // needs to equal length of candidates still running
 
   const predictionsWithPlaceHolders = [];
   playerPredictionsArray.forEach(function(candidate) {
-    console.log(candidate);
     if (!dropOutOrder.includes(candidate)) { // candidate hasn't dropped out
       predictionsWithPlaceHolders.push(alphabet1.shift()); // so instead add a placeholder
     } else {
