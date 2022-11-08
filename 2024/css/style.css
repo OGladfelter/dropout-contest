@@ -57,6 +57,16 @@ article {
   color: white;
 }
 
+::-moz-selection { /* Code for Firefox */
+  color: black;
+  background: cyan;
+}
+
+::selection {
+  color: black;
+  background: cyan;
+}
+
 /*--------------------
 Tabs CSS
 --------------------*/
