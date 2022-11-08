@@ -954,7 +954,7 @@ function drawHeatmap(data, dropOutOrder) {
         .range([ 0, width ])
         .padding(padding);
     svg.append("g")
-        .attr("class", "axis")
+        .attr("class", "axis noAxis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).tickFormat(function(d, i){return i + 1 == numberOfCandidates ? 'Win' : i + 1}));
     
@@ -964,7 +964,7 @@ function drawHeatmap(data, dropOutOrder) {
         .range([ 0, height ])
         .padding(padding);
     svg.append("g")
-        .attr("class", "axis")
+        .attr("class", "axis noAxis")
         .attr('transform', 'translate(0, 0)')
         .call(d3.axisLeft(y).tickFormat(function(d){return d.split(" ")[1]}));
 
@@ -1029,12 +1029,12 @@ function drawHeatmap(data, dropOutOrder) {
         .style("fill", function(d) {return heatmapColors(d.value)} )
         .on("mouseover", function() {
           tooltip.style("opacity", 1);
-          d3.select(this).style("stroke", "black").style("stroke-width", 2);
+          d3.select(this).style("fill", "orange");
         })
         .on("mousemove", mousemove)
-        .on("mouseleave", function() {
+        .on("mouseleave", function(d) {
           tooltip.style("opacity", 0);
-          d3.select(this).style("stroke", "none");
+          d3.select(this).style("fill", function(d) {return heatmapColors(d.value)} );
         });
 
     // Build color scale for text label
@@ -1070,7 +1070,6 @@ function drawHeatmap(data, dropOutOrder) {
         .append("text")
         .attr("x",(width)/2)
         .attr('y', 0-margin.top+20)
-        .attr('font-weight', 'bold')
         .attr('class', 'heatmapHeader')
         .attr('font-family', 'Segoe UI bold')
         .style("text-anchor", "middle")
