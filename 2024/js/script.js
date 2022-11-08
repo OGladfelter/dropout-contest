@@ -1,14 +1,11 @@
 numberOfCandidates = 14;
 
-function IsMobileCard() {
-    var check =  false;
-    (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
-    return check;   
+function IsMobile() {
+    return window.innerWidth < 600; 
 }
 
 // for tab navigation
-function openTab(evt, tabID, bgColor = "#312e2b") {
-  document.body.style.background = bgColor;
+function openTab(evt, tabID) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
@@ -22,7 +19,115 @@ function openTab(evt, tabID, bgColor = "#312e2b") {
   evt.currentTarget.className += " active";
 }
 
-/// data prep functions /////////////////////
+//////////////////////////////////////////////////////////
+// Entry form
+//////////////////////////////////////////////////////////
+
+// send user to rules tab then smooth scroll to scoring section
+function goToScoring(event) {
+  openTab(event, 'Rules');
+  $(document).ready(function () {
+      $('html, body').animate({
+          scrollTop: $('#scoring').offset().top - 100
+      }, 'slow');
+  });
+}
+
+// make interactive section on entry form sortable
+function addSortingToEntryForm() {
+
+  var candidates = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
+  shuffle(candidates);
+
+  $(".draggableNames").each(function(index) {
+      $(this)[0].style.top = 25 * index + "px";
+      $(this)[0].innerHTML = candidates[index];
+      d3.select($(this)[0]).lower();
+      //d3.select($(this)[0]).on("mouseover", function() { d3.select(this).raise(); })
+  });
+
+  $("#sortable").sortable({
+      stop: function(event, ui) {
+          $("#sortable li").each(function(index) {
+              if (index == 0 && this.id == '') { // if first sortable li element is still blank, make sure it says 'drop nominee here'
+                  this.innerHTML = 'Place 2024 nominee here';
+              }
+              else if (index == 1 && this.id == '') { // if second sortable li element is still blank, make sure it says 'drop last to drop here'
+                  this.innerHTML = 'Place last to drop out here';
+              }
+              else if ($("#sortable li").length - index == 1 && this.id == '') {
+                  this.innerHTML = 'Place first to drop out here';
+              }
+              else if ($("#sortable li").length - index == 2 && this.id == '') {
+                  this.innerHTML = 'Place second to drop out here';
+              }
+              else if (this.id == '') { // middle items that haven't been spoken for yet should just be blank
+                  this.innerHTML = '&nbsp;'
+              }
+          });
+      }
+  });
+
+  $(".draggableNames").draggable({
+      refreshPositions: true,
+      helper: 'clone',
+      start: function(event, ui) {
+        var movingName = event.target;
+        movingName.style.visibility = 'hidden';
+        $("#sortable li").each(function() {
+            if ($(this)[0].id == '') {
+                $(this)[0].style.boxShadow = 'rgba(17, 177, 177, 0.1) 0px 4px 16px, rgba(17, 177, 177, 0.1) 0px 8px 24px, rgba(17, 177, 177, 0.1) 0px 16px 56px';
+            }
+        });
+      },
+      stop: function (event, ui) {
+        var movingName = event.target;
+        movingName.style.visibility = 'visible';
+        $("#sortable li").each(function() {
+          $(this)[0].style.boxShadow = 'none';
+      });
+      },
+  });
+
+  $("#sortable li").droppable({
+    accept: function(d) { // check if a piece can be dropped here
+      if (this.id == '') { 
+          return true;
+      }
+      return false;
+    },
+    drop: function(event, ui) {
+      if (ui.draggable[0].classList.contains('draggableNames')) {
+          ui.draggable[0].style.display = 'none';
+          event.target.style.backgroundColor = 'whitesmoke';
+          event.target.style.border = '1px black solid';
+          event.target.style.color = 'black';
+          event.target.innerHTML = ui.draggable[0].innerHTML;
+          event.target.id = ui.draggable[0].innerHTML;
+      }
+    }
+  });
+}
+
+// dynamic options to "What should we call you on the leaderboard?" question
+function changeLeaderboardOptions() {
+  document.getElementById("option1").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value; 
+  document.getElementById("option2").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value.charAt(0); 
+}
+
+// when user clicks submit entry form button
+function submitEntryForm(e) {
+  if(!confirm('Are you sure?')) {
+      e.preventDefault();
+  } else {
+    console.log('submitted');
+  }
+}
+
+//////////////////////////////////////////////////////////
+// Data prep
+//////////////////////////////////////////////////////////
+
 // kendall tau rank distance function
 function calculateKendallTauDistance(listA, listB){
   var distance = 0
@@ -147,103 +252,9 @@ function dataPrep() {
 };
 
 //////////////////////////////////////////////////////////
+// Leaderboard
+//////////////////////////////////////////////////////////
 
-// functions for entry form
-// make interactive section on entry form sortable
-$( function() {
-
-    var candidates = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
-    shuffle(candidates);
-
-    $(".draggableNames").each(function(index) {
-        $(this)[0].style.top = 25 * index + "px";
-        $(this)[0].innerHTML = candidates[index];
-        d3.select($(this)[0]).lower();
-        //d3.select($(this)[0]).on("mouseover", function() { d3.select(this).raise(); })
-    });
-
-    $("#sortable").sortable({
-        stop: function(event, ui) {
-            $("#sortable li").each(function(index) {
-                if (index == 0 && this.id == '') { // if first sortable li element is still blank, make sure it says 'drop nominee here'
-                    this.innerHTML = 'Place 2024 nominee here';
-                }
-                else if (index == 1 && this.id == '') { // if second sortable li element is still blank, make sure it says 'drop last to drop here'
-                    this.innerHTML = 'Place last to drop out here';
-                }
-                else if ($("#sortable li").length - index == 1 && this.id == '') {
-                    this.innerHTML = 'Place first to drop out here';
-                }
-                else if ($("#sortable li").length - index == 2 && this.id == '') {
-                    this.innerHTML = 'Place second to drop out here';
-                }
-                else if (this.id == '') { // middle items that haven't been spoken for yet should just be blank
-                    this.innerHTML = '&nbsp;'
-                }
-            });
-        }
-    });
-
-    $(".draggableNames").draggable({
-        refreshPositions: true,
-        helper: 'clone',
-        start: function(event, ui) {
-          var movingName = event.target;
-          movingName.style.visibility = 'hidden';
-          $("#sortable li").each(function() {
-              if ($(this)[0].id == '') {
-                  $(this)[0].style.boxShadow = 'rgba(17, 177, 177, 0.1) 0px 4px 16px, rgba(17, 177, 177, 0.1) 0px 8px 24px, rgba(17, 177, 177, 0.1) 0px 16px 56px';
-              }
-          });
-        },
-        stop: function (event, ui) {
-          var movingName = event.target;
-          movingName.style.visibility = 'visible';
-          $("#sortable li").each(function() {
-            $(this)[0].style.boxShadow = 'none';
-        });
-        },
-    });
-
-    $("#sortable li").droppable({
-      accept: function(d) { // check if a piece can be dropped here
-        if (this.id == '') { 
-            return true;
-        }
-        return false;
-      },
-      drop: function(event, ui) {
-        if (ui.draggable[0].classList.contains('draggableNames')) {
-            ui.draggable[0].style.display = 'none';
-            event.target.style.backgroundColor = 'whitesmoke';
-            event.target.style.border = '1px black solid';
-            event.target.style.color = 'black';
-            event.target.innerHTML = ui.draggable[0].innerHTML;
-            event.target.id = ui.draggable[0].innerHTML;
-        }
-      }
-    });
-} );
-
-
-// send user to rules tab then smooth scroll to scoring section
-function goToScoring(event) {
-    openTab(event, 'Rules', '#312e2b');
-    $(document).ready(function () {
-        $('html, body').animate({
-            scrollTop: $('#scoring').offset().top
-        }, 'slow');
-    });
-}
-
-// dynamic options to "What should we call you on the leaderboard?" question
-function changeLeaderboardOptions() {
-    document.getElementById("option1").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value; 
-    document.getElementById("option2").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value.charAt(0); 
-}
-////////////////////////////////////
-
-// functions for leaderboard
 function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
     var table = document.getElementById("leaderboardTable");
     var row = table.insertRow(-1);
@@ -294,7 +305,8 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 
 }
 
-d3.text('data/droppedCandidates.csv', function(text) {
+function addInteractionToPredictionsList() {
+  d3.text('data/droppedCandidates.csv', function(text) {
     var dropOutOrder = text.split(",");
     d3.select("#playerPredictions").on("mouseover", function() {
         document.getElementById("winnerColumn2").innerHTML = '';
@@ -319,12 +331,13 @@ d3.text('data/droppedCandidates.csv', function(text) {
           document.getElementById("1stDropColumn2").innerHTML = '1st drop';
         });
     });
-});
+  });
+}
 
 //////////////////////////
 
 function drawScoresLineplot() {
-  if (IsMobileCard()){
+  if (IsMobile()){
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 30, bottom: 30, left: 50},
     width = (screen.height/2) - margin.left - margin.right,
@@ -443,7 +456,7 @@ function drawScoresLineplot() {
       .entries(data);
     sumstatCopy = sumstat;
 
-    if (IsMobileCard()){ // update when candidate drops out
+    if (IsMobile()){ // update when candidate drops out
       yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"];
       xTicks = ["MW", "CB", "JD", "AY", "MB", "DP", "TS", "PB", "AK", "MB", "EW", "TG", "BS"];
     }
@@ -885,9 +898,10 @@ function mobileSelectFunction(value){
   });
 
 }
-/////////////////////////////////////
 
-// functions for analysis section
+//////////////////////////////////////////////////////////
+// Analysis section
+//////////////////////////////////////////////////////////
 
 function drawHeatmap(data, dropOutOrder) {
     // set the dimensions and margins of the graph
@@ -1062,18 +1076,20 @@ function drawHeatmap(data, dropOutOrder) {
         .style("text-anchor", "middle")
         .text("74 Predictions Of Candidate Drop Out Order")
 }
-//////////////////////////////        
 
-function onPageLoad() {
+function main() {
 
+    // entry form
+    addSortingToEntryForm();
+
+    // dataPrep() calls a few other functions, such as addRow() and drawHeatmap()
     dataPrep();
 
-    // leaderboard
+    // leaderboard interaction
+    addInteractionToPredictionsList();
 
     // scores lineplot
     drawScoresLineplot();
-
-    // analysis section
 }
 
-onPageLoad();
+main();

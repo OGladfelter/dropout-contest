@@ -68,7 +68,8 @@
   <h3 style="margin-top:20px;">- A contest hosted by Oliver Gladfelter -</h3>
   <article>
     <p>N Republican candidates have entered the presidential race. N-1 candidates will concede to the party's eventual nominee. Can you correctly predict the order in which these candidates will drop out?</p>
-    <p>Complete the below form by November 15th, 2023 to enter the contest. Any candidates who drop out before then will be removed from the scoring formula, so you won't be penalized if you've already submitted your entry form. See <span onclick="goToScoring(event)" class="fauxLink">scoring details here</span>.</p>
+    <p>Complete the below form by November 15th, 2023 to enter the contest. Any candidates who drop out or enter before then won't count for this contest, so you can't be penalized by submitted your entry form sooner rather than later.</p>
+    <p>See <span onclick="goToScoring(event)" class="fauxLink">rules and scoring details here</span>.</p>
     
 
     <!-- Create Form -->
@@ -88,10 +89,10 @@
           <label>What should we call you on the leaderboard?</label>
 
           <label for="leaderboard-name-3">
-            <input type="radio" id="leaderboardNameOption1" name="leaderboard-name" checked><span id="option1">First name last name</span></input>
+            <input type="radio" id="leaderboardNameOption1" name="leaderboard-name" checked><span id="option1">First and last name</span></input>
           </label>
           <label for="leaderboard-name-1">
-              <input type="radio" id="leaderboardNameOption2" name="leaderboard-name"><span id="option2">First name last initial</span></input>
+              <input type="radio" id="leaderboardNameOption2" name="leaderboard-name"><span id="option2">First name and last initial</span></input>
           </label>
           <label for="leaderboard-name-2">
               <input type="radio" id="leaderboardNameOption3" name="leaderboard-name"> Other: &nbsp;
@@ -104,18 +105,22 @@
           <input type="email" id="email" placeholder="Enter your email" />
       </div>
       <div class="form-control">
-          <label for="role" id="label-role">How often can we email you?</label>
+        <label for="email2" id="label-email2">Confirm your email</label>
+        <input type="email2" id="email2" placeholder="Enter your email...again" />
+    </div>
+      <div class="form-control">
+          <label for="role" id="label-role">How often may we email you?</label>
           <!-- Dropdown options -->
           <select name="role" id="role">
               <option value="1">Whenever a candidate drops out and there are leaderboard updates</option>
-              <option value="2">Only at the end of the contest regardless of the outcome</option>
-              <option value="3">Only at the end of the contest if I win a prize</option>
+              <option value="2">Only at the end of the contest</option>
+              <option value="3">Only at the end of the contest and if I win a prize</option>
           </select>
       </div>
 
     </form>
 
-    <p>Remember, you're predicting candidate drop out order. Contest scoring will not consider final delegate counts unless multiple candidates have not ended their campaigns going into the 2024 convention. Recall Marco Rubio won more delegates than John Kasich in the 2016 Republican primary, but still ended his campaign earlier - so try to consider how stubborn each candidate might be!</p>
+    <p>Order the candidates by predicted drop out order below. As a hint: Marco Rubio won more delegates than John Kasich in the 2016 Republican primary, but still ended his campaign earlier - so try to consider how stubborn each candidate might be!</p>
   </article>
 
   <div class="sorterContainer">
@@ -175,7 +180,7 @@
   </div>
   
   <br>
-  <button class="submit">Submit Entry Form</button>
+  <button class="submit" onclick="submitEntryForm(event)">Submit Entry Form</button>
 </div>
 <!-- end entry form--> 
 
