@@ -255,7 +255,6 @@ function dataPrep() {
               scoresOverTime.push({'name':d.name, 'score':accuracy, 'round':roundNum});
             }
           });
-          console.log(scoresOverTime);
           drawScoresLineplot(scoresOverTime);
 
           // draw heatmap
@@ -352,7 +351,7 @@ function addInteractionToPredictionsList() {
 function drawScoresLineplot(data) {
 
   data = data.filter(d => d.name != 'Anonymous');
-  
+
   if (IsMobile()) {
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 30, bottom: 30, left: 50},
@@ -518,6 +517,8 @@ function drawScoresLineplot(data) {
   document.getElementById('alina').style.color = "hsl("+hues[1]+",100%,"+brightness[1]+"%)";
   document.getElementById('andrew').style.color = "hsl("+hues[2]+",100%,"+brightness[2]+"%)";
   document.getElementById('angela').style.color = "hsl("+hues[5]+",100%,"+brightness[5]+"%)";
+
+  console.log(sumstat);
 
   // Draw the line
   svg.selectAll(".line")
