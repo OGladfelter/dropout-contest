@@ -1015,7 +1015,7 @@ function drawHeatmap(data, dropOutOrder) {
     // Build color scale for cells
     var heatmapColors = d3.scaleLinear()
       .domain(d3.extent(heatmapData, function(d) { return (d.value); }))
-      .range(["white", "blue"]);
+      .range(["#312e2b", "white"]); // from background color of charcoal to less-light cyan
       
     // draw and color the cells
     svg.selectAll()
@@ -1040,7 +1040,7 @@ function drawHeatmap(data, dropOutOrder) {
     // Build color scale for text label
     var textColor = d3.scaleQuantile()
       .domain(d3.extent(heatmapData, function(d) { return (d.value); })) // pass only the extreme values to a scaleQuantize’s domain
-      .range(["none", "black", "white"])
+      .range(["none", "black", "black"])
 
     // labels for squares
     svg.selectAll(".heatmapLabel")
