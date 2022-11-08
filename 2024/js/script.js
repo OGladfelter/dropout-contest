@@ -161,31 +161,27 @@ function partialScoring(dropOutOrder, playerPredictionsArray) {
   // contest participants scores' should be impacted only by candidates who have already dropped;
   // candidates still running should essentially be ignored. But removing them does not work
   // because it messes with the 'weight' of a correct/incorrect prediction. Instead, replace all ? with 'correct' guesses
-  playerPredictionsArray.forEach(function(candidate, i) {
-      if (!dropOutOrder.includes(candidate)) { // candidate hasn't dropped out
-        playerPredictionsArray[i] = ''; // so remove them from the predictions array
-      } 
-  });
 
   var alphabet1 = ['A','B','C','D','E','F','G','H','I','J','K','L','M']; // needs to equal length of candidates still running
 
   const predictionsWithPlaceHolders = [];
-  playerPredictionsArray.forEach(function(d, i) {
-    if (d == '') {
-      predictionsWithPlaceHolders.push(alphabet1.shift());
+  playerPredictionsArray.forEach(function(candidate) {
+    console.log(candidate);
+    if (!dropOutOrder.includes(candidate)) { // candidate hasn't dropped out
+      predictionsWithPlaceHolders.push(alphabet1.shift()); // so instead add a placeholder
     } else {
-      predictionsWithPlaceHolders.push(d);
+      predictionsWithPlaceHolders.push(candidate);
     }
   });
 
   var alphabet2 = ['A','B','C','D','E','F','G','H','I','J','K','L','M']; // needs to equal length of candidates still running
 
   const dropsWithPlaceHolders = [];
-  dropOutOrder.forEach(function(d, i) {
-    if (d == '') {
+  dropOutOrder.forEach(function(candidate) {
+    if (candidate == '') {
       dropsWithPlaceHolders.push(alphabet2.shift());
     } else {
-      dropsWithPlaceHolders.push(d);
+      dropsWithPlaceHolders.push(candidate);
     }
   });
 
@@ -249,6 +245,10 @@ function dataPrep() {
           averagePredictions = averagePredictions.slice().sort((a, b) => d3.ascending(a.value, b.value));
           var averageOrder = [];
           averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
+
+          // for (i = dropOutOrder.length - 1; i > 0; i--) {
+          //   console.log(dropOutOrder[i]);
+          // }
 
           // draw heatmap
           drawHeatmap(data, averageOrder);
