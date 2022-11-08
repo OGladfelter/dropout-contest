@@ -208,7 +208,7 @@ function dataPrep() {
           });
           data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
           // compute rank for each player
-          for (i = 0; i < data.length; i++) {
+          for (let i = 0; i < data.length; i++) {
             if (i == 0) {
               data[i].rank = 1;
             }
@@ -349,6 +349,8 @@ function addInteractionToPredictionsList() {
 //////////////////////////
 
 function drawScoresLineplot(data) {
+
+  console.log(data);
 
   data = data.filter(d => d.name != 'Anonymous');
 
@@ -1090,7 +1092,6 @@ function drawHeatmap(data, dropOutOrder) {
 }
 
 function main() {
-
     // entry form
     addSortingToEntryForm();
 
@@ -1099,12 +1100,6 @@ function main() {
 
     // leaderboard interaction
     addInteractionToPredictionsList();
-
-    // scores lineplot
-    //Read the data
-    // d3.csv("data/scoresOverTime.csv", function(data) {
-    //   drawScoresLineplot(data);
-    // });
 }
 
 main();
