@@ -393,11 +393,9 @@ function drawScoresLineplot(data) {
 
   ////////////////////////////////////////////////////
 
-  // group the data by player
-  // let sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
-  //   .key(function(d) { return d.id;})
-  //   .entries(data);
+  // group the data by player ID
   const sumstat = d3.group(data, d => d.id);
+  console.log(sumstat);
 
   if (IsMobile()){ // update when candidate drops out
     yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"];
@@ -426,9 +424,6 @@ function drawScoresLineplot(data) {
     .attr("class", "axis")
     .call(d3.axisLeft(y).tickFormat(function(d, i){return yTicks[i]}));
 
-  // alphabetize sumstat
-  //sumstat.sort(alphabetize);
-
   // add all names to table menu
   const tableSelector = document.getElementById('scoresLineplotTable');
 
@@ -436,6 +431,7 @@ function drawScoresLineplot(data) {
     // add each participant's name to table menu
     var row = document.createElement('tr');
     row.value = d[0].id; // should be ID
+    row.dataset.selected = 0;
     var column = document.createElement('td');
     column.innerHTML = d[0].name;
     row.appendChild(column);
@@ -458,95 +454,72 @@ function drawScoresLineplot(data) {
     brightness.push(randomRange(40,90));
   };
 
-  // Draw lines
-  svg.selectAll(".line")
-    .data(sumstat)
-    .enter()
-    .append("path")
-    .attr("class", "scoreLine")
-    .attr("id", function(d) { return d.key; })
-    .style("stroke",function(d, i){return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"})
-    .attr("d", function(d){
-      return d3.line()
-        .curve(d3.curveCardinal)
-        .x(function(d) { return x(d.round); })
-        .y(function(d) { return y(d.rank); })
-        (d.values)
-    });
-
   // Define the div for the tooltip
   var tooltip = d3.select("body").append("div")	
-  .attr("class", "tooltip")				
-  .style("opacity", 0);
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
 
   // add circles for tooltip
-  svg.selectAll("dot")	
-    .data(data)			
-    .enter().append("circle")								
-    .attr("r", 10)
-    .style("visibility", "hidden")	
-    .style("opacity", 0)
-    .attr("id", function(d) { return d.name.replace(" ", "").replace(".","") + "Scatter"; })
-    .attr("cx", function(d) { return x(d.round); })		 
-    .attr("cy", function(d) { return y(d.rank); })
-    .on("mouseover", function(event, d) {	
-      var line = document.getElementById(d.name);
-      line.style.strokeWidth = "10px";	
-      tooltip.transition()		
-        .duration(550)		
-        .style("opacity", 1)
-        .style("left", (event.pageX + 14) + "px")		
-        .style("top", (event.pageY + 14) + "px");		
-      tooltip.html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round);
-      })
-    .on("mouseout", function(d){
-      var line = document.getElementById(d.name);
-      line.style.strokeWidth = "3px";	
-      tooltip.transition()		
-        .duration(550)		
-        .style("opacity", 0);
-    });
-
-  // give lines raising property
-  d3.selectAll(".scoreLine").on("mouseover", function(){
-    d3.select(this).raise(); 
-    d3.select(this).style("stroke-width", "10px");
-    //d3.selectAll("#" + this.id.replace(" ", "").replace(".","")+"Scatter").raise(); // get scatter dots and make top
-  })
-  .on("mouseout",function(){
-    d3.select(this).style("stroke-width", "3px");
-  });
-
-  // add styling to each selector option
-  //addColorToSelectOptions();
+  // svg.selectAll("dot")	
+  //   .data(data)			
+  //   .enter().append("circle")								
+  //   .attr("r", 10)
+  //   .style("visibility", "hidden")	
+  //   .style("opacity", 0)
+  //   .attr("id", function(d) { return d.name.replace(" ", "").replace(".","") + "Scatter"; })
+  //   .attr("cx", function(d) { return x(d.round); })		 
+  //   .attr("cy", function(d) { return y(d.rank); })
+  //   .on("mouseover", function(event, d) {	
+  //     var line = document.getElementById(d.name);
+  //     line.style.strokeWidth = "10px";	
+  //     tooltip.transition()		
+  //       .duration(550)		
+  //       .style("opacity", 1)
+  //       .style("left", (event.pageX + 14) + "px")		
+  //       .style("top", (event.pageY + 14) + "px");		
+  //     tooltip.html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round);
+  //     })
+  //   .on("mouseout", function(d){
+  //     var line = document.getElementById(d.name);
+  //     line.style.strokeWidth = "3px";	
+  //     tooltip.transition()		
+  //       .duration(550)		
+  //       .style("opacity", 0);
+  //   });
 
   function drawPlayerLine() {
-    const selectedData = sumstat.get(this.value);
-    
-    // define the line
-    var valueline = d3.line()
-      .x(function(d) { return x(d.round); })
-      .y(function(d) { return y(d.rank); });
+    this.dataset.selected == 0 ? this.dataset.selected = 1 : this.dataset.selected = 0; // flip 'truthiness' of if row is selected or not
 
-    // Draw lines
-    svg.append("path")
-    .data([selectedData])
-    .attr("d", valueline)
-    .attr("class", "scoreLine")
-    //.attr("id", function(d) { return d.key; })
-    //.style("stroke",function(d, i){return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"})
-  }
-}
+    const selectedData = sumstat.get(this.value); // access data for the player corresponding to clicked row
 
-// sorts sumstat alphabetically
-function alphabetize( a, b ) {
-  if ( a.key < b.key ){
-    return -1;
+    if (this.dataset.selected == 1) { // draw the line
+      // define the line
+      var valueline = d3.line()
+        .x(function(d) { return x(d.round); })
+        .y(function(d) { return y(d.rank); });
+  
+      // Draw lines
+      svg.append("path")
+        .data([selectedData])
+        .attr("d", valueline)
+        .attr("id", d => "scoreLine" + d[0].id)
+        .attr("class", "scoreLine")
+        .style("stroke", function(d, i) {return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"} )
+        .on("mouseover", function() {
+          d3.select(this).raise(); 
+          d3.select(this).style("stroke-width", "8px");
+          //d3.selectAll("#" + this.id.replace(" ", "").replace(".","")+"Scatter").raise(); // get scatter dots and make top
+        })
+        .on("mouseout",function() {
+          d3.select(this).style("stroke-width", "3px");
+        });
+  
+      this.style.backgroundColor = 'cyan';
+    } else { // remove the line
+      d3.select("#scoreLine" + selectedData[0].id).remove();
+      this.style.backgroundColor = 'white';
+    }
   }
-  if ( a.key > b.key ){
-    return 1;
-  }
-  return 0;
 }
 
 function shuffle(a) {
@@ -562,15 +535,6 @@ function shuffle(a) {
 
 function randomRange(min, max) {
   return Math.random() * (max - min) + min;
-}
-
-function addColorToSelectOptions(){
-  // for each of the options, add styling so the checked color matches corresponding line
-  for (i=0; i<80; i++){
-    var sheet = document.createElement('style')
-    sheet.innerHTML = "select option:nth-child("+(i+1)+"):checked { box-shadow: inset 20px 20px hsl("+hues[i]+",100%,"+brightness[i]+"%) }"; // magic number (3)
-    document.body.appendChild(sheet);
-  }
 }
 
 function selectTopNum(option, rankNum){
