@@ -464,6 +464,10 @@ function drawScoresLineplot(data) {
     row.appendChild(column);
     row.addEventListener('click', drawPlayerLine);
     tableSelector.appendChild(row);
+
+    if (d[0].name == 'Wisdom of the crowd') {
+      row.click();
+    }
   });
 
   // let voronoiData = [];
@@ -479,10 +483,10 @@ function drawScoresLineplot(data) {
   //   annotations.attr("transform", "translate(" + x(d.round) + "," + y(d.rank) + ")");
   // }
 
-  function drawPlayerLine() {
+  function drawPlayerLine(playerID) {
     this.dataset.selected == 0 ? this.dataset.selected = 1 : this.dataset.selected = 0; // flip 'truthiness' of if row is selected or not
 
-    const selectedData = sumstat.get(this.value); // access data for the player corresponding to clicked row
+    const selectedData = sumstat.get(this.value || playerID); // access data for the player corresponding to clicked row
 
     if (this.dataset.selected == 1) { // draw the line
 
