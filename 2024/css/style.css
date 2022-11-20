@@ -364,31 +364,6 @@ path.scoreLine{
   fill: none;
 }
 
-.computerSelector {
-  vertical-align: top;
-  font-size: 16px;
-}
-
-select.computerSelector option:disabled {
-  color: #000;
-  font-weight: bold;
-  text-align: center;
-}
-
-select.computerSelector option:disabled:hover {
-  color: #000;
-  box-shadow: inset 20px 20px white;
-}
-
-select.computerSelector option:hover {
-  color: white; 
-  box-shadow: inset 20px 20px black;
-}
-
-select.computerSelector option:checked {
-  box-shadow: inset 20px 20px slategrey;
-}
-
 .scoresLineplotTable {
   background-color: white;
   max-height: 100px;

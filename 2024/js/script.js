@@ -381,13 +381,6 @@ function drawScoresLineplot(data) {
     width = (screen.width * .75) - margin.left - margin.right,
     height = (screen.height/2) - margin.top - margin.bottom;
   }
-
-  if ($(window).width() < 870) {
-    document.querySelector("#scoresLineplot select").size = "5";
-  }
-  else {
-    document.querySelector("#scoresLineplot select").size = "20";
-  }
       
   // append the svg object to the body of the page
   var svg = d3.select("#lineplot")
@@ -435,24 +428,17 @@ function drawScoresLineplot(data) {
   // alphabetize sumstat
   sumstat.sort(alphabetize);
 
-  // add all names to selector
-  const scoresOverTimeSelector = document.getElementById('scoresOverTimeSelector');
+  // add all names to table menu
   const tableSelector = document.getElementById('scoresLineplotTable');
 
   sumstat.forEach((d, i) => { 
-    // add each participant's name to name selector
-    var opt = document.createElement('option');
-    opt.value = i;
-    opt.innerHTML = d.key;
-    scoresOverTimeSelector.appendChild(opt);
-
-    // add each participant's name to name selector
+    // add each participant's name to table menu
     var row = document.createElement('tr');
     row.value = d.key; // should be ID
     var column = document.createElement('td');
     column.innerHTML = d.values[0].name;
     row.appendChild(column);
-    row.addEventListener('click', test);
+    row.addEventListener('click', drawPlayerLine);
     tableSelector.appendChild(row);
   });
 
@@ -531,67 +517,29 @@ function drawScoresLineplot(data) {
   });
 
   // add styling to each selector option
-  addColorToSelectOptions();
+  //addColorToSelectOptions();
 
-  // pre-select some names
-  scoresOverTimeSelector.options[7].selected = true; // magic number
-  scoresOverTimeSelector.options[8].selected = true; // magic number
-  scoresOverTimeSelector.options[11].selected = true; // magic number
-
-  // get array of selected values
-  var selectedValues = $("#scoresOverTimeSelector").val();
-
-  // for each selected value, locate its line and make visible
-  for (i=0; i<selectedValues.length; i++){
-    var nameID = $('select option[value=' + selectedValues[i] + ']')[0].text // find option with matching value and get text
-    var line = document.getElementById(nameID); // use text to find line with matching ID
-    line.style.visibility = "visible"; // reveal
-    d3.selectAll("#" + nameID.replace(" ", "").replace(".","")+"Scatter").style("visibility", "visible");; // get scatter dots and make visible
-  }
-
-  // when selector is clicked
-  $("#scoresOverTimeSelector").on('click', function () {
-
-    // hide all lines
-    d3.selectAll('.scoreLine').style('visibility','hidden');
-    // hide all dots
-    d3.selectAll('circle').style('visibility', 'hidden');
-
-    // get array of selected values
-    var selectedValues = $("#scoresOverTimeSelector").val();
-
-    var names = [];
-    var playerColors = [];
-
-    // for each selected value, locate its line and make visible
-    for (i=0; i<selectedValues.length; i++){
-      var nameID = $('select option[value=' + selectedValues[i] + ']')[0].text // find option with matching value and get text
-      names.push(nameID);
-      var line = document.getElementById(nameID); // use text to find line with matching ID
-      line.style.visibility = "visible"; // reveal
-      playerColors.push(line.style.stroke);
-      d3.selectAll("#" + nameID.replace(" ", "").replace(".","")+"Scatter").style("visibility", "visible");; // get scatter dots and make visible
-    }
-  });
-
-  function test() {
+  function drawPlayerLine() {
     console.log(this.value);
+    const selectedData = sumstat.filter(s => s.key == this.value);
+    // Draw lines
+    svg.selectAll(".line")
+    .data(selectedData)
+    .enter()
+    .append("path")
+    .attr("class", "scoreLine")
+    .style('visibility', 'visible')
+    .attr("id", function(d) { return d.key; })
+    .style("stroke",function(d, i){return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"})
+    .attr("d", function(d){
+      return d3.line()
+        .curve(d3.curveCardinal)
+        .x(function(d) { return x(d.round); })
+        .y(function(d) { return y(d.rank); })
+        (d.values)
+    });
   }
 }
-
-// removes need to use ctrl for multiple select
-$("#scoresOverTimeSelector").mousedown(function(e) {
-  e.preventDefault();
-  
-  var select = this;
-  var scroll = select.scrollTop;
-  
-  e.target.selected = !e.target.selected;
-  
-  setTimeout(function(){select.scrollTop = scroll;}, 0);
-  
-  $(select).focus();
-}).mousemove(function(e){e.preventDefault()});
 
 // sorts sumstat alphabetically
 function alphabetize( a, b ) {
