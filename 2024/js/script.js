@@ -367,8 +367,6 @@ function addInteractionToPredictionsList() {
 
 function drawScoresLineplot(data) {
 
-  console.log(data);
-
   data = data.filter(d => d.name != 'Anonymous');
 
   if (IsMobile()) {
@@ -376,15 +374,12 @@ function drawScoresLineplot(data) {
     var margin = {top: 10, right: 30, bottom: 30, left: 50},
     width = (screen.height/2) - margin.left - margin.right,
     height = (screen.width) - margin.top - margin.bottom;
-    document.getElementById('select').style.display = 'none';
-    //d3.select("body").append("p").text("Click any player name to remove their line");
   }
   else {
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 40, bottom: 30, left: 80},
     width = (screen.width * .75) - margin.left - margin.right,
     height = (screen.height/2) - margin.top - margin.bottom;
-    document.getElementById('selectMobile').style.display = 'none';
   }
 
   if ($(window).width() < 870) {
@@ -414,24 +409,17 @@ function drawScoresLineplot(data) {
 
   // add all names to selector
   const scoresOverTimeSelector = document.getElementById('scoresOverTimeSelector');
-  selectMobile = document.getElementById('selectMobile');
-  LoL = [];
   for (row = 0; row < filtered.length; row++){
       // add each participant's name to name selector
       var opt = document.createElement('option');
       opt.value = row;
       opt.innerHTML = filtered[row]['name'];
+      opt.addEventListener('click', function() { console.log('hello'); })
       scoresOverTimeSelector.appendChild(opt);
-
-      var optMobile = document.createElement('option');
-      optMobile.value = row;
-      optMobile.innerHTML = filtered[row]['name'];
-      selectMobile.appendChild(optMobile);
   }
 
   // sort selector alphabetically
   sortSelect(scoresOverTimeSelector);
-  sortSelect(selectMobile);
 
   ////////////////////////////////////////////////////
 
@@ -485,13 +473,6 @@ function drawScoresLineplot(data) {
   for (i = 0; i < sumstat.length; i++){
     brightness.push(randomRange(40,90));
   };
-
-  // recolor pre-populated names in legend table
-  // document.getElementById('alina').style.color = "hsl("+hues[1]+",100%,"+brightness[1]+"%)";
-  // document.getElementById('andrew').style.color = "hsl("+hues[2]+",100%,"+brightness[2]+"%)";
-  //document.getElementById('angela').style.color = "hsl("+hues[5]+",100%,"+brightness[5]+"%)";
-
-  console.log(sumstat);
 
   // Draw lines
   svg.selectAll(".line")
@@ -556,14 +537,12 @@ function drawScoresLineplot(data) {
   addColorToSelectOptions();
 
   // pre-select some names
-  console.log(scoresOverTimeSelector);
   scoresOverTimeSelector.options[7].selected = true; // magic number
   scoresOverTimeSelector.options[8].selected = true; // magic number
   scoresOverTimeSelector.options[11].selected = true; // magic number
 
   // get array of selected values
   var selectedValues = $("#scoresOverTimeSelector").val();
-  console.log(selectedValues);
 
   // for each selected value, locate its line and make visible
   for (i=0; i<selectedValues.length; i++){
@@ -591,7 +570,6 @@ function drawScoresLineplot(data) {
     for (i=0; i<selectedValues.length; i++){
       var nameID = $('select option[value=' + selectedValues[i] + ']')[0].text // find option with matching value and get text
       names.push(nameID);
-      console.log(nameID);
       var line = document.getElementById(nameID); // use text to find line with matching ID
       line.style.visibility = "visible"; // reveal
       playerColors.push(line.style.stroke);
@@ -746,80 +724,6 @@ function selectTopNumPreviousRound(option, rankNum){
 function removeDuplicates(array) {
   array.splice(0, array.length, ...(new Set(array)))
 };
-
-mobileNames = [];
-mobileColors = [];
-function mobileSelectFunction(value){
-
-  // var names = [];
-  // var playerColors = [];
-
-  var nameID = $('#selectMobile option[value=' + value + ']')[0].text // find option with matching value and get text
-  mobileNames.push(nameID);
-  var line = document.getElementById(nameID); // use text to find line with matching ID
-  line.style.visibility = "visible"; // reveal
-  mobileColors.push(line.style.stroke);
-  d3.selectAll("#" + nameID.replace(" ", "").replace(".","")+"Scatter").style("visibility", "visible");; // get scatter dots and make visible
-  
-  removeDuplicates(mobileNames);
-  removeDuplicates(mobileColors);
-
-  if (!mobileNames.includes("Alina P.")){
-    document.getElementById("Alina P.").style.visibility = 'hidden';
-  };
-  if (!mobileNames.includes("Andrew B.")){
-    document.getElementById("Andrew B.").style.visibility = 'hidden';
-  };
-  if (!mobileNames.includes("Angela G.")){
-    document.getElementById("Angela G.").style.visibility = 'hidden';
-  };
-
-  d3.selectAll('tr').remove(); // remove all current table rows
-
-  // add row (with 2 columns) for every name
-  for (i=0;i<(mobileNames.length/2);i++){
-    var row = d3.select('table').append('tr');
-    row.append('td');
-    row.append('td');
-    row.append('td');
-  }
-  
-  columns = document.querySelectorAll('td');
-  for (i=0; i<mobileNames.length; i++){
-    columns[i].innerHTML = mobileNames[i];
-    columns[i].style.color = mobileColors[i];
-  }
-  
-  // give the td a mouseover function
-  d3.selectAll('td').on('mouseover',function(){
-    // select line corresponding to name in td and raise it
-    line = document.getElementById(this.innerHTML);
-    d3.select(line).raise();
-    d3.select(line).style("stroke-width", "10px");
-    d3.selectAll("#" + this.innerHTML.replace(" ", "").replace(".","")+"Scatter").raise(); // get scatter dots and make top
-  })
-  .on("mouseout",function(){
-    line = document.getElementById(this.innerHTML);
-    d3.select(line).style("stroke-width", "3px");
-  })
-  .on("click", function(){
-    line = document.getElementById(this.innerHTML);
-    line.style.visibility = 'hidden'; // hide line
-    d3.selectAll("#" + this.innerHTML.replace(" ", "").replace(".","")+"Scatter").style("visibility", "hidden"); // hide dots
-    playerIndex = $('select').find('option:contains('+this.innerHTML+')').index(); // find player index
-    document.getElementById("select").options[playerIndex].selected = false; // deselect player option
-
-    // remove name and color from arrays
-    var index = mobileNames.indexOf(this.innerHTML);
-    if (index > -1) {
-      mobileNames.splice(index, 1);
-      mobileColors.splice(index, 1);
-    }
-
-    this.remove() // self destruct!
-  });
-
-}
 
 //////////////////////////////////////////////////////////
 // Analysis section
