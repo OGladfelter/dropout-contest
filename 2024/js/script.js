@@ -192,8 +192,9 @@ function partialScoring(dropOutOrder, playerPredictionsArray) {
 //var dropoutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
 
 function dataPrep() { 
-  d3.csv("data/submissions.csv", function(data) {
-      d3.text('data/droppedCandidates.csv', function(text) {
+  d3.csv("data/submissions.csv")
+    .then(function(data) {
+      d3.text('data/droppedCandidates.csv').then(function(text) {
           var dropOutOrder = text.split(",");
           var numCandidatesStillRunning = numberOfCandidates - dropOutOrder.length
           for (var i = 0; i < numCandidatesStillRunning; i++) {
@@ -335,7 +336,7 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 }
 
 function addInteractionToPredictionsList() {
-  d3.text('data/droppedCandidates.csv', function(text) {
+  d3.text('data/droppedCandidates.csv').then(function(text) {
     var dropOutOrder = text.split(",");
     d3.select("#playerPredictions").on("mouseover", function() {
         document.getElementById("winnerColumn2").innerHTML = '';
@@ -393,10 +394,10 @@ function drawScoresLineplot(data) {
   ////////////////////////////////////////////////////
 
   // group the data by player
-  var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
-    .key(function(d) { return d.id;})
-    .entries(data);
-  console.log(sumstat);
+  // let sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
+  //   .key(function(d) { return d.id;})
+  //   .entries(data);
+  const sumstat = d3.group(data, d => d.id);
 
   if (IsMobile()){ // update when candidate drops out
     yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"];
@@ -426,17 +427,17 @@ function drawScoresLineplot(data) {
     .call(d3.axisLeft(y).tickFormat(function(d, i){return yTicks[i]}));
 
   // alphabetize sumstat
-  sumstat.sort(alphabetize);
+  //sumstat.sort(alphabetize);
 
   // add all names to table menu
   const tableSelector = document.getElementById('scoresLineplotTable');
 
-  sumstat.forEach((d, i) => { 
+  sumstat.forEach(d => {
     // add each participant's name to table menu
     var row = document.createElement('tr');
-    row.value = d.key; // should be ID
+    row.value = d[0].id; // should be ID
     var column = document.createElement('td');
-    column.innerHTML = d.values[0].name;
+    column.innerHTML = d[0].name;
     row.appendChild(column);
     row.addEventListener('click', drawPlayerLine);
     tableSelector.appendChild(row);
@@ -488,14 +489,14 @@ function drawScoresLineplot(data) {
     .attr("id", function(d) { return d.name.replace(" ", "").replace(".","") + "Scatter"; })
     .attr("cx", function(d) { return x(d.round); })		 
     .attr("cy", function(d) { return y(d.rank); })
-    .on("mouseover", function(d) {	
+    .on("mouseover", function(event, d) {	
       var line = document.getElementById(d.name);
       line.style.strokeWidth = "10px";	
       tooltip.transition()		
         .duration(550)		
         .style("opacity", 1)
-        .style("left", (d3.event.pageX + 14) + "px")		
-        .style("top", (d3.event.pageY + 14) + "px");		
+        .style("left", (event.pageX + 14) + "px")		
+        .style("top", (event.pageY + 14) + "px");		
       tooltip.html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round);
       })
     .on("mouseout", function(d){
@@ -520,24 +521,20 @@ function drawScoresLineplot(data) {
   //addColorToSelectOptions();
 
   function drawPlayerLine() {
-    console.log(this.value);
-    const selectedData = sumstat.filter(s => s.key == this.value);
+    const selectedData = sumstat.get(this.value);
+    
+    // define the line
+    var valueline = d3.line()
+      .x(function(d) { return x(d.round); })
+      .y(function(d) { return y(d.rank); });
+
     // Draw lines
-    svg.selectAll(".line")
-    .data(selectedData)
-    .enter()
-    .append("path")
+    svg.append("path")
+    .data([selectedData])
+    .attr("d", valueline)
     .attr("class", "scoreLine")
-    .style('visibility', 'visible')
-    .attr("id", function(d) { return d.key; })
-    .style("stroke",function(d, i){return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"})
-    .attr("d", function(d){
-      return d3.line()
-        .curve(d3.curveCardinal)
-        .x(function(d) { return x(d.round); })
-        .y(function(d) { return y(d.rank); })
-        (d.values)
-    });
+    //.attr("id", function(d) { return d.key; })
+    //.style("stroke",function(d, i){return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"})
   }
 }
 
@@ -575,27 +572,6 @@ function addColorToSelectOptions(){
     document.body.appendChild(sheet);
   }
 }
-
-// for the preloaded tds
-d3.selectAll('td').on('mouseover',function(){
-  // select line corresponding to name in td and raise it
-  line = document.getElementById(this.innerHTML);
-  d3.select(line).raise();
-  d3.select(line).style("stroke-width", "10px");
-  d3.selectAll("#" + this.innerHTML.replace(" ", "").replace(".","")+"Scatter").raise(); // get scatter dots and make top
-})
-.on("mouseout",function(){
-  line = document.getElementById(this.innerHTML);
-  d3.select(line).style("stroke-width", "3px");
-})
-.on("click", function(){
-  line = document.getElementById(this.innerHTML);
-  line.style.visibility = 'hidden'; // hide line
-  d3.selectAll("#" + this.innerHTML.replace(" ", "").replace(".","")+"Scatter").style("visibility", "hidden"); // hide dots
-  playerIndex = $('select').find('option:contains('+this.innerHTML+')').index(); // find player index
-  document.getElementById("select").options[playerIndex].selected = false; // deselect player option
-  this.remove() // self destruct!
-});
 
 function selectTopNum(option, rankNum){
 
@@ -735,7 +711,7 @@ function drawHeatmap(data, dropOutOrder) {
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip");
-    var mousemove = function(d) {
+    var mousemove = function(event, d) {
         var player, statement;
         if (d.value == 0){
             player = "No one predicts "
@@ -763,8 +739,8 @@ function drawHeatmap(data, dropOutOrder) {
         }
         tooltip
             .html(player + "<br>" + d.name + statement)
-            .style("left", (d3.event.pageX) + 40 + "px")
-            .style("top", (d3.event.pageY) + "px");
+            .style("left", (event.pageX) + 40 + "px")
+            .style("top", (event.pageY) + "px");
     }
 
     // Build color scale for cells
