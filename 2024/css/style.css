@@ -353,19 +353,16 @@ Leaderboard CSS
 Scores over time CSS
 ----------------------*/
 
-#scoresLineplot {
-  color: black;
-}
-
 path.scoreLine{
-  visibility: hidden;
   opacity: 1;
   stroke-width: 3;
   fill: none;
+  stroke: yellow;
 }
 
 .scoresLineplotTable {
   background-color: white;
+  color: black;
   max-height: 100px;
   overflow: scroll;
 }
@@ -381,11 +378,12 @@ Analysis CSS
   font: 16px 
   sans-serif; 
   fill: whitesmoke;
+  color: whitesmoke;
 }
 
 .axis path {
   fill: none;
-  stroke: #000;
+  stroke: whitesmoke;
   shape-rendering: crispEdges;
   stroke-width: 2px;
 }
