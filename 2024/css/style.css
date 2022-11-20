@@ -414,6 +414,17 @@ div.tooltip {
   color: black;	
 }
 
+.annotation {
+  font-size: 16px;
+}
+.annotation rect{
+  fill: white;
+  x: 10;
+  y: 10;
+  stroke-width: 1px;
+  stroke: black;
+}
+
 .heatmapHeader {
   font-size: 26px;
   fill: whitesmoke;
