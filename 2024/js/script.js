@@ -413,7 +413,7 @@ function drawScoresLineplot(data) {
   })
 
   // add all names to selector
-  select = document.getElementById('select');
+  const scoresOverTimeSelector = document.getElementById('scoresOverTimeSelector');
   selectMobile = document.getElementById('selectMobile');
   LoL = [];
   for (row = 0; row < filtered.length; row++){
@@ -421,7 +421,7 @@ function drawScoresLineplot(data) {
       var opt = document.createElement('option');
       opt.value = row;
       opt.innerHTML = filtered[row]['name'];
-      select.appendChild(opt);
+      scoresOverTimeSelector.appendChild(opt);
 
       var optMobile = document.createElement('option');
       optMobile.value = row;
@@ -430,55 +430,9 @@ function drawScoresLineplot(data) {
   }
 
   // sort selector alphabetically
-  sortSelect(select);
+  sortSelect(scoresOverTimeSelector);
   sortSelect(selectMobile);
 
-  // add section header for the players
-  opt = document.createElement('option');
-  opt.innerHTML = "Players";
-  opt.disabled = true;
-  select.add(opt,0);
-
-  // add space to appear after special options
-  opt = document.createElement('option');
-  opt.innerHTML = "";
-  opt.disabled = true;
-  select.add(opt,0);
-
-  // SPECIAL OPTIONS (reverse order)
-  // add top 10 option
-  opt = document.createElement('option');
-  opt.value = 'top10past';
-  opt.id = 'top10past';
-  opt.innerHTML = "Previous Top 10";
-  select.add(opt,0);
-
-  // add top 3 option
-  opt = document.createElement('option');
-  opt.value = 'top3past';
-  opt.id = 'top3past';
-  opt.innerHTML = "Previous Top 3";
-  select.add(opt,0);
-
-  // add top 10 option
-  opt = document.createElement('option');
-  opt.value = 'top10';
-  opt.id = 'top10';
-  opt.innerHTML = "Current Top 10";
-  select.add(opt,0);
-
-  // add top 3 option
-  opt = document.createElement('option');
-  opt.value = 'top3';
-  opt.id = 'top3';
-  opt.innerHTML = "Current Top 3";
-  select.add(opt,0);
-
-  // attach special functions to special options
-  d3.select("#top3").on("click", function(){selectTopNum(this, 3)});
-  d3.select("#top10").on("click", function(){selectTopNum(this, 10)});
-  d3.select("#top3past").on("click", function(){selectTopNumPreviousRound(this, 3)});
-  d3.select("#top10past").on("click", function(){selectTopNumPreviousRound(this, 10)});
   ////////////////////////////////////////////////////
 
   // group the data: I want to draw one line per group
@@ -525,7 +479,7 @@ function drawScoresLineplot(data) {
   //   return (d < 41) || (d > 70); 
   // });
   shuffle(hues); // randomize the list
-  hues = hues.splice(0, sumstat.length); // grab the first 80 in the list
+  hues = hues.splice(0, sumstat.length); // grab the first X in the list
   
   brightness = [];
   for (i = 0; i < sumstat.length; i++){
@@ -533,28 +487,27 @@ function drawScoresLineplot(data) {
   };
 
   // recolor pre-populated names in legend table
-  document.getElementById('alina').style.color = "hsl("+hues[1]+",100%,"+brightness[1]+"%)";
-  document.getElementById('andrew').style.color = "hsl("+hues[2]+",100%,"+brightness[2]+"%)";
-  document.getElementById('angela').style.color = "hsl("+hues[5]+",100%,"+brightness[5]+"%)";
+  // document.getElementById('alina').style.color = "hsl("+hues[1]+",100%,"+brightness[1]+"%)";
+  // document.getElementById('andrew').style.color = "hsl("+hues[2]+",100%,"+brightness[2]+"%)";
+  //document.getElementById('angela').style.color = "hsl("+hues[5]+",100%,"+brightness[5]+"%)";
 
   console.log(sumstat);
 
-  // Draw the line
+  // Draw lines
   svg.selectAll(".line")
-      .data(sumstat)
-      .enter()
-      .append("path")
-        .attr("fill", "none")
-        .attr("class", "scoreLine")
-        .attr("id", function(d) { return d.key; })
-        .style("stroke",function(d,i){return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"})
-        .attr("d", function(d){
-          return d3.line()
-            .curve(d3.curveCardinal)
-            .x(function(d) { return x(d.round); })
-            .y(function(d) { return y(d.rank); })
-            (d.values)
-        });
+    .data(sumstat)
+    .enter()
+    .append("path")
+    .attr("class", "scoreLine")
+    .attr("id", function(d) { return d.key; })
+    .style("stroke",function(d, i){return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"})
+    .attr("d", function(d){
+      return d3.line()
+        .curve(d3.curveCardinal)
+        .x(function(d) { return x(d.round); })
+        .y(function(d) { return y(d.rank); })
+        (d.values)
+    });
 
   // Define the div for the tooltip
   var tooltip = d3.select("body").append("div")	
@@ -603,13 +556,14 @@ function drawScoresLineplot(data) {
   addColorToSelectOptions();
 
   // pre-select some names
-  select = document.getElementById("select");
-  select.options[7].selected = true; // magic number
-  select.options[8].selected = true; // magic number
-  select.options[11].selected = true; // magic number
+  console.log(scoresOverTimeSelector);
+  scoresOverTimeSelector.options[7].selected = true; // magic number
+  scoresOverTimeSelector.options[8].selected = true; // magic number
+  scoresOverTimeSelector.options[11].selected = true; // magic number
 
   // get array of selected values
-  var selectedValues = $("#select").val();
+  var selectedValues = $("#scoresOverTimeSelector").val();
+  console.log(selectedValues);
 
   // for each selected value, locate its line and make visible
   for (i=0; i<selectedValues.length; i++){
@@ -620,10 +574,7 @@ function drawScoresLineplot(data) {
   }
 
   // when selector is clicked
-  $("#select").on('click',function () {
-
-    // select selector
-    var sel = document.getElementById('select');
+  $("#scoresOverTimeSelector").on('click', function () {
 
     // hide all lines
     d3.selectAll('.scoreLine').style('visibility','hidden');
@@ -631,28 +582,7 @@ function drawScoresLineplot(data) {
     d3.selectAll('circle').style('visibility', 'hidden');
 
     // get array of selected values
-    var selectedValues = $("#select").val();
-
-    // remove 'top 3' from selectedValues array as to not disrupt rest of function
-    const indexTop3 = selectedValues.indexOf("top3");
-    if (indexTop3 > -1) {
-      selectedValues.splice(indexTop3, 1);
-    };
-    // remove 'top 10' from selectedValues array as to not disrupt rest of function
-    const indexTop10 = selectedValues.indexOf("top10");
-    if (indexTop10 > -1) {
-      selectedValues.splice(indexTop10, 1);
-    };
-    // remove 'top 3 past' from selectedValues array as to not disrupt rest of function
-    const indexTop3Past = selectedValues.indexOf("top3past");
-    if (indexTop3Past > -1) {
-      selectedValues.splice(indexTop3Past, 1);
-    };
-    // remove 'top 10 past' from selectedValues array as to not disrupt rest of function
-    const indexTop10Past = selectedValues.indexOf("top10past");
-    if (indexTop10Past > -1) {
-      selectedValues.splice(indexTop10Past, 1);
-    };
+    var selectedValues = $("#scoresOverTimeSelector").val();
 
     var names = [];
     var playerColors = [];
@@ -661,18 +591,17 @@ function drawScoresLineplot(data) {
     for (i=0; i<selectedValues.length; i++){
       var nameID = $('select option[value=' + selectedValues[i] + ']')[0].text // find option with matching value and get text
       names.push(nameID);
+      console.log(nameID);
       var line = document.getElementById(nameID); // use text to find line with matching ID
       line.style.visibility = "visible"; // reveal
       playerColors.push(line.style.stroke);
       d3.selectAll("#" + nameID.replace(" ", "").replace(".","")+"Scatter").style("visibility", "visible");; // get scatter dots and make visible
     }
-
-    updateLegend(names, playerColors); // also add name to legend table
   });
 }
 
 // removes need to use ctrl for multiple select
-$("#select").mousedown(function(e){
+$("#scoresOverTimeSelector").mousedown(function(e) {
   e.preventDefault();
   
   var select = this;
@@ -735,48 +664,9 @@ function addColorToSelectOptions(){
   // for each of the options, add styling so the checked color matches corresponding line
   for (i=0; i<80; i++){
     var sheet = document.createElement('style')
-    sheet.innerHTML = "select option:nth-child("+(i+1+6)+"):checked { box-shadow: inset 20px 20px hsl("+hues[i]+",100%,"+brightness[i]+"%) }"; // magic number (3)
+    sheet.innerHTML = "select option:nth-child("+(i+1)+"):checked { box-shadow: inset 20px 20px hsl("+hues[i]+",100%,"+brightness[i]+"%) }"; // magic number (3)
     document.body.appendChild(sheet);
   }
-}
-
-function updateLegend(names, colors){
-  d3.selectAll('tr').remove(); // remove all current table rows
-
-  // add row (with 2 columns) for every name
-  for (i=0;i<(names.length/2);i++){
-    var row = d3.select('table').append('tr');
-    c1 = row.append('td');
-    c2 = row.append('td');
-  }
-
-  // loop over all cells, add in names
-  columns = document.querySelectorAll('td');
-  for (c=0;c<names.length;c++){
-      columns[c].innerHTML = names[c];
-      columns[c].style.color = colors[c];
-  }
-
-  // give all the tds a mouseover function
-  d3.selectAll('td').on('mouseover',function(){
-    // select line corresponding to name in td and raise it
-    line = document.getElementById(this.innerHTML);
-    d3.select(line).raise();
-    d3.select(line).style("stroke-width", "10px");
-    d3.selectAll("#" + this.innerHTML.replace(" ", "").replace(".","")+"Scatter").raise(); // get scatter dots and make top
-  })
-  .on("mouseout",function(){
-    line = document.getElementById(this.innerHTML);
-    d3.select(line).style("stroke-width", "3px");
-  })
-  .on("click", function(){
-    line = document.getElementById(this.innerHTML);
-    line.style.visibility = 'hidden'; // hide line
-    d3.selectAll("#" + this.innerHTML.replace(" ", "").replace(".","")+"Scatter").style("visibility", "hidden"); // hide dots
-    playerIndex = $('select').find('option:contains('+this.innerHTML+')').index(); // find player index
-    document.getElementById("select").options[playerIndex].selected = false; // deselect player option
-    this.remove() // self destruct!
-  });
 }
 
 // for the preloaded tds

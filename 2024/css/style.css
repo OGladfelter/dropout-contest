@@ -359,8 +359,9 @@ Scores over time CSS
 
 path.scoreLine{
   visibility: hidden;
-  opacity: 0.8;
+  opacity: 1;
   stroke-width: 3;
+  fill: none;
 }
 
 .computerSelector {
