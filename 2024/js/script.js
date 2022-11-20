@@ -368,7 +368,9 @@ function addInteractionToPredictionsList() {
 
 function drawScoresLineplot(data) {
 
+  // remove Anonymous players and group the data by player ID
   data = data.filter(d => d.name != 'Anonymous');
+  const sumstat = d3.group(data, d => d.id);
 
   if (IsMobile()) {
     // set the dimensions and margins of the graph
@@ -391,12 +393,6 @@ function drawScoresLineplot(data) {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  ////////////////////////////////////////////////////
-
-  // group the data by player ID
-  const sumstat = d3.group(data, d => d.id);
-  console.log(sumstat);
-
   if (IsMobile()){ // update when candidate drops out
     yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"];
     xTicks = ["MW", "CB", "JD", "AY", "MB", "DP", "TS", "PB", "AK", "MB", "EW", "TG", "BS"];
@@ -405,6 +401,8 @@ function drawScoresLineplot(data) {
     yTicks = ["1st Place", "10th", 20, 30, 40, 50, 60, 70, "80"];
     xTicks = ["Williamson", "Booker", "Delaney", "Yang", "Bennet", "Patrick", "Steyer", "Buttigieg", "Klobuchar", "Bloomberg", "Warren", "Gabbard", "Sanders"];
   }
+
+  ////////////////////////////////////////////////////
 
   // Add X axis
   var x = d3.scaleLinear()
@@ -428,6 +426,8 @@ function drawScoresLineplot(data) {
   const tableSelector = document.getElementById('scoresLineplotTable');
 
   sumstat.forEach(d => {
+    d.color = 'hsl(' + Math.floor(Math.random() * 360) + ', 100%, 50%';
+
     // add each participant's name to table menu
     var row = document.createElement('tr');
     row.value = d[0].id; // should be ID
@@ -438,21 +438,6 @@ function drawScoresLineplot(data) {
     row.addEventListener('click', drawPlayerLine);
     tableSelector.appendChild(row);
   });
-
-  // generate random array of colors
-  hues = [];
-  for (i=0; i < 361; i++){hues.push(i)};
-  // remove 'yellows'
-  // hues = hues.filter(function(d) {
-  //   return (d < 41) || (d > 70); 
-  // });
-  shuffle(hues); // randomize the list
-  hues = hues.splice(0, sumstat.length); // grab the first X in the list
-  
-  brightness = [];
-  for (i = 0; i < sumstat.length; i++){
-    brightness.push(randomRange(40,90));
-  };
 
   // Define the div for the tooltip
   var tooltip = d3.select("body").append("div")	
@@ -504,7 +489,7 @@ function drawScoresLineplot(data) {
         .attr("d", valueline)
         .attr("id", d => "scoreLine" + d[0].id)
         .attr("class", "scoreLine")
-        .style("stroke", function(d, i) {return "hsl("+hues[i]+",100%,"+brightness[i]+"%)"} )
+        .style("stroke", selectedData.color)
         .on("mouseover", function() {
           d3.select(this).raise(); 
           d3.select(this).style("stroke-width", "8px");
@@ -514,7 +499,7 @@ function drawScoresLineplot(data) {
           d3.select(this).style("stroke-width", "3px");
         });
   
-      this.style.backgroundColor = 'cyan';
+      this.style.backgroundColor = selectedData.color;
     } else { // remove the line
       d3.select("#scoreLine" + selectedData[0].id).remove();
       this.style.backgroundColor = 'white';
@@ -531,10 +516,6 @@ function shuffle(a) {
       a[j] = x;
   }
   return a;
-}
-
-function randomRange(min, max) {
-  return Math.random() * (max - min) + min;
 }
 
 function selectTopNum(option, rankNum){
