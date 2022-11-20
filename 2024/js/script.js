@@ -402,25 +402,6 @@ function drawScoresLineplot(data) {
   document.querySelector('table').style.height = height + margin.top + margin.bottom;
   document.querySelector('#scoresLineplot select').style.height = height + margin.top + margin.bottom;
 
-  // get a dataset of only round 1, for name purposes
-  filtered = data.filter(function(row) {
-    return (row['round'] == 1); 
-  })
-
-  // add all names to selector
-  const scoresOverTimeSelector = document.getElementById('scoresOverTimeSelector');
-  for (row = 0; row < filtered.length; row++){
-      // add each participant's name to name selector
-      var opt = document.createElement('option');
-      opt.value = row;
-      opt.innerHTML = filtered[row]['name'];
-      opt.addEventListener('click', function() { console.log('hello'); })
-      scoresOverTimeSelector.appendChild(opt);
-  }
-
-  // sort selector alphabetically
-  sortSelect(scoresOverTimeSelector);
-
   ////////////////////////////////////////////////////
 
   // group the data: I want to draw one line per group
@@ -458,6 +439,16 @@ function drawScoresLineplot(data) {
 
   // alphabetize sumstat
   sumstat.sort(alphabetize);
+
+  // add all names to selector
+  const scoresOverTimeSelector = document.getElementById('scoresOverTimeSelector');
+  sumstat.forEach((d, i) => { 
+    // add each participant's name to name selector
+    var opt = document.createElement('option');
+    opt.value = i;
+    opt.innerHTML = d.key;
+    scoresOverTimeSelector.appendChild(opt);
+  });
 
   // generate random array of colors
   hues = [];
@@ -591,26 +582,6 @@ $("#scoresOverTimeSelector").mousedown(function(e) {
   
   $(select).focus();
 }).mousemove(function(e){e.preventDefault()});
-
-
-
-function sortSelect(selElem) {
-  var tmpAry = new Array();
-  for (var i=0;i<selElem.options.length;i++) {
-      tmpAry[i] = new Array();
-      tmpAry[i][0] = selElem.options[i].text;
-      tmpAry[i][1] = selElem.options[i].value;
-  }
-  tmpAry.sort();
-  while (selElem.options.length > 0) {
-      selElem.options[0] = null;
-  }
-  for (var i=0;i<tmpAry.length;i++) {
-      var op = new Option(tmpAry[i][0], tmpAry[i][1]);
-      selElem.options[i] = op;
-  }
-  return;
-}
 
 // sorts sumstat alphabetically
 function alphabetize( a, b ) {

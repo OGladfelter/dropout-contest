@@ -389,7 +389,9 @@ select.computerSelector option:checked {
   box-shadow: inset 20px 20px slategrey;
 }
 
-
+.scoresLineplotTable {
+  background-color: white;
+}
 
 /*--------------------
 Analysis CSS
