@@ -425,30 +425,30 @@ function drawScoresLineplot(data) {
     .attr("class", "tooltip")				
     .style("opacity", 0);
 
-  const annotations = svg
-    .append("g")
-    .attr("class", "annotation");
-  annotations.append("rect")
-    .attr("x", 0)
-    .attr("y", 0);
-  annotations.append("text")
-    .attr("id", "text1")
-    .attr("x", 20)
-    .attr("y", 20)
-    .style("dominant-baseline", "hanging")
-    .html('Oliver Gladfelter');
-  annotations.append("text")
-    .attr("id", "text2")
-    .attr("x", 20)
-    .attr("y", 42)
-    .style("dominant-baseline", "hanging")
-    .html("Rank: 59");
-  annotations.append("text")
-    .attr("id", "text3")
-    .attr("x", 20)
-    .attr("y", 64)
-    .style("dominant-baseline", "hanging")
-    .html("Round: 4");
+  // const annotations = svg
+  //   .append("g")
+  //   .attr("class", "annotation");
+  // annotations.append("rect")
+  //   .attr("x", 0)
+  //   .attr("y", 0);
+  // annotations.append("text")
+  //   .attr("id", "text1")
+  //   .attr("x", 20)
+  //   .attr("y", 20)
+  //   .style("dominant-baseline", "hanging")
+  //   .html('Oliver Gladfelter');
+  // annotations.append("text")
+  //   .attr("id", "text2")
+  //   .attr("x", 20)
+  //   .attr("y", 42)
+  //   .style("dominant-baseline", "hanging")
+  //   .html("Rank: 59");
+  // annotations.append("text")
+  //   .attr("id", "text3")
+  //   .attr("x", 20)
+  //   .attr("y", 64)
+  //   .style("dominant-baseline", "hanging")
+  //   .html("Round: 4");
 
   // add all names to table menu
   const tableSelector = document.getElementById('scoresLineplotTable');
@@ -465,18 +465,18 @@ function drawScoresLineplot(data) {
     tableSelector.appendChild(row);
   });
 
-  let voronoiData = [];
+  // let voronoiData = [];
 
-  function updateTooltip(event, d) {
-    d3.select("#text1").text(d.name);
-    d3.select("#text2").text('Rank: ' + d.rank);
-    d3.select("#text3").text('Round: ' + d.round);
-    // use bounding boxes on first and last text lines to determine rectangle dimensions
-    var bbox1 = document.getElementById("text1").getBoundingClientRect();
-    var bbox2 = document.getElementById("text3").getBoundingClientRect();
-    annotations.select("rect").attr("width", bbox1.width + 20).attr("height", bbox2.y + bbox2.height - bbox1.y + 15);
-    annotations.attr("transform", "translate(" + x(d.round) + "," + y(d.rank) + ")");
-  }
+  // function updateTooltip(event, d) {
+  //   d3.select("#text1").text(d.name);
+  //   d3.select("#text2").text('Rank: ' + d.rank);
+  //   d3.select("#text3").text('Round: ' + d.round);
+  //   // use bounding boxes on first and last text lines to determine rectangle dimensions
+  //   var bbox1 = document.getElementById("text1").getBoundingClientRect();
+  //   var bbox2 = document.getElementById("text3").getBoundingClientRect();
+  //   annotations.select("rect").attr("width", bbox1.width + 20).attr("height", bbox2.y + bbox2.height - bbox1.y + 15);
+  //   annotations.attr("transform", "translate(" + x(d.round) + "," + y(d.rank) + ")");
+  // }
 
   function drawPlayerLine() {
     this.dataset.selected == 0 ? this.dataset.selected = 1 : this.dataset.selected = 0; // flip 'truthiness' of if row is selected or not
@@ -489,8 +489,8 @@ function drawScoresLineplot(data) {
       this.style.backgroundColor = selectedData.color;
 
       // add selected row's data to voronoiData
-      voronoiData.push(selectedData);
-      voronoiData = voronoiData.flat();
+      // voronoiData.push(selectedData);
+      // voronoiData = voronoiData.flat();
 
       // define the line
       var valueline = d3.line()
@@ -518,37 +518,52 @@ function drawScoresLineplot(data) {
         .data(selectedData)			
         .enter().append("circle")								
         .attr("r", 5)
-        .style("fill", selectedData.color)
+        .style("stroke", selectedData.color)
         .attr("class", d => "scoreDots" + d.id)
         .attr("cx", function(d) { return x(d.round); })		 
-        .attr("cy", function(d) { return y(d.rank); });
+        .attr("cy", function(d) { return y(d.rank); })
+        .on("mouseover", function(event, d) {	
+          tooltip
+            .html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
+            .transition()		
+            .duration(550)		
+            .style("opacity", 1)
+            .style("left", (event.pageX + 14) + "px")		
+            .style("top", (event.pageY + 14) + "px");		
+        })
+        .on("mouseout", function(d){
+          tooltip
+            .transition()		
+            .duration(550)		
+            .style("opacity", 0);
+        });
     } else { // remove the line
       d3.select("#scoreLine" + selectedData[0].id).remove();
       d3.selectAll(".scoreDots" + selectedData[0].id).remove();
       this.style.backgroundColor = 'white';
-      voronoiData = voronoiData.filter(d => d.id != this.value); // remove user data from voronoi
+      //voronoiData = voronoiData.filter(d => d.id != this.value); // remove user data from voronoi
     }
 
-    updateVoronoi(voronoiData);
+    //updateVoronoi(voronoiData);
   }
 
-  function updateVoronoi(data) {
-    // update voronoi
-    voronoi = d3.Delaunay
-      .from(data, d => x(d.round), d => y(d.rank))
-      .voronoi([-1, -1, width + 1, height + 1]); // ensures voronoi is limited to the chart area
-    d3.select("#voronoiWrapper").remove(); // remove old voronoi
-    // add new
-    svg.append("g")
-      .attr('id', 'voronoiWrapper')
-      .selectAll("path")
-      .data(data)
-      .join("path")
-      .attr("fill", "transparent")
-      .style("pointer-events", "all")
-      .attr("d", (d,i) => voronoi.renderCell(i))
-      .on("mousemove", updateTooltip);
-  }
+  // function updateVoronoi(data) {
+  //   // update voronoi
+  //   voronoi = d3.Delaunay
+  //     .from(data, d => x(d.round), d => y(d.rank))
+  //     .voronoi([-1, -1, width + 1, height + 1]); // ensures voronoi is limited to the chart area
+  //   d3.select("#voronoiWrapper").remove(); // remove old voronoi
+  //   // add new
+  //   svg.append("g")
+  //     .attr('id', 'voronoiWrapper')
+  //     .selectAll("path")
+  //     .data(data)
+  //     .join("path")
+  //     .attr("fill", "transparent")
+  //     .style("pointer-events", "all")
+  //     .attr("d", (d,i) => voronoi.renderCell(i))
+  //     .on("mousemove", updateTooltip);
+  // }
 }
 
 function shuffle(a) {
