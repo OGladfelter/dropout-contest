@@ -442,12 +442,20 @@ function drawScoresLineplot(data) {
 
   // add all names to selector
   const scoresOverTimeSelector = document.getElementById('scoresOverTimeSelector');
+  const tableSelector = document.getElementById('scoresLineplotTable');
   sumstat.forEach((d, i) => { 
     // add each participant's name to name selector
     var opt = document.createElement('option');
     opt.value = i;
     opt.innerHTML = d.key;
     scoresOverTimeSelector.appendChild(opt);
+
+    // add each participant's name to name selector
+    var row = document.createElement('tr');
+    var column = document.createElement('td');
+    column.innerHTML = d.key;
+    row.appendChild(column);
+    tableSelector.appendChild(row);
   });
 
   // generate random array of colors

@@ -313,7 +313,7 @@ Leaderboard CSS
   margin-right: 5%;
   margin-bottom: 5%;
 }
-.predictions th, td {
+.predictions > th, td {
   padding: 5px;
   text-align: left;
 }
@@ -391,6 +391,11 @@ select.computerSelector option:checked {
 
 .scoresLineplotTable {
   background-color: white;
+  max-height: 100px;
+  overflow: scroll;
+}
+.scoresLineplotTable > tr {
+  line-height: 15px;
 }
 
 /*--------------------
