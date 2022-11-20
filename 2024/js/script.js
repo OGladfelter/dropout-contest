@@ -440,13 +440,44 @@ function drawScoresLineplot(data) {
     tableSelector.appendChild(row);
   });
 
+  const voronoiStarterData = sumstat.get("20");
+
+  // add a voronoi
+  let voronoi = d3.Delaunay
+    .from(voronoiStarterData, d => x(d.round), d => y(d.rank))
+    .voronoi([-1, -1, width + 1, height + 1]); // ensures voronoi is limited to the chart area
+
+  const voronoiWrapper = svg.append("g")
+    .attr("class", "voronoiWrapper")
+    .attr('id', 'voronoiWrapper')
+    .selectAll("path")
+    .data(voronoiStarterData)
+    .join("path")
+    .attr("opacity", 0.5)
+    .attr("stroke", "white") // Hide overlay
+    .attr("fill", "cyan")
+    .style("pointer-events", "all")
+    .attr("d", (d,i) => voronoi.renderCell(i))
+    .on("mouseover", (event, d) => {
+        console.log(d);
+        tooltip
+          .html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
+          // .transition()		
+          // .duration(550)		
+          .style("opacity", 1)
+          .style("left", x(d.round) + "px")		
+          .style("top", y(d.rank) + "px");		
+    });
+
   function drawPlayerLine() {
     this.dataset.selected == 0 ? this.dataset.selected = 1 : this.dataset.selected = 0; // flip 'truthiness' of if row is selected or not
 
     const selectedData = sumstat.get(this.value); // access data for the player corresponding to clicked row
 
     if (this.dataset.selected == 1) { // draw the line
+
       this.style.backgroundColor = selectedData.color;
+      updateVoronoi(selectedData);
 
       // define the line
       var valueline = d3.line()
@@ -480,15 +511,17 @@ function drawScoresLineplot(data) {
         .attr("cx", function(d) { return x(d.round); })		 
         .attr("cy", function(d) { return y(d.rank); })
         .on("mouseover", function(event, d) {	
-          tooltip.transition()		
+          tooltip
+            .html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
+            .transition()		
             .duration(550)		
             .style("opacity", 1)
             .style("left", (event.pageX + 14) + "px")		
             .style("top", (event.pageY + 14) + "px");		
-          tooltip.html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round);
-          })
+        })
         .on("mouseout", function(d){
-          tooltip.transition()		
+          tooltip
+            .transition()		
             .duration(550)		
             .style("opacity", 0);
         });
@@ -497,6 +530,25 @@ function drawScoresLineplot(data) {
       d3.selectAll(".scoreDots" + selectedData[0].id).remove();
       this.style.backgroundColor = 'white';
     }
+  }
+
+  function updateVoronoi(data) {
+    // update voronoi
+    voronoi = d3.Delaunay
+      .from(data, d => x(d.round), d => y(d.rank))
+      .voronoi([-1, -1, width + 1, height + 1]); // ensures voronoi is limited to the chart area
+    voronoiWrapper
+      .data(data)
+      .attr("d", (d,i) => voronoi.renderCell(i))
+      .on("mousemove", (event, d) => {
+        tooltip
+          .html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
+          // .transition()		
+          // .duration(550)		
+          .style("opacity", 1)
+          .style("left", x(d.round) + "px")		
+          .style("top", y(d.rank) + "px");		
+      });
   }
 }
 
@@ -742,7 +794,7 @@ function drawHeatmap(data, dropOutOrder) {
         .attr('class', 'heatmapHeader')
         .attr('font-family', 'Segoe UI bold')
         .style("text-anchor", "middle")
-        .text("74 Predictions Of Candidate Drop Out Order")
+        .text("Candidate Drop Out Order Predictions")
 }
 
 function main() {
