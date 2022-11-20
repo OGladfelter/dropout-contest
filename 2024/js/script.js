@@ -253,7 +253,7 @@ function dataPrep() {
               const score = partialScoring(partialDrops, d.prediction);
               // const kendallNormal = (score / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
               // const accuracy = 100 - (kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
-              scoresThisRound.push({'name':d.name, 'score':score, 'round':roundNum});
+              scoresThisRound.push({'id':d.participantID, 'name':d.name, 'score':score, 'round':roundNum});
             });
             // sort the scores for this round of the current loop iteration
             scoresThisRound = scoresThisRound.slice().sort((a, b) => d3.ascending(a.score, b.score)); // sort data ascending by kendall distance
@@ -392,23 +392,18 @@ function drawScoresLineplot(data) {
   // append the svg object to the body of the page
   var svg = d3.select("#lineplot")
     .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
     .append("g")
-      .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
-
-  // make table and selector height matches graph
-  document.querySelector('table').style.height = height + margin.top + margin.bottom;
-  document.querySelector('#scoresLineplot select').style.height = height + margin.top + margin.bottom;
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   ////////////////////////////////////////////////////
 
-  // group the data: I want to draw one line per group
+  // group the data by player
   var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
-    .key(function(d) { return d.name;})
+    .key(function(d) { return d.id;})
     .entries(data);
-  sumstatCopy = sumstat;
+  console.log(sumstat);
 
   if (IsMobile()){ // update when candidate drops out
     yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"];
@@ -443,6 +438,7 @@ function drawScoresLineplot(data) {
   // add all names to selector
   const scoresOverTimeSelector = document.getElementById('scoresOverTimeSelector');
   const tableSelector = document.getElementById('scoresLineplotTable');
+
   sumstat.forEach((d, i) => { 
     // add each participant's name to name selector
     var opt = document.createElement('option');
@@ -452,9 +448,11 @@ function drawScoresLineplot(data) {
 
     // add each participant's name to name selector
     var row = document.createElement('tr');
+    row.value = d.key; // should be ID
     var column = document.createElement('td');
-    column.innerHTML = d.key;
+    column.innerHTML = d.values[0].name;
     row.appendChild(column);
+    row.addEventListener('click', test);
     tableSelector.appendChild(row);
   });
 
@@ -526,7 +524,7 @@ function drawScoresLineplot(data) {
   d3.selectAll(".scoreLine").on("mouseover", function(){
     d3.select(this).raise(); 
     d3.select(this).style("stroke-width", "10px");
-    d3.selectAll("#" + this.id.replace(" ", "").replace(".","")+"Scatter").raise(); // get scatter dots and make top
+    //d3.selectAll("#" + this.id.replace(" ", "").replace(".","")+"Scatter").raise(); // get scatter dots and make top
   })
   .on("mouseout",function(){
     d3.select(this).style("stroke-width", "3px");
@@ -575,6 +573,10 @@ function drawScoresLineplot(data) {
       d3.selectAll("#" + nameID.replace(" ", "").replace(".","")+"Scatter").style("visibility", "visible");; // get scatter dots and make visible
     }
   });
+
+  function test() {
+    console.log(this.value);
+  }
 }
 
 // removes need to use ctrl for multiple select
