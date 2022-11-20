@@ -393,16 +393,14 @@ function drawScoresLineplot(data) {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  if (IsMobile()){ // update when candidate drops out
+  if (IsMobile()) { // update when candidate drops out
     yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"];
     xTicks = ["MW", "CB", "JD", "AY", "MB", "DP", "TS", "PB", "AK", "MB", "EW", "TG", "BS"];
   }
-  else{ // update when candidate drops out
+  else { // update when candidate drops out
     yTicks = ["1st Place", "10th", 20, 30, 40, 50, 60, 70, "80"];
     xTicks = ["Williamson", "Booker", "Delaney", "Yang", "Bennet", "Patrick", "Steyer", "Buttigieg", "Klobuchar", "Bloomberg", "Warren", "Gabbard", "Sanders"];
   }
-
-  ////////////////////////////////////////////////////
 
   // Add X axis
   var x = d3.scaleLinear()
@@ -422,12 +420,15 @@ function drawScoresLineplot(data) {
     .attr("class", "axis")
     .call(d3.axisLeft(y).tickFormat(function(d, i){return yTicks[i]}));
 
+  // Define the div for the tooltip
+  var tooltip = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
   // add all names to table menu
   const tableSelector = document.getElementById('scoresLineplotTable');
-
   sumstat.forEach(d => {
     d.color = 'hsl(' + Math.floor(Math.random() * 360) + ', 100%, 50%';
-
     // add each participant's name to table menu
     var row = document.createElement('tr');
     row.value = d[0].id; // should be ID
@@ -439,45 +440,14 @@ function drawScoresLineplot(data) {
     tableSelector.appendChild(row);
   });
 
-  // Define the div for the tooltip
-  var tooltip = d3.select("body").append("div")	
-    .attr("class", "tooltip")				
-    .style("opacity", 0);
-
-  // add circles for tooltip
-  // svg.selectAll("dot")	
-  //   .data(data)			
-  //   .enter().append("circle")								
-  //   .attr("r", 10)
-  //   .style("visibility", "hidden")	
-  //   .style("opacity", 0)
-  //   .attr("id", function(d) { return d.name.replace(" ", "").replace(".","") + "Scatter"; })
-  //   .attr("cx", function(d) { return x(d.round); })		 
-  //   .attr("cy", function(d) { return y(d.rank); })
-  //   .on("mouseover", function(event, d) {	
-  //     var line = document.getElementById(d.name);
-  //     line.style.strokeWidth = "10px";	
-  //     tooltip.transition()		
-  //       .duration(550)		
-  //       .style("opacity", 1)
-  //       .style("left", (event.pageX + 14) + "px")		
-  //       .style("top", (event.pageY + 14) + "px");		
-  //     tooltip.html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round);
-  //     })
-  //   .on("mouseout", function(d){
-  //     var line = document.getElementById(d.name);
-  //     line.style.strokeWidth = "3px";	
-  //     tooltip.transition()		
-  //       .duration(550)		
-  //       .style("opacity", 0);
-  //   });
-
   function drawPlayerLine() {
     this.dataset.selected == 0 ? this.dataset.selected = 1 : this.dataset.selected = 0; // flip 'truthiness' of if row is selected or not
 
     const selectedData = sumstat.get(this.value); // access data for the player corresponding to clicked row
 
     if (this.dataset.selected == 1) { // draw the line
+      this.style.backgroundColor = selectedData.color;
+
       // define the line
       var valueline = d3.line()
         .x(function(d) { return x(d.round); })
@@ -490,18 +460,41 @@ function drawScoresLineplot(data) {
         .attr("id", d => "scoreLine" + d[0].id)
         .attr("class", "scoreLine")
         .style("stroke", selectedData.color)
-        .on("mouseover", function() {
+        .on("mouseover", function(event, d) {
           d3.select(this).raise(); 
           d3.select(this).style("stroke-width", "8px");
-          //d3.selectAll("#" + this.id.replace(" ", "").replace(".","")+"Scatter").raise(); // get scatter dots and make top
+          d3.selectAll(".scoreDots" +  + d[0].id).raise(); // get scatter dots and make top
         })
         .on("mouseout",function() {
           d3.select(this).style("stroke-width", "3px");
         });
-  
-      this.style.backgroundColor = selectedData.color;
+
+      // add circles for tooltip
+      svg.selectAll("dot")	
+        .data(selectedData)			
+        .enter().append("circle")								
+        .attr("r", 10)
+        // .style("visibility", "hidden")	
+        // .style("opacity", 0)
+        .attr("class", d => "scoreDots" + d.id)
+        .attr("cx", function(d) { return x(d.round); })		 
+        .attr("cy", function(d) { return y(d.rank); })
+        .on("mouseover", function(event, d) {	
+          tooltip.transition()		
+            .duration(550)		
+            .style("opacity", 1)
+            .style("left", (event.pageX + 14) + "px")		
+            .style("top", (event.pageY + 14) + "px");		
+          tooltip.html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round);
+          })
+        .on("mouseout", function(d){
+          tooltip.transition()		
+            .duration(550)		
+            .style("opacity", 0);
+        });
     } else { // remove the line
       d3.select("#scoreLine" + selectedData[0].id).remove();
+      d3.selectAll(".scoreDots" + selectedData[0].id).remove();
       this.style.backgroundColor = 'white';
     }
   }
