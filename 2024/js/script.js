@@ -370,7 +370,8 @@ function drawScoresLineplot(data) {
 
   // remove Anonymous players and group the data by player ID
   data = data.filter(d => d.name != 'Anonymous');
-  const sumstat = d3.group(data, d => d.id);
+  const grouped = d3.group(data, d => d.id);
+  const sumstat = new Map([...grouped].sort((a, b) => (a[1][0].name > b[1][0].name ? 1 : -1))); // alphabetize
 
   if (IsMobile()) {
     // set the dimensions and margins of the graph
@@ -513,28 +514,39 @@ function drawScoresLineplot(data) {
           d3.select(this).style("stroke-width", "3px");
         });
 
-      // add circles for tooltip
-      svg.selectAll("dot")	
+      // add circles to look at
+      svg.selectAll(".dot")	
         .data(selectedData)			
         .enter().append("circle")								
         .attr("r", 5)
         .style("stroke", selectedData.color)
         .attr("class", d => "scoreDots" + d.id)
         .attr("cx", function(d) { return x(d.round); })		 
+        .attr("cy", function(d) { return y(d.rank); });
+
+      // add invisible circles for tooltip
+      svg.selectAll(".dot")	
+        .data(selectedData)			
+        .enter().append("circle")								
+        .attr("r", 15)
+        .style("opacity", 0.2)
+        .attr("class", d => "scoreDots" + d.id)
+        .style("stroke", selectedData.color)
+        .attr("cx", function(d) { return x(d.round); })		 
         .attr("cy", function(d) { return y(d.rank); })
         .on("mouseover", function(event, d) {	
           tooltip
             .html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
-            .transition()		
-            .duration(550)		
-            .style("opacity", 1)
             .style("left", (event.pageX + 14) + "px")		
-            .style("top", (event.pageY + 14) + "px");		
+            .style("top", (event.pageY + 14) + "px")
+            .transition()		
+            .duration(500)		
+            .style("opacity", 1);		
         })
         .on("mouseout", function(d){
           tooltip
             .transition()		
-            .duration(550)		
+            .duration(250)		
             .style("opacity", 0);
         });
     } else { // remove the line
