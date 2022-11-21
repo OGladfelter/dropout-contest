@@ -67,6 +67,20 @@ article {
   background: cyan;
 }
 
+/* link */
+a:link, a:visited  {
+  color: rgb(0,210,210);
+}
+
+/* selected link */
+a:active {
+  color: #0000EE;
+}
+
+.blackText {
+  color: black !important;
+}
+
 /*--------------------
 Tabs CSS
 --------------------*/
@@ -277,7 +291,8 @@ Leaderboard CSS
   border: collapse;
 }
 .leaderboard tr:hover {
-  background-color: rgb(29, 228, 228) !important;
+  background-color: rgb(0, 210, 210) !important;
+  color: black !important;
 }
 .leaderboard td {
   padding: 15px;

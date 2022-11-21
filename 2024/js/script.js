@@ -294,18 +294,21 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
     var distanceCell = row.insertCell(2);
     var accuracyCell = row.insertCell(3);
     rankCell.innerHTML = '<span class="circle">' + rank + '</span>';
-    nameCell.innerHTML = name;
+    nameCell.innerHTML = name == "Wisdom of the crowd" ? "<a href='https://en.wikipedia.org/wiki/Wisdom_of_the_crowd' target='_blank' id='wikiLink'>Wisdom of the crowd</a>" : name;
     distanceCell.innerHTML = kendallDistance;
     accuracyCell.innerHTML = accuracy;
 
     // make aggregate row stand out
     if (name == "Wisdom of the crowd") {
-        rowColor = "#008b8b";
-        row.addEventListener("click", function() {
-            window.open("https://en.wikipedia.org/wiki/Wisdom_of_the_crowd", '_blank').focus();
+        row.addEventListener("mouseover", function() {
+            document.getElementById('wikiLink').classList.add('blackText');
         });
-        row.style.cursor = 'pointer';
+        row.addEventListener("mouseout", function() {
+          document.getElementById('wikiLink').classList.remove('blackText');
+        });
         nameCell.style.fontStyle = 'italic';
+        nameCell.style.fontWeight = 'bolder';
+        nameCell.style.color = 'cyan';
     }
 
     row.style.backgroundColor = rowColor;
@@ -807,10 +810,14 @@ function drawHeatmap(data, dropOutOrder) {
           d3.select(this).style("fill", "orange");
         })
         .on("mousemove", mousemove)
-        .on("mouseleave", function(d) {
+        .on("mouseleave", function() {
           tooltip.style("opacity", 0);
           d3.select(this).style("fill", function(d) {return heatmapColors(d.value)} );
-        });
+        })
+        .on("click", function(event, d) {
+            // figure out who made this prediction
+            console.log(data.filter(t => t.prediction[d.dropOutPosition - 1] == d.name));
+        })
 
     // Build color scale for text label
     var textColor = d3.scaleQuantile()
