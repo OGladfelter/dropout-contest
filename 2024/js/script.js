@@ -393,6 +393,12 @@ function drawScoresLineplot(data) {
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
+    .on('click', function() {
+      d3.selectAll("[data-scatterplotMark]").remove();
+      d3.selectAll('.scoreLine').remove();
+      d3.selectAll("[data-selected]").style('background-color', 'white');
+      document.querySelectorAll("[data-selected='1']").forEach(tr => tr.dataset.selected = 0);
+    })
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -540,6 +546,7 @@ function drawScoresLineplot(data) {
         .attr("r", 5)
         .style("stroke", selectedData.color)
         .attr("class", d => "scoreDots" + d.id)
+        .attr('data-scatterplotMark', 1)
         .attr("cx", function(d) { return x(d.round); })		 
         .attr("cy", function(d) { return y(d.rank); });
 
@@ -550,6 +557,7 @@ function drawScoresLineplot(data) {
         .attr("r", 15)
         .style("opacity", 0.1)
         .attr("class", d => "scoreDots" + d.id)
+        .attr('data-scatterplotMark', 1)
         .style("fill", selectedData.color)
         .attr("cx", function(d) { return x(d.round); })		 
         .attr("cy", function(d) { return y(d.rank); })
