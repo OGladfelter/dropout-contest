@@ -454,7 +454,13 @@ function drawScoresLineplot(data) {
   // add all names to table menu
   const tableSelector = document.getElementById('scoresLineplotTable');
   sumstat.forEach(d => {
-    d.color = 'hsl(' + Math.floor(Math.random() * 360) + ', 100%, 50%';
+    let randomHue = Math.floor(Math.random() * 360);
+    const blueMin = 210;
+    const purpleMax = 270;
+    if (blueMin < randomHue & randomHue < purpleMax) { // shift hue to get out of dark blue - purple range
+        randomHue += purpleMax - blueMin;
+    }
+    d.color = 'hsl(' + randomHue + ', 100%, 50%';
     // add each participant's name to table menu
     var row = document.createElement('tr');
     row.value = d[0].id; // should be ID
@@ -533,12 +539,13 @@ function drawScoresLineplot(data) {
         .data(selectedData)			
         .enter().append("circle")								
         .attr("r", 15)
-        .style("opacity", 0.2)
+        .style("opacity", 0.1)
         .attr("class", d => "scoreDots" + d.id)
-        .style("stroke", selectedData.color)
+        .style("fill", selectedData.color)
         .attr("cx", function(d) { return x(d.round); })		 
         .attr("cy", function(d) { return y(d.rank); })
         .on("mouseover", function(event, d) {	
+          d3.select(this).transition().duration(500).attr("r", 20);
           tooltip
             .html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
             .style("left", (event.pageX + 14) + "px")		
@@ -547,7 +554,8 @@ function drawScoresLineplot(data) {
             .duration(500)		
             .style("opacity", 1);		
         })
-        .on("mouseout", function(d){
+        .on("mouseout", function(d) {
+          d3.select(this).transition().duration(500).attr("r", 15);
           tooltip
             .transition()		
             .duration(250)		
