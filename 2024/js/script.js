@@ -294,7 +294,7 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
     var distanceCell = row.insertCell(2);
     var accuracyCell = row.insertCell(3);
     rankCell.innerHTML = '<span class="circle">' + rank + '</span>';
-    nameCell.innerHTML = name == "Wisdom of the crowd" ? "<a href='https://en.wikipedia.org/wiki/Wisdom_of_the_crowd' target='_blank' id='wikiLink'>Wisdom of the crowd</a>" : name;
+    nameCell.innerHTML = name == "Wisdom of the crowd" ? "<a href='https://en.wikipedia.org/wiki/Wisdom_of_the_crowd' target='_blank' id='wikiLink'>Wisdom of the crowd &#9432;</a>" : name;
     distanceCell.innerHTML = kendallDistance;
     accuracyCell.innerHTML = accuracy;
 
@@ -306,8 +306,7 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
         row.addEventListener("mouseout", function() {
           document.getElementById('wikiLink').classList.remove('blackText');
         });
-        nameCell.style.fontStyle = 'italic';
-        nameCell.style.fontWeight = 'bolder';
+        nameCell.style.fontWeight = 'bold';
         nameCell.style.color = 'cyan';
     }
 
