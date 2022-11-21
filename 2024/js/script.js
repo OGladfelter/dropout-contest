@@ -376,16 +376,18 @@ function drawScoresLineplot(data) {
   if (IsMobile()) {
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 30, bottom: 50, left: 50},
-    width = (screen.height/2) - margin.left - margin.right,
+    width = (screen.height / 2) - margin.left - margin.right,
     height = (screen.width) - margin.top - margin.bottom;
   }
   else {
     // set the dimensions and margins of the graph
     var margin = {top: 10, right: 40, bottom: 50, left: 80},
     width = (screen.width * .75) - margin.left - margin.right,
-    height = (screen.height/2) - margin.top - margin.bottom;
+    height = (screen.height / 1.5) - margin.top - margin.bottom;
+
+    document.getElementById('tableContainer').style.maxHeight = height + 'px';
   }
-      
+     
   // append the svg object to the body of the page
   var svg = d3.select("#lineplot")
     .append("svg")
