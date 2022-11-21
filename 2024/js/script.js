@@ -548,8 +548,8 @@ function drawScoresLineplot(data) {
           d3.select(this).transition().duration(500).attr("r", 20);
           tooltip
             .html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
-            .style("left", (event.pageX + 14) + "px")		
-            .style("top", (event.pageY + 14) + "px")
+            .style('left', event.pageX / window.innerWidth <= 0.75 ? event.pageX + 5 + 'px' : event.pageX - tooltip.node().getBoundingClientRect().width - 10 + 'px')
+            .style("top", (event.pageY + 10) + "px")
             .transition()		
             .duration(500)		
             .style("opacity", 1);		
