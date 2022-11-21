@@ -287,11 +287,11 @@ Leaderboard CSS
   /* position: sticky;
   top:45px; */
 }
-.leaderboard tr:not(:first-child) {
+.leaderboardRow {
   border: collapse;
   cursor: pointer;
 }
-.leaderboard tr:not(:first-child):hover {
+.leaderboardRow:hover {
   background-color: rgb(0, 210, 210) !important;
   color: black !important;
 }
@@ -348,6 +348,10 @@ Leaderboard CSS
 }
 .contestInfo img {
   padding: 10px;
+}
+
+.orangeFill {
+  background-color: #efa311 !important;
 }
 
 /* ::-webkit-scrollbar {

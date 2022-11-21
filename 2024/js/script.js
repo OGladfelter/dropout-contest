@@ -288,6 +288,8 @@ function dataPrep() {
 function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
     var table = document.getElementById("leaderboardTable");
     var row = table.insertRow(-1);
+    row.id = "leaderboardRow" + d.participantID;
+    row.classList.add('leaderboardRow');
 
     var rankCell = row.insertCell(0);
     var nameCell = row.insertCell(1);
@@ -808,6 +810,7 @@ function drawHeatmap(data, dropOutOrder) {
         .attr("width", width / numberOfCandidates )
         .attr("height", height / numberOfCandidates )
         .style("fill", function(d) {return heatmapColors(d.value)} )
+        .style('cursor', 'pointer')
         .on("mouseover", function() {
           tooltip.style("opacity", 1);
           d3.select(this).style("fill", "orange");
@@ -818,8 +821,12 @@ function drawHeatmap(data, dropOutOrder) {
           d3.select(this).style("fill", function(d) {return heatmapColors(d.value)} );
         })
         .on("click", function(event, d) {
-            // figure out who made this prediction
-            console.log(data.filter(t => t.prediction[d.dropOutPosition - 1] == d.name));
+            // figure out who made this prediction and highlight them on the leaderboard
+            const theGuessers = data.filter(t => t.prediction[d.dropOutPosition - 1] == d.name);
+            document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill'))
+            theGuessers.forEach(g => document.getElementById("leaderboardRow" + g.participantID).classList.add('orangeFill'));
+            document.getElementById("contestInfo").innerHTML = 'Remove highlighting';
+            openTab(event, 'Leaderboard');
         })
 
     // Build color scale for text label
