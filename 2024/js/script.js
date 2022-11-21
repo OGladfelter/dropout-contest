@@ -334,6 +334,9 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
         document.getElementById("13thDrop").innerHTML = d["prediction"][12];
         document.getElementById("winner").innerHTML = d["prediction"][13];
     });
+    row.addEventListener("click", function() { // click a row to show their line in Standings Over Time tab
+      document.getElementById('lineplotRow' + d.participantID).click();
+    })
 
 }
 
@@ -486,6 +489,7 @@ function drawScoresLineplot(data) {
     column.innerHTML = d[0].name;
     row.appendChild(column);
     row.addEventListener('click', drawPlayerLine);
+    row.id = 'lineplotRow' + d[0].id;
     tableSelector.appendChild(row);
 
     if (d[0].name == 'Wisdom of the crowd') {

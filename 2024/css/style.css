@@ -287,8 +287,9 @@ Leaderboard CSS
   /* position: sticky;
   top:45px; */
 }
-.leaderboard tr {
+.leaderboard tr:not(:first-child) {
   border: collapse;
+  cursor: pointer;
 }
 .leaderboard tr:not(:first-child):hover {
   background-color: rgb(0, 210, 210) !important;
