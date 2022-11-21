@@ -47,13 +47,14 @@ h2 {
 p { 
   font-size: 18px;
   margin: 20px;
+  color: whitesmoke;
 }
 
 article {
   text-align: left;
   width: 40%;
   margin: auto;
-  color: white;
+  color: whitesmoke;
 }
 
 ::-moz-selection { /* Code for Firefox */

@@ -687,15 +687,14 @@ function drawHeatmap(data, dropOutOrder) {
 
     // append the svg object to the body of the page
     var svg = d3.select("#heatmap")
-    .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     function range(start, end) {
-      return Array(end - start + 1).fill().map((_, idx) => start + idx)
+      return Array(end - start + 1).fill().map((_, idx) => start + idx);
     }
     var dropOutPositions = range(1, numberOfCandidates); 
 
@@ -783,7 +782,7 @@ function drawHeatmap(data, dropOutOrder) {
     // Build color scale for cells
     var heatmapColors = d3.scaleLinear()
       .domain(d3.extent(heatmapData, function(d) { return (d.value); }))
-      .range(["#312e2b", "white"]); // from background color of charcoal to less-light cyan
+      .range(["#312e2b", "cyan"]); // from background color of charcoal to less-light cyan
       
     // draw and color the cells
     svg.selectAll()
