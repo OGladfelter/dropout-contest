@@ -375,13 +375,13 @@ function drawScoresLineplot(data) {
 
   if (IsMobile()) {
     // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 30, bottom: 30, left: 50},
+    var margin = {top: 10, right: 30, bottom: 50, left: 50},
     width = (screen.height/2) - margin.left - margin.right,
     height = (screen.width) - margin.top - margin.bottom;
   }
   else {
     // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 40, bottom: 30, left: 80},
+    var margin = {top: 10, right: 40, bottom: 50, left: 80},
     width = (screen.width * .75) - margin.left - margin.right,
     height = (screen.height/2) - margin.top - margin.bottom;
   }
@@ -420,6 +420,13 @@ function drawScoresLineplot(data) {
   svg.append("g")
     .attr("class", "axis")
     .call(d3.axisLeft(y).tickFormat(function(d, i){return yTicks[i]}));
+
+  svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", height + margin.top + (margin.bottom / 1.5))
+    .attr("class", "axis")
+    .style("text-anchor", "middle")
+    .text("Candidate drop out order");
 
   // Define the div for the tooltip
   var tooltip = d3.select("body").append("div")	
