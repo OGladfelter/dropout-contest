@@ -61,15 +61,14 @@
   <h1 style="font-size:42px;">2024 Republican Primary Drop Out Prediction</h1>
   <h3 style="margin-top:20px;">- A contest hosted by Oliver Gladfelter -</h3>
   <article>
-    <p>N Republican candidates have entered the presidential race. N-1 candidates will concede to the party's eventual nominee. Can you correctly predict the order in which these candidates will drop out?</p>
-    <p>Complete the below form by November 15th, 2023 to enter the contest. Any candidates who drop out or enter before then won't count for this contest, so you can't be penalized by submitted your entry form sooner rather than later.</p>
-    <p>See <span onclick="goToScoring(event)" class="fauxLink">rules and scoring details here</span>.</p>
+    <p>11 Republican candidates have entered the presidential race, 10 of which will eventually concede to the party's eventual nominee. Can you correctly predict the 2024 Republican nominee and the order in which the remaining candidates will end their campaigns?</p>
+    <p><b>Complete the form below by July 15th, 2023 to enter the contest.</b> Any candidates who drop out or enter before the submission deadline won't count for this contest.</p>
+    <p>See all <span onclick="goToScoring(event)" class="fauxLink">rules and scoring details here</span>.</p>
     
-
     <!-- Create Form -->
     <form id="form">
-    
       <div>
+        <h3>Your information</h3>
         <div class="form-control" style="display:inline-block; width:40%;">
           <label for="name" id="first-name">First name</label>
           <input type="text" id="firstName" placeholder="Joe" oninput="changeLeaderboardOptions()"/>
@@ -83,10 +82,10 @@
           <label>What should we call you on the leaderboard?</label>
 
           <label for="leaderboard-name-3">
-            <input type="radio" id="leaderboardNameOption1" name="leaderboard-name" checked><span id="option1">First and last name</span></input>
+            <input type="radio" id="leaderboardNameOption1" name="leaderboard-name" checked><span id="option1"> First and last name</span></input>
           </label>
           <label for="leaderboard-name-1">
-              <input type="radio" id="leaderboardNameOption2" name="leaderboard-name"><span id="option2">First name and last initial</span></input>
+              <input type="radio" id="leaderboardNameOption2" name="leaderboard-name"><span id="option2"> First name and last initial</span></input>
           </label>
           <label for="leaderboard-name-2">
               <input type="radio" id="leaderboardNameOption3" name="leaderboard-name"> Other: &nbsp;
@@ -100,21 +99,22 @@
       </div>
       <div class="form-control">
         <label for="email2" id="label-email2">Confirm your email</label>
-        <input type="email2" id="email2" placeholder="Enter your email...again" />
+        <input type="email" id="email2" placeholder="Enter your email...again" autocomplete="off"/>
     </div>
       <div class="form-control">
           <label for="role" id="label-role">How often may we email you?</label>
           <!-- Dropdown options -->
           <select name="role" id="role">
-              <option value="email_1">Whenever a candidate drops out and there are leaderboard updates</option>
-              <option value="email_2">Only at the end of the contest</option>
-              <option value="email_3">Only at the end of the contest and if I win a prize</option>
+              <option value="email_1">Whenever a candidate drops out</option>
+              <option value="email_2">Only with final updates at the end of the contest</option>
+              <option value="email_3">Only if I win a prize at the end of the contest</option>
           </select>
       </div>
 
     </form>
 
-    <p>Order the candidates by predicted drop out order below. As a hint: Marco Rubio won more delegates than John Kasich in the 2016 Republican primary, but still ended his campaign earlier - so try to consider how stubborn each candidate might be!</p>
+    <p>Next, make your drop out predictions below by dragging the candidate names into the empty slots to the left.</p>
+    <p>Pro tip: although candidates tend to drop out after disappointing performances in early primaries, some stick around to the bitter end - so try to consider how stubborn each candidate might be!</p>
   </article>
 
   <div class="sorterContainer">
@@ -122,9 +122,6 @@
           <ul class="sortableGuide">
             <li class="ui-state-default">2024 Nominee</li>
             <li class="ui-state-default">Last to drop out</li>
-            <li class="ui-state-default">&nbsp;</li>
-            <li class="ui-state-default">&nbsp;</li>
-            <li class="ui-state-default">&nbsp;</li>
             <li class="ui-state-default">&nbsp;</li>
             <li class="ui-state-default">&nbsp;</li>
             <li class="ui-state-default">&nbsp;</li>
@@ -145,9 +142,6 @@
             <li class="ui-state-default">&nbsp;</li>
             <li class="ui-state-default">&nbsp;</li>
             <li class="ui-state-default">&nbsp;</li>
-            <li class="ui-state-default">&nbsp;</li>
-            <li class="ui-state-default">&nbsp;</li>
-            <li class="ui-state-default">&nbsp;</li>
             <li class="ui-state-default">Place second to drop out here</li>
             <li class="ui-state-default">Place first to drop out here</li>
           </ul>
@@ -155,20 +149,17 @@
       <div style="width:25%;">
           <h1 style="margin-top:0px;">Candidates</h1>
           <div style="position:relative;">
-              <div class="draggableNames">Joe Biden</div>
-              <div class="draggableNames">Elizabeth Warren</div>
-              <div class="draggableNames">Bernie Sanders</div>
-              <div class="draggableNames">Tulsi Gabbard</div>
-              <div class="draggableNames">Michael Bloomberg</div>
-              <div class="draggableNames">Amy Klobuchar</div>
-              <div class="draggableNames">Pete Buttigieg</div>
-              <div class="draggableNames">Tom Steyer</div>
-              <div class="draggableNames">Deval Patrick</div>
-              <div class="draggableNames">Michael Bennet</div>
-              <div class="draggableNames">Andrew Yang</div>
-              <div class="draggableNames">John Delaney</div>
-              <div class="draggableNames">Cory Booker</div>
-              <div class="draggableNames">Marianne Williamson</div>
+              <div class="draggableNames">Donald Trump</div>
+              <div class="draggableNames">Nikki Haley</div>
+              <div class="draggableNames">Vivek Ramaswamy</div>
+              <div class="draggableNames">Asa Hutchinson</div>
+              <div class="draggableNames">Larry Elder</div>
+              <div class="draggableNames">Tim Scott</div>
+              <div class="draggableNames">Ron DeSantis</div>
+              <div class="draggableNames">Mike Pence</div>
+              <div class="draggableNames">Chris Christie</div>
+              <div class="draggableNames">Doug Burgum</div>
+              <div class="draggableNames">Francis Suarez</div>
           </div>
       </div>
   </div>
@@ -193,9 +184,9 @@
   <h2 id="scoring">Scoring</h2>
   <article>
       <p>The player with the lowest Kendall tau distance wins.</p>
-      <p>Kendall tau distance compares how similar any two ordered lists are: the number of <i>adjacent</i> swaps needed to make a player's prediction match the real order is their Kendall tau distance. For example, let's say the 2020 Democratic had just four candidates: Joe Biden, Bernie Sanders, Elizabeth Warren, and Amy Klobuchar. I may have predicted they'd drop out in this order:</p>
-      <div class="example_row" style="width:50%;">
-        <div style="padding: 5px;">
+      <p>Kendall tau distance compares how similar any two ordered lists are: the number of <i>adjacent</i> swaps needed to make a player's prediction match the real order is their Kendall tau distance. For example, let's say the 2020 Democratic primary had just four candidates: Joe Biden, Bernie Sanders, Elizabeth Warren, and Amy Klobuchar. I may have predicted they'd drop out in this order:</p>
+      <div class="example_row" style="width:60%;">
+        <div style="padding:5px; width:60%;">
           <table>
             <tr><td>Eventual nominee</td></tr>
             <tr><td>&nbsp;</td></tr>

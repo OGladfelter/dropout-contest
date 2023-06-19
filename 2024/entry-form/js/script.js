@@ -45,7 +45,7 @@ function shuffle(a) {
 // make interactive section on entry form sortable
 function addSortingToEntryForm() {
 
-  var candidates = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
+  var candidates = ["Donald Trump","Nikki Haley","Vivek Ramaswamy","Asa Hutchinson","Larry Elder","Tim Scott","Ron DeSantis","Mike Pence","Chris Christie","Doug Burgum","Francis Suarez"];
   shuffle(candidates);
 
   $(".draggableNames").each(function(index) {

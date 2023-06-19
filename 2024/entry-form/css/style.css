@@ -135,9 +135,9 @@ Contest Entry Form CSS
 
 form {
   background-color: #fff;
-  width: 90%;
-  margin: 50px auto;
-  padding: 30px 20px;
+  width: 100%;
+  margin: 30px auto;
+  padding: 5px 20px;
   box-shadow: 2px 5px 10px rgba(255, 255, 255, 0.25);
   color: black;
 }
