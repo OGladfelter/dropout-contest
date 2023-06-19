@@ -268,6 +268,11 @@ form {
   color: gray;
   border: gray 1px dashed;
 }
+.hasName {
+  background-color: whitesmoke !important;
+  border: 1px black solid !important;
+  color: black !important;
+}
 .sortable li:hover {
   cursor: move;
 }

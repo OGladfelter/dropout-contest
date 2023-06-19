@@ -123,16 +123,6 @@ function addSortingToEntryForm() {
           return true;
       }
       return false;
-    },
-    drop: function(event, ui) {
-      if (ui.draggable[0].classList.contains('draggableNames')) {
-          ui.draggable[0].style.display = 'none';
-          event.target.style.backgroundColor = 'whitesmoke';
-          event.target.style.border = '1px black solid';
-          event.target.style.color = 'black';
-          event.target.innerHTML = ui.draggable[0].innerHTML;
-          event.target.id = ui.draggable[0].innerHTML;
-      }
     }
   });
 }
@@ -150,13 +140,38 @@ function candidateHeadshotClicked(event, cellElement) {
   // iterate over sortable list items, add candidate that was clicked
   $("#sortable li").each(function(index, li) {
     if (!li.id) {
-      li.style.backgroundColor = 'whitesmoke';
-      li.style.border = '1px black solid';
-      li.style.color = 'black';
+      li.classList.add("hasName");
       li.innerHTML = candidateDict[candidate];
       li.id = candidate;
       return false; // break out of each loop
     }
+  });
+}
+
+function resetPredictions() {
+  // all headshots full opacity and get data-ranked = 0 again
+  $('.gallery-cell').each(function(i, e) {
+    e.style.opacity = 1;
+    e.dataset.ranked = 0;
+  })
+
+  // all sortable lis reset
+  $("#sortable li").each(function(index, li) {
+      li.classList.remove("hasName");
+      li.innerHTML = '&nbsp;';
+      li.id = '';
+      if (index == 0) { // if first sortable li element is still blank, make sure it says 'drop nominee here'
+        this.innerHTML = 'Place 2024 nominee here';
+      }
+      else if (index == 1) { // if second sortable li element is still blank, make sure it says 'drop last to drop here'
+          this.innerHTML = 'Place last to drop out here';
+      }
+      else if ($("#sortable li").length - index == 1) {
+        this.innerHTML = 'Place first to drop out here';
+      }
+      else if ($("#sortable li").length - index == 2) {
+          this.innerHTML = 'Place second to drop out here';
+      }
   });
 }
 
