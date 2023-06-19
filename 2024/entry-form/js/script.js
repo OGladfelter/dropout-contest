@@ -17,10 +17,6 @@ function openTab(evt, tabID) {
   evt.currentTarget.className += " active";
 }
 
-//////////////////////////////////////////////////////////
-// Entry form
-//////////////////////////////////////////////////////////
-
 // send user to rules tab then smooth scroll to scoring section
 function goToScoring(event) {
   openTab(event, 'Rules');
@@ -31,6 +27,13 @@ function goToScoring(event) {
   });
 }
 
+// dynamic options to "What should we call you on the leaderboard?" question
+function changeLeaderboardOptions() {
+  document.getElementById("option1").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value; 
+  document.getElementById("option2").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value.charAt(0); 
+}
+
+// used to randomize candidate order
 function shuffle(a) {
   var j, x, i;
   for (i = a.length - 1; i > 0; i--) {
@@ -42,18 +45,57 @@ function shuffle(a) {
   return a;
 }
 
+// add candidates to the carousel
+function addCandidatesToDOM() {
+  const candidateDict = {
+    'trump': "Donald Trump",
+    'haley': "Nikki Haley",
+    'ramaswamy': "Vivek Ramaswamy",
+    'hutchinson': "Asa Hutchinson",
+    'elder': "Larry Elder",
+    'scott': "Tim Scott",
+    'desantis': "Ron DeSantis",
+    'pence': "Mike Pence",
+    'christie': "Chris Christie",
+    'burgum': "Doug Burgum",
+    'suarez': "Francis Suarez"
+  }
+  const candidateNames = Object.keys(candidateDict).map(function(key){
+    return candidateDict[key];
+  });
+  const candidates = Object.keys(candidateDict);
+  shuffle(candidates); // randomize since it is a survey
+  console.log(candidates);
+
+  // select the gallery container div
+  const gallery = document.querySelector(".gallery");
+
+  candidates.forEach(c => {
+    // add a gallery cell div to the gallery
+    const galleryCell = document.createElement("div");
+    galleryCell.dataset.candidate = c;
+    galleryCell.classList.add("gallery-cell");
+
+    // create headshot div
+    const div = document.createElement("div");
+    div.classList.add("headshot");
+    div.classList.add(c);
+
+    // create span with name
+    const span = document.createElement("span");
+    span.innerHTML = candidateDict[c];
+
+    // add headshot div and span to gallery cell
+    galleryCell.appendChild(div);
+    galleryCell.appendChild(span);
+
+    // add gallery cell to gallery
+    gallery.appendChild(galleryCell);
+  })
+}
+
 // make interactive section on entry form sortable
 function addSortingToEntryForm() {
-
-  var candidates = ["Donald Trump","Nikki Haley","Vivek Ramaswamy","Asa Hutchinson","Larry Elder","Tim Scott","Ron DeSantis","Mike Pence","Chris Christie","Doug Burgum","Francis Suarez"];
-  shuffle(candidates);
-
-  $(".draggableNames").each(function(index) {
-      $(this)[0].style.top = 25 * index + "px";
-      $(this)[0].innerHTML = candidates[index];
-      d3.select($(this)[0]).lower();
-      //d3.select($(this)[0]).on("mouseover", function() { d3.select(this).raise(); })
-  });
 
   $("#sortable").sortable({
       stop: function(event, ui) {
@@ -118,10 +160,21 @@ function addSortingToEntryForm() {
   });
 }
 
-// dynamic options to "What should we call you on the leaderboard?" question
-function changeLeaderboardOptions() {
-  document.getElementById("option1").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value; 
-  document.getElementById("option2").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value.charAt(0); 
+// when user clicks a candidate in the carousel
+function candidateHeadshotClicked(event, cellElement) {
+  const candidate = cellElement.getAttribute("data-candidate");
+
+  // iterate over sortable list items, add candidate that was clicked
+  $("#sortable li").each(function(index, li) {
+    if (!li.id) {
+      li.style.backgroundColor = 'whitesmoke';
+      li.style.border = '1px black solid';
+      li.style.color = 'black';
+      li.innerHTML = candidate;
+      li.id = candidate;
+      return false; // break out of each loop
+    }
+  });
 }
 
 // when user clicks submit entry form button
@@ -133,14 +186,14 @@ function submitEntryForm(e) {
   }
 }
 
-function candidateHeadshotClicked(event, cellElement) {
-    console.log(cellElement.getAttribute("data-candidate"));
-  }
-
 function main() {
-    // entry form
+    // jquery code for sorting and dragging abilities
     addSortingToEntryForm();
 
+    // add candidates to DOM
+    addCandidatesToDOM();
+
+    // use Flickity to set up a carousel
     var flkty = new Flickity( '.js-flickity', {
       // options
       cellAlign: 'center',
