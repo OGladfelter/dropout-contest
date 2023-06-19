@@ -117,27 +117,6 @@ function addSortingToEntryForm() {
       }
   });
 
-  $(".draggableNames").draggable({
-      refreshPositions: true,
-      helper: 'clone',
-      start: function(event, ui) {
-        var movingName = event.target;
-        movingName.style.visibility = 'hidden';
-        $("#sortable li").each(function() {
-            if ($(this)[0].id == '') {
-                $(this)[0].style.boxShadow = 'rgba(17, 177, 177, 0.1) 0px 4px 16px, rgba(17, 177, 177, 0.1) 0px 8px 24px, rgba(17, 177, 177, 0.1) 0px 16px 56px';
-            }
-        });
-      },
-      stop: function (event, ui) {
-        var movingName = event.target;
-        movingName.style.visibility = 'visible';
-        $("#sortable li").each(function() {
-          $(this)[0].style.boxShadow = 'none';
-      });
-      },
-  });
-
   $("#sortable li").droppable({
     accept: function(d) { // check if a piece can be dropped here
       if (this.id == '') { 
@@ -205,7 +184,7 @@ function main() {
       wrapAround: true,
       freeScroll: true,
       // autoPlay: true,
-      // autoPlay: 1500,
+      // autoPlay: 2000,
       arrowShape: { 
         x0: 15,
         x1: 70, y1: 30,
