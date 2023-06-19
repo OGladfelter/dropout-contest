@@ -62,9 +62,9 @@
   <h1>2024 Republican Primary Drop Out Prediction</h1>
   <h3 style="margin-top:20px;">- A contest hosted by Oliver Gladfelter -</h3>
   <article>
-    <p>11 Republican candidates have entered the presidential race, 10 of which will eventually concede to the party's eventual nominee. Can you correctly predict the 2024 Republican nominee and the order in which the remaining candidates will end their campaigns?</p>
-    <p><b>Complete the form below by July 15th, 2023 to enter the contest.</b> Any candidates who drop out or enter before the submission deadline won't count for this contest.</p>
-    <p>See all <span onclick="goToScoring(event)" class="fauxLink">rules and scoring details here</span>.</p>
+    <p>11 Republican candidates have entered the presidential race. Only one can win the 2024 Republican party nomination. Can you correctly predict the winner and the order the remaining candidates will end their campaigns?</p>
+    <p><b>Complete this form by July 15th, 2023 to enter the contest.</b></p>
+    <p>Any presidential candidates who enter or exit the primary before July 15th won't count for this contest. See more <span onclick="goToScoring(event)" class="fauxLink">rules and scoring details here</span>.</p>
     
     <!-- Create Form -->
     <form id="form">
@@ -114,18 +114,20 @@
 
     </form>
 
-    <p>Next, make your predictions below.</p>
+    <h3>Make your predictions below</h3>
     <ol>
-      <li>Click candidates below to add them to the sorter</li>
-      <li>Once a candidate name appears in the sorter, drag it to rearrange as necessary</li>
+      <li>Click on any candidate to add them to the below sorter</li>
+      <li>Drag candidate names in the sorter to rearrange your prediction</li>
+      <li>You are predicting <i>drop out</i> order; candidates sometimes continue their campaign despite performing poorly - so try to consider how stubborn each presidential hopeful might be!</li>
   </article>
   
-  <h2 style="margin-top:50px;">Candidates</h2>
+  <h2 style="margin-top:50px;">The Candidates</h2>
   <!-- Flickity HTML init -->
   <div class="gallery js-flickity"></div>
 
   <div class="sorterContainer">
     <div style="width:100%;">
+      <h3>Your Drop Out Prediction</h3>
         <ul class="sortableGuide">
           <li class="ui-state-default">2024 Nominee</li>
           <li class="ui-state-default">Last to drop out</li>
@@ -156,7 +158,7 @@
   </div>
 
   <article>
-    <p>That's it! Confirm your information and predictions are correct, then click 'Submit' below. Pro tip: although candidates tend to drop out after disappointing performances in early primaries, some stick around to the bitter end - so try to consider how stubborn each candidate might be!</p>
+    <p>That's it! Confirm your information and predictions are correct, then submit your entry form:</p>
   </article>
 
   <button class="submit" onclick="submitEntryForm(event)">Submit Entry Form</button>
@@ -319,7 +321,7 @@
   </article>
   <h2>The “Gary Hart” Affair</h2>
   <article>
-      <p>If someone leaves then re-enters the primary, the scoring algorithm will only account for their <i>first</i> drop out - unless they go on to win the nomination, in which case the scoring algorithm will consider the candidate as never having dropped out.</p>
+      <p>In the rare event that a candidate leaves then re-enters the primary, the scoring algorithm will only account for their <i>first</i> drop out - unless they go on to win the nomination, in which case the scoring algorithm will consider the candidate as never having dropped out.</p>
   </article>
 </div>
 <!-- end rules & contest info -->
