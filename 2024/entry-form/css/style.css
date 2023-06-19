@@ -92,23 +92,13 @@ a:active {
 .gallery-cell {
   width: 10vw;
   height: 10vw;
-  margin-right: 20px;
+  margin-right: 10px;
   background: transparent;
   counter-increment: gallery-cell;
 }
 
 /* .gallery-cell.is-selected {
-  background: #ED2;
-} */
-
-/* cell number */
-/* .gallery-cell:before {
-  display: block;
-  text-align: center;
-  content: counter(gallery-cell);
-  line-height: 200px;
-  font-size: 80px;
-  color: white;
+  background: cyan;
 } */
 
 /* arrow color */

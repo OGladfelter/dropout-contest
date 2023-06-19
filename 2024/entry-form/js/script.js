@@ -133,6 +133,10 @@ function submitEntryForm(e) {
   }
 }
 
+function candidateHeadshotClicked(event, cellElement) {
+    console.log(cellElement.getAttribute("data-candidate"));
+  }
+
 function main() {
     // entry form
     addSortingToEntryForm();
@@ -153,7 +157,10 @@ function main() {
       },
       imagesLoaded: true
     });
-    ///flkty.playPlayer();
+    flkty.on( 'staticClick', function( event, pointer, cellElement ) {
+      candidateHeadshotClicked(event, cellElement);
+    });
+
 }
 
 main();
