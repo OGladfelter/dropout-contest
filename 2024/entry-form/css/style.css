@@ -292,20 +292,11 @@ form {
   border: 1px transparent solid;
 }
 
-.draggableNames {
-  background-color: whitesmoke;
-  color: black;
-  padding: 10px;
-  border: black 1px solid;
-  cursor: move;
-  margin: 10px;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-.draggableNames:hover {
-  background-color: rgb(209, 255, 255);
-  z-index: 2;
+.resetButton {
+  font-size: 40px;
+  top: 100px;
+  position: sticky;
+  text-align: right;
 }
 
 /*--------------------
