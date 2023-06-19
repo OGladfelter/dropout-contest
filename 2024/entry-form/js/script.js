@@ -2,6 +2,20 @@ function IsMobile() {
     return window.innerWidth < 600; 
 }
 
+const candidateDict = {
+  'trump': "Donald Trump",
+  'haley': "Nikki Haley",
+  'ramaswamy': "Vivek Ramaswamy",
+  'hutchinson': "Asa Hutchinson",
+  'elder': "Larry Elder",
+  'scott': "Tim Scott",
+  'desantis': "Ron DeSantis",
+  'pence': "Mike Pence",
+  'christie': "Chris Christie",
+  'burgum': "Doug Burgum",
+  'suarez': "Francis Suarez"
+}
+
 // for tab navigation
 function openTab(evt, tabID) {
   var i, tabcontent, tablinks;
@@ -47,25 +61,8 @@ function shuffle(a) {
 
 // add candidates to the carousel
 function addCandidatesToDOM() {
-  const candidateDict = {
-    'trump': "Donald Trump",
-    'haley': "Nikki Haley",
-    'ramaswamy': "Vivek Ramaswamy",
-    'hutchinson': "Asa Hutchinson",
-    'elder': "Larry Elder",
-    'scott': "Tim Scott",
-    'desantis': "Ron DeSantis",
-    'pence': "Mike Pence",
-    'christie': "Chris Christie",
-    'burgum': "Doug Burgum",
-    'suarez': "Francis Suarez"
-  }
-  const candidateNames = Object.keys(candidateDict).map(function(key){
-    return candidateDict[key];
-  });
   const candidates = Object.keys(candidateDict);
   shuffle(candidates); // randomize since it is a survey
-  console.log(candidates);
 
   // select the gallery container div
   const gallery = document.querySelector(".gallery");
@@ -74,6 +71,7 @@ function addCandidatesToDOM() {
     // add a gallery cell div to the gallery
     const galleryCell = document.createElement("div");
     galleryCell.dataset.candidate = c;
+    galleryCell.dataset.ranked = 0; // used to track if candidate has been added later on
     galleryCell.classList.add("gallery-cell");
 
     // create headshot div
@@ -162,7 +160,13 @@ function addSortingToEntryForm() {
 
 // when user clicks a candidate in the carousel
 function candidateHeadshotClicked(event, cellElement) {
+  const alreadyClicked = cellElement.getAttribute("data-ranked");
+  if (alreadyClicked == 1) {
+    return; // do nothing
+  }
   const candidate = cellElement.getAttribute("data-candidate");
+  cellElement.style.opacity = 0.25;
+  cellElement.dataset.ranked = 1;
 
   // iterate over sortable list items, add candidate that was clicked
   $("#sortable li").each(function(index, li) {
@@ -170,7 +174,7 @@ function candidateHeadshotClicked(event, cellElement) {
       li.style.backgroundColor = 'whitesmoke';
       li.style.border = '1px black solid';
       li.style.color = 'black';
-      li.innerHTML = candidate;
+      li.innerHTML = candidateDict[candidate];
       li.id = candidate;
       return false; // break out of each loop
     }

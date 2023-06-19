@@ -69,7 +69,7 @@
     <!-- Create Form -->
     <form id="form">
       <div>
-        <h3>Your information</h3>
+        <h3>About you</h3>
         <div class="form-control" style="display:inline-block; width:40%;">
           <label for="name" id="first-name">First name</label>
           <input type="text" id="firstName" placeholder="Joe" oninput="changeLeaderboardOptions()"/>
@@ -114,60 +114,15 @@
 
     </form>
 
-    <p>Next, make your drop out predictions below by dragging the candidate names into the empty slots to the left.</p>
-    <p>Pro tip: although candidates tend to drop out after disappointing performances in early primaries, some stick around to the bitter end - so try to consider how stubborn each candidate might be!</p>
+    <p>Next, make your predictions below.</p>
+    <ol>
+      <li>Click candidates below to add them to the sorter</li>
+      <li>Once a candidate name appears in the sorter, drag it to rearrange as necessary</li>
   </article>
   
   <h2 style="margin-top:50px;">Candidates</h2>
   <!-- Flickity HTML init -->
-  <div class="gallery js-flickity">
-    <!-- <div class="gallery-cell" data-candidate="trump">
-      <div class="headshot trump"></div>
-      <span>Donald Trump</span>
-    </div>
-    <div class="gallery-cell" data-candidate="haley">
-      <div class="headshot haley"></div>
-      <span>Nikki Haley</span>
-    </div>
-    <div class="gallery-cell" data-candidate="ramaswamy">
-      <div class="headshot ramaswamy"></div>
-      <span>Vivek Ramaswamy</span>
-    </div>
-    <div class="gallery-cell" data-candidate="hutchinson">
-      <div class="headshot hutchinson"></div>
-      <span>Asa Hutchinson</span>
-    </div>
-    <div class="gallery-cell" data-candidate="elder">
-      <div class="headshot elder"></div>
-      <span>Larry Elder</span>
-    </div>
-    <div class="gallery-cell" data-candidate="scott">
-      <div class="headshot scott"></div>
-      <span>Tim Scott</span>
-    </div>
-    <div class="gallery-cell" data-candidate="desantis">
-      <div class="headshot desantis"></div>
-      <span>Ron DeSantis</span>
-    </div>
-    <div class="gallery-cell" data-candidate="pence">
-      <div class="headshot pence"></div>
-      <span>Mike Pence</span>
-    </div>
-    <div class="gallery-cell" data-candidate="christie">
-      <div class="headshot christie"></div>
-      <span>Chris Christie</span>
-    </div>
-    <div class="gallery-cell" data-candidate="burgum">
-      <div class="headshot burgum"></div>
-      <span>Doug Burgum</span>
-    </div>
-    <div class="gallery-cell" data-candidate="suarez">
-      <div class="headshot suarez"></div>
-      <span>Francis Suarez</span>
-    </div> -->
-  </div>
-
-  <br><br>
+  <div class="gallery js-flickity"></div>
 
   <div class="sorterContainer">
     <div style="width:100%;">
@@ -198,9 +153,12 @@
           <li class="ui-state-default">Place first to drop out here</li>
         </ul>
     </div>
-</div>
+  </div>
 
-  <br>
+  <article>
+    <p>That's it! Confirm your information and predictions are correct, then click 'Submit' below. Pro tip: although candidates tend to drop out after disappointing performances in early primaries, some stick around to the bitter end - so try to consider how stubborn each candidate might be!</p>
+  </article>
+
   <button class="submit" onclick="submitEntryForm(event)">Submit Entry Form</button>
 </div>
 <!-- end entry form--> 
