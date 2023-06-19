@@ -143,14 +143,15 @@ function main() {
       contain: true,
       wrapAround: true,
       freeScroll: true,
-      autoPlay: true,
-      autoPlay: 1500,
+      // autoPlay: true,
+      // autoPlay: 1500,
       arrowShape: { 
         x0: 15,
         x1: 70, y1: 30,
         x2: 60, y2: 5,
         x3: 60
-      }
+      },
+      imagesLoaded: true
     });
     ///flkty.playPlayer();
 }

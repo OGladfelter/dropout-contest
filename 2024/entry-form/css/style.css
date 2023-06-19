@@ -83,17 +83,22 @@ a:active {
 }
 
 .gallery {
-  background: #EEE;
+  background: transparent;
   width: 90%;
   margin: auto;
+  /* border: 1px white solid; */
 }
 
 .gallery-cell {
-  width: 20%;
-  height: 200px;
-  margin-right: 10px;
-  background: #8C8;
+  width: 10vw;
+  height: 10vw;
+  margin-right: 20px;
+  background: white;
   counter-increment: gallery-cell;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 /* .gallery-cell.is-selected {
@@ -101,13 +106,52 @@ a:active {
 } */
 
 /* cell number */
-.gallery-cell:before {
+/* .gallery-cell:before {
   display: block;
   text-align: center;
   content: counter(gallery-cell);
   line-height: 200px;
   font-size: 80px;
   color: white;
+} */
+
+/* arrow color */
+.flickity-prev-next-button .arrow {
+  fill: black;
+}
+
+.trump {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/trump.png");
+}
+.haley {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/haley.png");
+}
+.ramaswamy {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/ramaswamy.png");
+}
+.hutchinson {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/hutchinson.png");
+}
+.elder {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/elder.png");
+}
+.scott {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/t_scott.png");
+}
+.desantis {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/desantis.png");
+}
+.pence {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/pence.png");
+}
+.christie {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/christie.png");
+}
+.burgum {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/burgum.png");
+}
+.suarez {
+  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/suarez.png");
 }
 
 /*--------------------
