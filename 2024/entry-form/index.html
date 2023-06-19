@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9MC8LMQVMV"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9MC8LMQVMV');
+  </script>
+
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta charset="UTF-8">
+  <title>2024 Republican Primary Drop Out Prediction Competition</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <!-- Favicons -->
+	<link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+    <link rel="manifest" href="../favicon/site.webmanifest">
+
+  <!-- Facebook Opengraph -->
+  <meta property="og:url" content="https://cultureplot.com/rep-drop-out-contest/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="2024 Republican Drop Out Prediction Contest" />
+  <meta property="og:description" content="Who Will The Nomination? And More Importantly...Who Will Win The iPad?!"/>
+
+  <meta property="og:image" content="http://cultureplot.com/img/leaderboardPicture.png" />
+  <meta property="og:image:alt" content="2024 Republican Drop Out Prediction Contest" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="677" />
+  <meta property="og:image:height" content="583" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="http://cultureplot.com/img/leaderboardPicture.png" />
+  <meta name="twitter:image:alt" content="2024 Republican Drop Out Prediction Contest" />
+  <meta name="twitter:description" content="Can you predict the field's drop out order?"/>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+  <script src="https://kit.fontawesome.com/788718e8f2.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="tabs">
+  <button class="tablinks" onclick="openTab(event, 'Survey')" id="surveyButton">Contest Entry Form</button>
+  <button class="tablinks" onclick="openTab(event, 'Rules')">Rules</button>
+</div>
+
+<!-- ENTRY FORM -->
+<div id="Survey" class="tabcontent" style="display:block;">
+  <h1 style="font-size:42px;">2024 Republican Primary Drop Out Prediction</h1>
+  <h3 style="margin-top:20px;">- A contest hosted by Oliver Gladfelter -</h3>
+  <article>
+    <p>N Republican candidates have entered the presidential race. N-1 candidates will concede to the party's eventual nominee. Can you correctly predict the order in which these candidates will drop out?</p>
+    <p>Complete the below form by November 15th, 2023 to enter the contest. Any candidates who drop out or enter before then won't count for this contest, so you can't be penalized by submitted your entry form sooner rather than later.</p>
+    <p>See <span onclick="goToScoring(event)" class="fauxLink">rules and scoring details here</span>.</p>
+    
+
+    <!-- Create Form -->
+    <form id="form">
+    
+      <div>
+        <div class="form-control" style="display:inline-block; width:40%;">
+          <label for="name" id="first-name">First name</label>
+          <input type="text" id="firstName" placeholder="Joe" oninput="changeLeaderboardOptions()"/>
+        </div>
+        <div class="form-control" style="display:inline-block; width:40%;">
+          <label for="lastName" id="ast-name">Last name</label>
+          <input type="text" id="lastName" placeholder="Biden" oninput="changeLeaderboardOptions()"/>
+        </div>
+      </div>
+      <div class="form-control">
+          <label>What should we call you on the leaderboard?</label>
+
+          <label for="leaderboard-name-3">
+            <input type="radio" id="leaderboardNameOption1" name="leaderboard-name" checked><span id="option1">First and last name</span></input>
+          </label>
+          <label for="leaderboard-name-1">
+              <input type="radio" id="leaderboardNameOption2" name="leaderboard-name"><span id="option2">First name and last initial</span></input>
+          </label>
+          <label for="leaderboard-name-2">
+              <input type="radio" id="leaderboardNameOption3" name="leaderboard-name"> Other: &nbsp;
+                  <input style="display:inline; width:40%;" placeholder="Your alias here"></input>
+              </input>
+          </label>
+      </div>
+      <div class="form-control">
+          <label for="email" id="label-email">Email</label>
+          <input type="email" id="email" placeholder="Enter your email" />
+      </div>
+      <div class="form-control">
+        <label for="email2" id="label-email2">Confirm your email</label>
+        <input type="email2" id="email2" placeholder="Enter your email...again" />
+    </div>
+      <div class="form-control">
+          <label for="role" id="label-role">How often may we email you?</label>
+          <!-- Dropdown options -->
+          <select name="role" id="role">
+              <option value="email_1">Whenever a candidate drops out and there are leaderboard updates</option>
+              <option value="email_2">Only at the end of the contest</option>
+              <option value="email_3">Only at the end of the contest and if I win a prize</option>
+          </select>
+      </div>
+
+    </form>
+
+    <p>Order the candidates by predicted drop out order below. As a hint: Marco Rubio won more delegates than John Kasich in the 2016 Republican primary, but still ended his campaign earlier - so try to consider how stubborn each candidate might be!</p>
+  </article>
+
+  <div class="sorterContainer">
+      <div style="width:70%;">
+          <ul class="sortableGuide">
+            <li class="ui-state-default">2024 Nominee</li>
+            <li class="ui-state-default">Last to drop out</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">Second to drop out</li>
+            <li class="ui-state-default">First to drop out</li>
+          </ul>
+          <ul id="sortable" class="sortable">
+            <li class="ui-state-default">Place 2024 nominee here</li>
+            <li class="ui-state-default">Place last to drop out here</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">&nbsp;</li>
+            <li class="ui-state-default">Place second to drop out here</li>
+            <li class="ui-state-default">Place first to drop out here</li>
+          </ul>
+      </div>
+      <div style="width:25%;">
+          <h1 style="margin-top:0px;">Candidates</h1>
+          <div style="position:relative;">
+              <div class="draggableNames">Joe Biden</div>
+              <div class="draggableNames">Elizabeth Warren</div>
+              <div class="draggableNames">Bernie Sanders</div>
+              <div class="draggableNames">Tulsi Gabbard</div>
+              <div class="draggableNames">Michael Bloomberg</div>
+              <div class="draggableNames">Amy Klobuchar</div>
+              <div class="draggableNames">Pete Buttigieg</div>
+              <div class="draggableNames">Tom Steyer</div>
+              <div class="draggableNames">Deval Patrick</div>
+              <div class="draggableNames">Michael Bennet</div>
+              <div class="draggableNames">Andrew Yang</div>
+              <div class="draggableNames">John Delaney</div>
+              <div class="draggableNames">Cory Booker</div>
+              <div class="draggableNames">Marianne Williamson</div>
+          </div>
+      </div>
+  </div>
+  
+  <br>
+  <button class="submit" onclick="submitEntryForm(event)">Submit Entry Form</button>
+</div>
+<!-- end entry form--> 
+
+<!-- RULES & CONTEST INFO -->
+<div id="Rules" class="tabcontent">
+  <h2>🏆 Prizes 🏆</h2>
+  <h3 style='text-align: center; margin-bottom: 10px;'>1st Place: Apple iPad</h3>
+  <h3 style='text-align: center; margin-bottom: 10px;'>2nd Place: $100</h3>
+  <h3 style='text-align: center;'>3rd Place: $25</h3>
+  <h2>Contest Entry</h2>
+  <article>
+    <p>1. One entry per player</p>
+    <p>2. The submission period will last from ___ to ___</p>
+    <p>3. Any candidate who enters or leaves the race during the submission window will be ignored in contest scoring; this is so players who submit their predictions earlier rather than later are not penalized by early drop-outs and last-minute additions to the primary</p>
+  </article>
+  <h2 id="scoring">Scoring</h2>
+  <article>
+      <p>The player with the lowest Kendall tau distance wins.</p>
+      <p>Kendall tau distance compares how similar any two ordered lists are: the number of <i>adjacent</i> swaps needed to make a player's prediction match the real order is their Kendall tau distance. For example, let's say the 2020 Democratic had just four candidates: Joe Biden, Bernie Sanders, Elizabeth Warren, and Amy Klobuchar. I may have predicted they'd drop out in this order:</p>
+      <div class="example_row" style="width:50%;">
+        <div style="padding: 5px;">
+          <table>
+            <tr><td>Eventual nominee</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>1st drop out</td></tr>
+          </table>
+        </div>
+        <div class="example_column">
+          <table class="example_table">
+            <tr><td>Sanders</td></tr>
+            <tr><td>Biden</td></tr>
+            <tr><td>Warren</td></tr>
+            <tr><td>Klobuchar</td></tr>
+          </table>
+        </div>
+      </div>
+      <p>In that case, my Kendall tau distance would be 1, because just one swap (Sanders & Biden) would be needed to make my prediction match the actual outcome:</p>
+      <div class="example_row">
+        <div class="example_column">
+          <table class="example_table">
+            <tr><td>Sanders</td></tr>
+            <tr><td>Biden</td></tr>
+            <tr><td>Warren</td></tr>
+            <tr><td>Klobuchar</td></tr>
+          </table>
+        </div>
+        <div class="arrow_container">
+          <span>&rarr;</span>
+        </div>
+        <div class="example_column">
+          <table class="example_table">
+            <tr><td>Biden</td></tr>
+            <tr><td>Sanders<sup>1</sup></td></tr>
+            <tr><td>Warren</td></tr>
+            <tr><td>Klobuchar</td></tr>
+          </table>
+        </div>
+      </div>
+      <p>By contrast, had my predictions been a complete reversal of reality, my Kendall tau distance would be 6, due to needing six swaps to correct my list:</p>
+  </article>
+  <div class="example_row">
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Klobuchar</td></tr>
+        <tr><td>Warren</td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Warren</td></tr>
+        <tr><td>Klobuchar<sup>1</sup></td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Warren</td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Klobuchar<sup>2</sup></td></tr>
+        <tr><td>Biden</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Warren</td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+        <tr><td>Klobuchar<sup>3</sup></td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Sanders</td></tr>
+        <tr><td>Warren<sup>4</sup></td></tr>
+        <tr><td>Biden</td></tr>
+        <tr><td>Klobuchar</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+        <tr><td>Warren<sup>5</sup></td></tr>
+        <tr><td>Klobuchar</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Biden</td></tr>
+        <tr><td>Sanders<sup>6</sup></td></tr>
+        <tr><td>Warren</td></tr>
+        <tr><td>Klobuchar</td></tr>
+      </table>
+    </div>
+  </div>
+  <!-- <h2>The Leaderboard</h2>
+  <article>
+      <p>A second metric you may be interested in is your accuracy percentage: how close you are to a perfect prediction, in other words.</p>
+      <p>A player's accuracy percentage is derived by first converting your Kendall tau distance to a number between 0-1 using the formula Kendall tau distance / (N candidates * (N candidates - 1) / 2.</p>
+      <p>In the case of a normalized Kendall tau distance, 0 means perfectly predicting reality and 1 means perfectly predicting the opposite of reality.</p>
+      <p>These accuracy percentage is then calculated using the formula (100 - 100 * your normalized Kendall tau distance).</p>
+      <p>Because accuracy scores are much easier to read and interpret to understand, they will be shown on the leaderboard instead of the Kendall tau distances. But don't worry: players cannot win by one metric and lose by the other.</p>
+  </article> -->
+  <h2>Tie Breaker</h2>
+  <article>
+      <p>Final scoring will be calculated once the final drop out order is known. Ties will be broken by omitting the first candidate who dropped out and rerunning the scoring algorithm. The player with the lower Kendall tau distance from that will be awarded the better final placement. If their Kendall tau distances continue to match, this process will be repeated iteratively until we reach a decisive outcome.</p>
+      <p>In other words, ties are broken by determining which player more accurately predicted the drop out positions of the final N - X candidates, where N is the number of candidates and X is the number of early-drop-out candidates needed to omit in order to break the tie. So accurate predictions closer to the end of the drop out order are more important than correctly guessing the earlier drop outs for a tie breaker.</p>
+  </article>
+  <h2>Brokered Convention</h2>
+  <article>
+      <p>A brokered convention occurs when no single candidate wins a majority of delegates through the standard primary process. In this rare scenario, we could end up with multiple candidates actively campaigning right up to the end.</p>
+      <p>Usually a brokered convention has multiple rounds of votes and revotes. A candidate might suspend their campaign in between these votes. In this event, their withdrawl from the primary is considered a standard drop out for the purposes of this contest and they are simply added to their place in the drop out order.</p>
+      <p>However, a candidate may also decide to stick around all the way to the final convention vote. In this case, their campaign is considered over as soon as someone else wins the nomination. If multiple candidates meet this fate, the candidate receiving fewer final delegates is considered the earlier drop out. These rules would apply to protest candidates whom refuse to concede during the primary, even in the absence of a brokered convention.</p>
+  </article>
+  <h2>The “Gary Hart” Affair</h2>
+  <article>
+      <p>If someone leaves then re-enters the primary, the scoring algorithm will only account for their <i>first</i> drop out - unless they go on to win the nomination, in which case the scoring algorithm will consider the candidate as never having dropped out.</p>
+  </article>
+</div>
+<!-- end rules & contest info -->
+  
+<script src='js/script.js'></script>
+
+</body>
+</html>
