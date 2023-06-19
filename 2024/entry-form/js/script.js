@@ -136,6 +136,23 @@ function submitEntryForm(e) {
 function main() {
     // entry form
     addSortingToEntryForm();
+
+    var flkty = new Flickity( '.js-flickity', {
+      // options
+      cellAlign: 'center',
+      contain: true,
+      wrapAround: true,
+      freeScroll: true,
+      autoPlay: true,
+      autoPlay: 1500,
+      arrowShape: { 
+        x0: 15,
+        x1: 70, y1: 30,
+        x2: 60, y2: 5,
+        x3: 60
+      }
+    });
+    ///flkty.playPlayer();
 }
 
 main();

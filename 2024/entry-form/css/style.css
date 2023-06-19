@@ -82,6 +82,34 @@ a:active {
   color: black !important;
 }
 
+.gallery {
+  background: #EEE;
+  width: 90%;
+  margin: auto;
+}
+
+.gallery-cell {
+  width: 20%;
+  height: 200px;
+  margin-right: 10px;
+  background: #8C8;
+  counter-increment: gallery-cell;
+}
+
+/* .gallery-cell.is-selected {
+  background: #ED2;
+} */
+
+/* cell number */
+.gallery-cell:before {
+  display: block;
+  text-align: center;
+  content: counter(gallery-cell);
+  line-height: 200px;
+  font-size: 80px;
+  color: white;
+}
+
 /*--------------------
 Tabs CSS
 --------------------*/
@@ -284,3 +312,4 @@ Mobile
           transform: translate(0%, 0%);
   }
 }
+
