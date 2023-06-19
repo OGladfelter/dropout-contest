@@ -93,12 +93,8 @@ a:active {
   width: 10vw;
   height: 10vw;
   margin-right: 20px;
-  background: white;
+  background: transparent;
   counter-increment: gallery-cell;
-  border-radius: 50%;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
 }
 
 /* .gallery-cell.is-selected {
@@ -120,6 +116,16 @@ a:active {
   fill: black;
 }
 
+.headshot {
+  height: 80%;
+  width: 80%;
+  margin: auto;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: rgba(255,255,255,0.9);
+}
 .trump {
   background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/trump.png");
 }
