@@ -13,7 +13,8 @@ const candidateDict = {
   'pence': "Mike Pence",
   'christie': "Chris Christie",
   'burgum': "Doug Burgum",
-  'suarez': "Francis Suarez"
+  'suarez': "Francis Suarez",
+  'hurd': "Will Hurd"
 }
 
 // for tab navigation
@@ -34,11 +35,6 @@ function openTab(evt, tabID) {
 // send user to rules tab then smooth scroll to scoring section
 function goToScoring(event) {
   openTab(event, 'Rules');
-  // $(document).ready(function () {
-  //     $('html, body').animate({
-  //         scrollTop: $('#scoring').offset().top - 100
-  //     }, 'slow');
-  // });
 }
 
 // dynamic options to "What should we call you on the leaderboard?" question
