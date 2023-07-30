@@ -173,11 +173,32 @@ function resetPredictions() {
 
 // when user clicks submit entry form button
 function submitEntryForm(e) {
-  if(!confirm('Are you sure?')) {
+  if(!confirm('Submit your entry form and predictions?')) {
       e.preventDefault();
   } else {
     console.log('submitted');
   }
+}
+
+function validation() {
+  document.getElementById("firstName").style.border = document.getElementById("firstName").value == '' ? '2px red solid' : '1px black solid';
+  document.getElementById("lastName").style.border = document.getElementById("lastName").value == '' ? '2px red solid' : '1px black solid';
+  document.getElementById("email").style.border = document.getElementById("email").value == '' ? '2px red solid' : '1px black solid';
+  document.getElementById("email2").style.border = (document.getElementById("email2").value != document.getElementById("email").value || document.getElementById("email2").value == '') ? '2px red solid' : '1px black solid';
+
+  let error = false;
+
+  // need first and last name
+  if (document.getElementById("firstName").value == '' || document.getElementById("lastName").value == '') {
+    error = true;
+  }
+  
+  // need two emails that match
+  if (document.getElementById("email").value == '' || document.getElementById("email").value != document.getElementById("email2").value) {
+    error = true;
+  }
+
+  document.getElementById("formErrorMessage").style.display = error ? 'block' : 'none';
 }
 
 function main() {
