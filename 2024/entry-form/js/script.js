@@ -176,7 +176,11 @@ function submitEntryForm(e) {
   if(!confirm('Submit your entry form and predictions?')) {
       e.preventDefault();
   } else {
-    console.log('submitted');
+    if (validation()) {
+      console.log('Correct form errors and try again');
+    } else {
+      console.log('Entry form submitted!')
+    }
   }
 }
 
@@ -198,7 +202,18 @@ function validation() {
     error = true;
   }
 
+  // need all candidates placed
+  let predictionsError = false;
+  $("#sortable li").each(function(index, li) {
+      if (!li.classList.contains('hasName')) {
+        predictionsError = true;
+      }
+  });
+
   document.getElementById("formErrorMessage").style.display = error ? 'block' : 'none';
+  document.getElementById("predictionsErrorMessage").style.display = predictionsError ? 'block' : 'none';
+
+  return error || predictionsError;
 }
 
 function main() {
