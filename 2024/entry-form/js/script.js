@@ -177,9 +177,11 @@ function submitEntryForm(e) {
       e.preventDefault();
   } else {
     if (validation()) {
-      console.log('Correct form errors and try again');
+      // validation failed, do nothing
+      return;
     } else {
-      console.log('Entry form submitted!')
+      // validation successful, send to database
+      sendSubmission();
     }
   }
 }
@@ -215,6 +217,37 @@ function validation() {
 
   return error || predictionsError;
 }
+
+function getAlias() {
+  if (document.getElementById("leaderboardNameOption2").checked) {
+      return document.getElementById("option2").innerHTML;
+  } else if (document.getElementById("leaderboardNameOption3").checked) {
+      return document.getElementById("customAliasInput").value;
+  } else {
+      return document.getElementById("option1").innerHTML; 
+  }
+}
+
+function getPredictions() {
+  let prediction = '';
+  $($("#sortable li").get().reverse()).each(function(index, li) { 
+    prediction += li.innerHTML + ","; 
+  });
+  return prediction;
+}
+
+function sendSubmission() {
+  $.ajax({
+      url: 'submit.php',
+      type: "POST",
+      dataType: "JSON",
+      data: ({'email':document.getElementById("email").value, 'firstName':document.getElementById("firstName").value, 'lastName':document.getElementById("lastName").value, 'leaderboardAlias':getAlias(), 'emailFreq':document.getElementById("email-freq").value, 'prediction':getPredictions()}),
+      complete: function() {
+          console.log('successful');
+          // redirect to new page
+      }
+  });
+};
 
 function main() {
     // jquery code for sorting and dragging abilities

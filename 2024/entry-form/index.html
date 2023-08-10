@@ -75,7 +75,7 @@
           <input type="text" id="firstName" placeholder="Joe" oninput="changeLeaderboardOptions()"/>
         </div>
         <div class="form-control" style="display:inline-block; width:40%;">
-          <label for="lastName" id="ast-name">Last name</label>
+          <label for="lastName" id="last-name">Last name</label>
           <input type="text" id="lastName" placeholder="Biden" oninput="changeLeaderboardOptions()"/>
         </div>
       </div>
@@ -90,7 +90,7 @@
           </label>
           <label for="leaderboard-name-2">
               <input type="radio" id="leaderboardNameOption3" name="leaderboard-name"> Other: &nbsp;
-                  <input style="display:inline; width:40%;" placeholder="Your alias here"></input>
+                  <input style="display:inline; width:40%;" placeholder="Your alias here" id="customAliasInput"></input>
               </input>
           </label>
       </div>
@@ -103,12 +103,12 @@
         <input type="email" id="email2" placeholder="Enter your email...again" autocomplete="off"/>
     </div>
       <div class="form-control">
-          <label for="role" id="label-role">How often may we email you?</label>
+          <label for="email-freq" id="email-freq-question">How often may we email you?</label>
           <!-- Dropdown options -->
-          <select name="role" id="role">
-              <option value="email_1">Whenever a candidate drops out</option>
-              <option value="email_2">Only with final updates at the end of the contest</option>
-              <option value="email_3">Only if I win a prize at the end of the contest</option>
+          <select name="email-freq" id="email-freq">
+              <option value="email_2">Whenever a candidate drops out</option>
+              <option value="email_1">Only with final updates at the end of the contest</option>
+              <option value="email_0">Only if I win a prize at the end of the contest</option>
           </select>
       </div>
 
