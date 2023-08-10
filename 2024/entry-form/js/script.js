@@ -193,6 +193,8 @@ function submitEntryForm(e) {
       return;
     } else {
       // validation successful, send to database
+      document.getElementById("submitButton").disabled = true;
+      document.getElementById("loader").style.display = 'block';
       sendSubmission();
     }
   }
@@ -295,6 +297,7 @@ function main() {
       candidateHeadshotClicked(event, cellElement);
     });
 
+    resetPredictions();
 }
 
 main();

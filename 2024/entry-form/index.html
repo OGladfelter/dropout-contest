@@ -172,7 +172,9 @@
     <p id="predictionsErrorMessage" class="errorMessage">Place all 12 candidates in the predictions section above before submitting.</p>
   </article>
 
-  <button class="submit" onclick="submitEntryForm(event)">Submit Entry Form</button>
+  <div class="loader" id="loader"></div>
+
+  <button id="submitButton" class="submit" onclick="submitEntryForm(event)">Submit Entry Form</button>
 </div>
 <!-- end entry form--> 
 
