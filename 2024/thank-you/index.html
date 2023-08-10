@@ -43,18 +43,13 @@
   <meta name="twitter:description" content="Can you predict the field's drop out order?"/>
 
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/flickity.css" media="screen">
-
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-  <script src="https://kit.fontawesome.com/788718e8f2.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
 <div class="tabs">
   <button class="tablinks" onclick="openTab(event, 'Survey')" id="surveyButton">Home</button>
   <button class="tablinks" onclick="openTab(event, 'Rules')">Rules</button>
+  <button class="tablinks" onclick="openTab(event, 'Sponsors')">Sponsors</button>
 </div>
 
 <!-- ENTRY FORM -->
@@ -234,7 +229,20 @@
 </div>
 <!-- end rules & contest info -->
 
-<script src="js/flickity.pkgd.min.js"></script>
+<!-- sponsors -->
+<div id="Sponsors" class="tabcontent">
+  <div class="sponsor_container_container">
+      <div class="sponsor_container" style="width:65%;" onclick="window.open('https:\/\/bellwetheranalytics.com/','mywindow');">
+        <img src="../img/bellwetherlogo.webp" alt="Bellwether Analytics" style="height:90%; width:90%;">
+      </div>
+    <div class="sponsor_container" style="width:35%;" onclick="window.open('https:\/\/cultureplot.com/','mywindow');">
+      <img src="../img/primary-beeswarm-square.png" alt="Cultureplot" style="width:80%; height:80%;">
+      <div class="centered">Cultureplot</div>
+    </div>
+  </div>
+  </div>
+<!-- end sponsors -->
+
 <script src='js/script.js'></script>
 
 </body>
