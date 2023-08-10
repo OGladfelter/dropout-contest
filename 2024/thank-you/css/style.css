@@ -163,16 +163,11 @@ Mobile
 --------------------*/
 
 @media screen and (max-width: 600px) {
-  .leaderboard {
-    position: absolute;
-    /* top: 1000px; */
+  h1 {
+    font-size: 36px;
+    line-height: 120%;
+  }
+  article {
     width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    left: 5%;
-    margin-top: 70%;
-    -webkit-transform: translate(0%, 0%);
-          transform: translate(0%, 0%);
   }
 }
-
