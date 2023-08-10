@@ -249,8 +249,8 @@ function sendSubmission() {
       dataType: "JSON",
       data: ({'email':document.getElementById("email").value, 'firstName':document.getElementById("firstName").value, 'lastName':document.getElementById("lastName").value, 'leaderboardAlias':getAlias(), 'emailFreq':document.getElementById("email-freq").value, 'prediction':getPredictions()}),
       complete: function() {
-          console.log('successful');
           // redirect to new page
+          window.location.href = '../thank-you';
       }
   });
 };
