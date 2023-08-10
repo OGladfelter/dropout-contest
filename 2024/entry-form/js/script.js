@@ -191,6 +191,7 @@ function validation() {
   document.getElementById("lastName").style.border = document.getElementById("lastName").value == '' ? '2px red solid' : '1px black solid';
   document.getElementById("email").style.border = document.getElementById("email").value == '' ? '2px red solid' : '1px black solid';
   document.getElementById("email2").style.border = (document.getElementById("email2").value != document.getElementById("email").value || document.getElementById("email2").value == '') ? '2px red solid' : '1px black solid';
+  document.getElementById("customAliasInput").style.border = (document.getElementById("leaderboardNameOption3").checked && document.getElementById("customAliasInput").value == '') ? '2px red solid' : '1px black solid';
 
   let error = false;
 
@@ -198,7 +199,12 @@ function validation() {
   if (document.getElementById("firstName").value == '' || document.getElementById("lastName").value == '') {
     error = true;
   }
-  
+
+  // if user wants a custom alias, they need to fill in the custom alias input
+  if (document.getElementById("leaderboardNameOption3").checked && document.getElementById("customAliasInput").value == '') {
+    error = true;
+  }
+
   // need two emails that match
   if (document.getElementById("email").value == '' || document.getElementById("email").value != document.getElementById("email2").value) {
     error = true;
