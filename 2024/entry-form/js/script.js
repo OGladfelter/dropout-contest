@@ -78,6 +78,9 @@ function addCandidatesToDOM() {
     // create span with name
     const span = document.createElement("span");
     span.innerHTML = candidateDict[c];
+    if (IsMobile) { // if mobile, just show last name
+      span.innerHTML = candidateDict[c].split(' ')[1];
+    }
 
     // add headshot div and span to gallery cell
     galleryCell.appendChild(div);
