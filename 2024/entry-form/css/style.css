@@ -383,6 +383,19 @@ Sponsor section
   cursor: pointer;
 }
 
+.bellwether_container {
+  width: 65%;
+}
+.cultureplot_container {
+  width: 35%;
+}
+.bellwether_logo {
+  height:90%; width:90%;
+}
+.cultureplot_logo {
+  height:80%; width:80%;
+}
+
 .centered {
   color: #aa56a9;
   font-weight: bold;
@@ -442,6 +455,22 @@ Mobile
     width: 10vh;
     height: 10vh;
     right: 40%;
+  }
+  .sponsor_container_container {
+    width: 100%;
+    display: block;
+  }
+  .sponsor_container {
+    display: block;
+    text-align: center;
+    margin: 10px auto;
+    width: 80%;
+  }
+  .centered {
+    font-size: 36px;
+  }
+  .cultureplot_logo {
+    height:50%; width:50%;
   }
 }
 
