@@ -186,9 +186,6 @@ Tabs CSS
 .tabs button:hover {
   background-color: #ddd;
 }
-.tabs button.active {
-  background-color: #ccc;
-}
 .tabcontent {
   display: none;
   border-top: none;
@@ -277,6 +274,10 @@ form {
   border: 1px black solid !important;
   color: black !important;
 }
+.winner {
+  box-shadow:
+    0 0 15px 2px rgba(255, 255, 255, 0.5); /* outer cyan */
+}
 .sortable li:hover {
   cursor: move;
 }
@@ -294,13 +295,6 @@ form {
   color: white;
   text-align: right;
   border: 1px transparent solid;
-}
-
-.resetButton {
-  font-size: 40px;
-  top: 100px;
-  position: sticky;
-  text-align: right;
 }
 
 /*--------------------
@@ -341,6 +335,9 @@ sup {
   text-align: center;
   font-size: 20px;
 }
+.tap {
+  display: none;
+}
 
 /*--------------------
 Mobile
@@ -370,6 +367,26 @@ Mobile
     height: 30px !important;
     width: 30px !important;
     top: 90% !important;
+  }
+  .sorterContainer {
+    display:flex;
+    justify-content:flex-start;
+    margin: 50px auto;
+    width: 100%;
+  }
+  .sortableGuide { 
+    display: none;
+  }
+  .sortable { 
+    width: 70%; 
+    display: block;
+    margin: auto;
+  }
+  .click {
+    display: none;
+  }
+  .tap {
+    display: inline;
   }
 }
 

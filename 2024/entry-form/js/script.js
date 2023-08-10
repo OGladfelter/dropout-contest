@@ -97,6 +97,12 @@ function addSortingToEntryForm() {
   $("#sortable").sortable({
       stop: function(event, ui) {
           $("#sortable li").each(function(index) {
+              if (index == 0 && this.id != '') {
+                this.classList.add("winner");
+              } else {
+                this.classList.remove("winner");
+              }
+
               if (index == 0 && this.id == '') { // if first sortable li element is still blank, make sure it says 'drop nominee here'
                   this.innerHTML = 'Place 2024 nominee here';
               }
@@ -138,6 +144,9 @@ function candidateHeadshotClicked(event, cellElement) {
 
   // iterate over sortable list items, add candidate that was clicked
   $("#sortable li").each(function(index, li) {
+    if (index == 0 && li.index != '') {
+        li.classList.add("winner");
+    }
     if (!li.id) {
       li.classList.add("hasName");
       li.innerHTML = candidateDict[candidate];
@@ -240,7 +249,7 @@ function getAlias() {
 function getPredictions() {
   let prediction = '';
   $($("#sortable li").get().reverse()).each(function(index, li) { 
-    prediction += li.innerHTML + ","; 
+    prediction += li.id + ","; 
   });
   return prediction;
 }

@@ -95,9 +95,6 @@ Tabs CSS
 .tabs button:hover {
   background-color: #ddd;
 }
-.tabs button.active {
-  background-color: #ccc;
-}
 .tabcontent {
   display: none;
   border-top: none;

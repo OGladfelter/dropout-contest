@@ -115,15 +115,15 @@
 
     <h3>Make your predictions below</h3>
     <ol>
-      <li>Click on any candidate to add them to the below sorter</li>
+      <li><span class="click">Click</span><span class="tap">Tap</span> on any candidate to add them to the below sorter</li>
       <li>Drag candidate names in the sorter to rearrange your prediction</li>
       <li>You are predicting <i>drop out</i> order; candidates sometimes continue their campaign despite performing poorly - so try to consider how stubborn each presidential hopeful might be!</li>
-      <li>Click <span class="fauxLink" onclick="resetPredictions()" >here</span> to reset at any time</li>
+      <li><span class="click">Click</span><span class="tap">Tap</span> <span class="fauxLink" onclick="resetPredictions()">here</span> to reset at any time</li>
   </article>
   
   
   <h3 style="margin-top:50px; margin-bottom:2.5px;">The Candidates</h3>
-  <p style="font-size:16px; margin-top: 0px; margin-bottom:25px;">Click these faces to add them to your prediction below</p>
+  <p style="font-size:16px; margin-top: 0px; margin-bottom:25px;"><span class="click">Click</span><span class="tap">Tap</span> these faces to add them to your prediction below</p>
   <!-- Flickity HTML init -->
   <div class="gallery js-flickity">
   </div>
@@ -131,7 +131,9 @@
   <div class="sorterContainer">
     <div style="width:100%;">
       <h3 style="margin-top:20px; margin-bottom:2.5px;">Your Prediction</h3>
-      <p style="font-size:16px; margin-top: 0px; margin-bottom:25px;">Click and drag any name to rearrange the order</p>
+      <article style="margin-bottom:25px;">
+        <p style="margin: 2.5px;"><span class="click">Click</span><span class="tap">Tap</span> and drag any name to rearrange the order. Place the candidate you predict will win on top. Place the candidate you predict will drop out first at the bottom.</p>
+      </article>
         <ul class="sortableGuide">
           <li class="ui-state-default">2024 Nominee</li>
           <li class="ui-state-default">Last to drop out</li>
