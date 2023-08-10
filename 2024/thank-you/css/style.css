@@ -15,27 +15,7 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-.submit {
-  padding: 10px 20px;
-  margin: 10px;
-  font-weight: bold;
-  font-size: 18px;
-  background-color: rgb(0, 255, 255);
-  color: black;
-  border: 1px solid black;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: rgba(17, 170, 170, 0.1) 0px 1px 0px, rgba(17, 170, 170, 0.1) 0px 8px 24px, rgba(17, 170, 170, 0.1) 0px 16px 48px;
-}
-.submit:hover {
-  box-shadow: rgba(17, 170, 170, 0.5) 0px 1px 0px, rgba(17, 170, 170, 0.5) 0px 4px 24px, rgba(17, 170, 170, 0.5) 0px 3px 48px;
-}
 
-.errorMessage {
-  display:none;
-  color:rgb(254, 126, 126);
-  font-weight: bold;
-}
 
 #Survey, #Rules {
   margin-top: 100px;
@@ -50,11 +30,6 @@ h2 {
   font-size: 24px;
   margin-top: 10vh;
   color: whitesmoke;
-}
-
-li {
-  font-size: 18px;
-  margin: 10px auto;
 }
 
 p { 
@@ -93,77 +68,6 @@ a:active {
 
 .blackText {
   color: black !important;
-}
-
-.gallery {
-  background: transparent;
-  width: 90%;
-  margin: auto;
-  /* border: 1px white solid; */
-}
-
-.gallery-cell {
-  width: 10vw;
-  height: 10vw;
-  margin-right: 10px;
-  background: transparent;
-  counter-increment: gallery-cell;
-}
-
-/* .gallery-cell.is-selected {
-  background: cyan;
-} */
-
-/* arrow color */
-.flickity-prev-next-button .arrow {
-  fill: black;
-}
-
-.headshot {
-  height: 80%;
-  width: 80%;
-  margin: auto;
-  border-radius: 50%;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-color: rgba(255,255,255,0.9);
-}
-.trump {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/trump.png");
-}
-.haley {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/haley.png");
-}
-.ramaswamy {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/ramaswamy.png");
-}
-.hutchinson {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/hutchinson.png");
-}
-.elder {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/elder.png");
-}
-.scott {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/t_scott.png");
-}
-.desantis {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/desantis.png");
-}
-.pence {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/pence.png");
-}
-.christie {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/christie.png");
-}
-.burgum {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/burgum.png");
-}
-.suarez {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/73083cdf4205ef0105d0434d67b2625451f0faf4/_assets/headshots/suarez.png");
-}
-.hurd {
-  background-image: url("https://static01.nytimes.com/newsgraphics/2023-02-10-2024-candidate-tracker/b7f83aca418a5851ac56978f905b40086810db14/_assets/headshots/hurd.png");
 }
 
 /*--------------------
@@ -216,96 +120,6 @@ Contest Entry Form CSS
 .fauxLink:hover {
   text-decoration: underline;
   cursor: pointer;
-}
-
-form {
-  background-color: #fff;
-  width: 100%;
-  margin: 30px auto;
-  padding: 5px 20px;
-  box-shadow: 2px 5px 10px rgba(255, 255, 255, 0.25);
-  color: black;
-}
-.form-control {
-  text-align: left;
-  margin-bottom: 25px;
-}
-.form-control label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-.form-control input,
-.form-control select,
-.form-control textarea {
-  border: 1px solid #777;
-  border-radius: 2px;
-  font-family: inherit;
-  padding: 10px;
-  display: block;
-  width: 95%;
-}
-.form-control input[type="radio"],
-.form-control input[type="checkbox"] {
-  display: inline-block;
-  width: auto;
-}
-
-.sorterContainer {
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  display:flex;
-  justify-content:flex-start;
-  margin: 50px auto;
-}
-
-.sortable { 
-  list-style-type: none; 
-  margin: 0; 
-  padding: 0; 
-  width: 30%; 
-  display: inline-block;
-}
-.sortable li {
-  margin: 5px; 
-  padding: 8px; 
-  font-size: 16px; 
-  background: rgba(245, 245, 245, 0.1);
-  color: gray;
-  border: gray 1px dashed;
-}
-.hasName {
-  background-color: whitesmoke !important;
-  border: 1px black solid !important;
-  color: black !important;
-}
-.sortable li:hover {
-  cursor: move;
-}
-.sortableGuide { 
-  list-style-type: none; 
-  margin: 0; 
-  padding: 0; 
-  display: inline-block;
-}
-.sortableGuide li {
-  margin: 5px; 
-  padding: 8px; 
-  font-size: 16px; 
-  background: none;
-  color: white;
-  text-align: right;
-  border: 1px transparent solid;
-}
-
-.resetButton {
-  font-size: 40px;
-  top: 100px;
-  position: sticky;
-  text-align: right;
 }
 
 /*--------------------
