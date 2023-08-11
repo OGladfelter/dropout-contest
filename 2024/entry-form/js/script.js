@@ -192,7 +192,7 @@ function submitEntryForm(e) {
       // validation successful, send to database
       document.getElementById("submitButton").disabled = true;
       document.getElementById("loader").style.display = 'block';
-      getIP();
+      getKey(); // get key, for IP, for submissions
     }
   }
 }
@@ -253,21 +253,28 @@ function getPredictions() {
   return prediction;
 }
 
-function getIP() {
-  $.ajax({
-      url: 'getIP.php',
-      type: "GET",
-      dataType: "JSON",
-      complete: function(resp) {
-          var response = resp.responseText;
-          sendSubmission(response);
-          return;
-      }
-  });
+function getKey() {
+  var request=new XMLHttpRequest();
+  request.onload=function() {
+    getIP(this.responseText);
+  };
+  request.open("get", "getKey.php", true);
+  request.send();
 };
 
-function sendSubmission(ipResp) {
+function getIP(key) {
+  const url = `https://ipgeolocation.abstractapi.com/v1/?api_key=${key}&fields=ip_address%2Ccity%2Cregion%2Ccountry_code%2Cpostal_code%2Csecurity`;
+  const xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = function() {
+      if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
+      sendSubmission(xmlHttp.responseText);
+  }
+  xmlHttp.open("GET", url, true); // true for asynchronous
+  xmlHttp.send(null);
+}
 
+function sendSubmission(ipResp) {
+  console.log(ipResp);
   $.ajax({
       url: 'submit.php',
       type: "POST",
