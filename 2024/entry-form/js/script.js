@@ -93,23 +93,23 @@ function addSortingToEntryForm() {
   $("#sortable").sortable({
       stop: function(event, ui) {
           $("#sortable li").each(function(index) {
-              if (index == 0 && this.id != '') {
+              if (index == 11 && this.id != '') {
                 this.classList.add("winner");
               } else {
                 this.classList.remove("winner");
               }
 
               if (index == 0 && this.id == '') { // if first sortable li element is still blank, make sure it says 'drop nominee here'
-                  this.innerHTML = 'Place 2024 nominee here';
-              }
-              else if (index == 1 && this.id == '') { // if second sortable li element is still blank, make sure it says 'drop last to drop here'
-                  this.innerHTML = 'Place last to drop out here';
-              }
-              else if ($("#sortable li").length - index == 1 && this.id == '') {
                   this.innerHTML = 'Place first to drop out here';
               }
-              else if ($("#sortable li").length - index == 2 && this.id == '') {
+              else if (index == 1 && this.id == '') { // if second sortable li element is still blank, make sure it says 'drop last to drop here'
                   this.innerHTML = 'Place second to drop out here';
+              }
+              else if ($("#sortable li").length - index == 1 && this.id == '') {
+                  this.innerHTML = 'Place 2024 nominee here';
+              }
+              else if ($("#sortable li").length - index == 2 && this.id == '') {
+                  this.innerHTML = 'Place last to drop out here';
               }
               else if (this.id == '') { // middle items that haven't been spoken for yet should just be blank
                   this.innerHTML = '&nbsp;'
@@ -140,7 +140,7 @@ function candidateHeadshotClicked(event, cellElement) {
 
   // iterate over sortable list items, add candidate that was clicked
   $("#sortable li").each(function(index, li) {
-    if (index == 0 && li.index != '') {
+    if (index == 11 && li.index != '') {
         li.classList.add("winner");
     }
     if (!li.id) {
@@ -166,16 +166,16 @@ function resetPredictions() {
       li.innerHTML = '&nbsp;';
       li.id = '';
       if (index == 0) { // if first sortable li element is still blank, make sure it says 'drop nominee here'
-        this.innerHTML = 'Place 2024 nominee here';
-      }
-      else if (index == 1) { // if second sortable li element is still blank, make sure it says 'drop last to drop here'
-          this.innerHTML = 'Place last to drop out here';
-      }
-      else if ($("#sortable li").length - index == 1) {
         this.innerHTML = 'Place first to drop out here';
       }
-      else if ($("#sortable li").length - index == 2) {
+      else if (index == 1) { // if second sortable li element is still blank, make sure it says 'drop last to drop here'
           this.innerHTML = 'Place second to drop out here';
+      }
+      else if ($("#sortable li").length - index == 1) {
+        this.innerHTML = 'Place 2024 nominee here';
+      }
+      else if ($("#sortable li").length - index == 2) {
+          this.innerHTML = 'Place last to drop out here';
       }
   });
 }
