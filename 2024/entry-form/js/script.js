@@ -166,6 +166,7 @@ function resetPredictions() {
   // all sortable lis reset
   $("#sortable li").each(function(index, li) {
       li.classList.remove("hasName");
+      li.classList.remove("winner");
       li.innerHTML = '&nbsp;';
       li.id = '';
       if (index == 0) { // if first sortable li element is still blank, make sure it says 'drop nominee here'
