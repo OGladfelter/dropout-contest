@@ -247,7 +247,7 @@ function getAlias() {
 
 function getPredictions() {
   let prediction = '';
-  $($("#sortable li").get().reverse()).each(function(index, li) { 
+  $("#sortable li").each(function(index, li) { 
     prediction += li.id + ","; 
   });
   return prediction;
@@ -274,7 +274,6 @@ function getIP(key) {
 }
 
 function sendSubmission(ipResp) {
-  console.log(ipResp);
   $.ajax({
       url: 'submit.php',
       type: "POST",
