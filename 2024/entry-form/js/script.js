@@ -1,7 +1,3 @@
-function IsMobile() {
-    return window.innerWidth < 600; 
-}
-
 const candidateDict = {
   'trump': "Donald Trump",
   'haley': "Nikki Haley",
@@ -78,7 +74,7 @@ function addCandidatesToDOM() {
     // create span with name
     const span = document.createElement("span");
     span.innerHTML = candidateDict[c];
-    if (IsMobile) { // if mobile, just show last name
+    if (window.innerWidth < 600) { // if mobile, just show last name
       span.innerHTML = candidateDict[c].split(' ')[1];
     }
 
