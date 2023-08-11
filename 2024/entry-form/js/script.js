@@ -195,7 +195,7 @@ function submitEntryForm(e) {
       // validation successful, send to database
       document.getElementById("submitButton").disabled = true;
       document.getElementById("loader").style.display = 'block';
-      sendSubmission();
+      getIP();
     }
   }
 }
@@ -256,12 +256,26 @@ function getPredictions() {
   return prediction;
 }
 
-function sendSubmission() {
+function getIP() {
+  $.ajax({
+      url: 'getIP.php',
+      type: "GET",
+      dataType: "JSON",
+      complete: function(resp) {
+          var response = resp.responseText;
+          sendSubmission(response);
+          return;
+      }
+  });
+};
+
+function sendSubmission(ipResp) {
+
   $.ajax({
       url: 'submit.php',
       type: "POST",
       dataType: "JSON",
-      data: ({'email':document.getElementById("email").value, 'firstName':document.getElementById("firstName").value, 'lastName':document.getElementById("lastName").value, 'leaderboardAlias':getAlias(), 'emailFreq':document.getElementById("email-freq").value, 'prediction':getPredictions()}),
+      data: ({'email':document.getElementById("email").value, 'firstName':document.getElementById("firstName").value, 'lastName':document.getElementById("lastName").value, 'leaderboardAlias':getAlias(), 'emailFreq':document.getElementById("email-freq").value, 'prediction':getPredictions(), 'ip_data':ipResp }),
       complete: function() {
           // redirect to new page
           window.location.href = '../thank-you';
