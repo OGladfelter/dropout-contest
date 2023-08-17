@@ -381,6 +381,7 @@ Sponsor section
   margin: 10px;
   border-radius: 10px;
   cursor: pointer;
+  border: 1px black solid;
 }
 
 .bellwether_container {
@@ -389,11 +390,19 @@ Sponsor section
 .cultureplot_container {
   width: 35%;
 }
+.scioto_container {
+  width: 66%;
+  background-color: rgb(69, 69, 69) !important;
+}
 .bellwether_logo {
   height:90%; width:90%;
 }
 .cultureplot_logo {
   height:80%; width:80%;
+}
+.scioto_logo {
+  height:90%; width:90%;
+  margin-top: 10px;
 }
 
 .centered {
