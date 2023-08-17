@@ -2,6 +2,7 @@
 *.DS_Store
 /2020/data
 /2024/data
+/2024/leaderboard/data
 .ipynb_checkpoints/
 2024/entry-form/submit.php
 2024/entry-form/getIP.php
