@@ -329,7 +329,7 @@ div.tooltip {
 .annotation {
   font-size: 16px;
 }
-.annotation rect{
+.annotation rect {
   fill: white;
   x: 10;
   y: 10;
