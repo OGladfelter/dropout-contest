@@ -711,7 +711,7 @@ function drawHeatmap() {
   d3.csv("data/heatmapData.csv").then(function(data) {
     
     const dropOutOrder = data.map(function(d) { return d.index}); // list of candidates in 'average' drop out order
-    const dropOutPositions = range(0, 11); // numbers
+    const dropOutPositions = range(1, numberOfCandidates); // numbers
 
     // reformat data into long format
     const heatmapData = [];
@@ -761,13 +761,6 @@ function drawHeatmap() {
         .attr("class", "axis noAxis")
         .attr('transform', 'translate(0, 0)')
         .call(d3.axisLeft(y).tickFormat(function(d){return candidateDict[d].split(" ")[1]}));
-
-    if (screen.width < 600){
-        d3.selectAll(".axis>.tick>text")
-        .each(function(d, i){
-            d3.select(this).style("font-size","12px");
-        });
-    }
     
     // create a tooltip
     var tooltip = d3.select("body")
@@ -794,7 +787,7 @@ function drawHeatmap() {
         else if (d.dropOutPosition == 3){
             statement = " will drop out 3rd"
         }
-        else if (d.dropOutPosition < numberOfCandidates - 1){
+        else if (d.dropOutPosition < numberOfCandidates){
             statement = " will drop out " + d.dropOutPosition + "th"
         } 
         else{

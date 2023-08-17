@@ -431,6 +431,10 @@ Mobile
           transform: translate(0%, 0%);
   }
 
+  .axis { 
+    font: 12px sans-serif; 
+  }
+
   .predictions {
     visibility: hidden;
     z-index: -1;
