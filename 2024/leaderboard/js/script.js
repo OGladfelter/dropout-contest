@@ -703,6 +703,8 @@ function range(start, end) {
   return Array(end - start + 1).fill().map((_, idx) => start + idx);
 }
 
+function nth(n){return["st","nd","rd"][((n+90)%100-10)%10-1]||"th"}
+
 function drawHeatmap() {
 
   numberOfCandidates = 12;
@@ -768,34 +770,28 @@ function drawHeatmap() {
         .style("opacity", 0)
         .attr("class", "tooltip");
     var mousemove = function(event, d) {
-        var player, statement;
+        let player;
         if (d.value == 0){
             player = "No one predicts "
         }
         else if (d.value == 1) {
-            player = "1 player predicts "
+            player = "One player predicts "
         }
         else {
             player = d.value + " players predict "
         }
-        if (d.dropOutPosition == 1){
-            statement = " will drop out 1st"
-        }
-        else if (d.dropOutPosition == 2){
-            statement = " will drop out 2nd"
+        
+        let statement;
+        if (d.dropOutPosition == numberOfCandidates){
+            statement = " will win";
         } 
-        else if (d.dropOutPosition == 3){
-            statement = " will drop out 3rd"
+        else {
+            statement = " will drop out " + d.dropOutPosition + nth(d.dropOutPosition);
         }
-        else if (d.dropOutPosition < numberOfCandidates){
-            statement = " will drop out " + d.dropOutPosition + "th"
-        } 
-        else{
-            statement = " will win"
-        }
+      
         tooltip
             .html(player + "<br>" + candidateDict[d.name] + statement)
-            .style("left", (event.pageX) + 40 + "px")
+            .style("left", (event.pageX) + 20 + "px")
             .style("top", (event.pageY) + "px");
     }
 
