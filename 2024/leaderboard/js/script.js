@@ -775,13 +775,14 @@ function drawHeatmap(predictionsData) {
           d3.select(this).style("fill", function(d) {return heatmapColors(d.value)} );
         })
         .on("click", function(event, d) {
+            document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill'));
             // figure out who made this prediction and highlight them on the leaderboard
             const theGuessers = predictionsData.filter(t => t.prediction[d.dropOutPosition - 1] == d.name);
-            console.log(theGuessers);
-            document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill'))
-            theGuessers.forEach(g => document.getElementById("leaderboardRow" + g.participantID).classList.add('orangeFill'));
-            document.getElementById("contestInfo").innerHTML = 'Remove highlighting';
-            openTab(event, 'Leaderboard');
+            if (theGuessers.length) {
+                theGuessers.forEach(g => document.getElementById("leaderboardRow" + g.participantID).classList.add('orangeFill'));
+                document.getElementById("contestInfo").innerHTML = 'Remove highlighting';
+                openTab(event, 'Leaderboard');
+            }
         })
 
     // Build color scale for text label
