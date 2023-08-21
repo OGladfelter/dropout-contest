@@ -764,7 +764,7 @@ function drawHeatmap(predictionsData) {
         .attr("width", width / numberOfCandidates )
         .attr("height", height / numberOfCandidates )
         .style("fill", function(d) {return heatmapColors(d.value)} )
-        .style('cursor', 'pointer')
+        .style('cursor', function(d) { return d.value > 0 ? 'pointer' : 'default' })
         .on("mouseover", function() {
           tooltip.style("opacity", 1);
           d3.select(this).style("fill", "orange");
