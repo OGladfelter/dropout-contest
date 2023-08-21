@@ -1,4 +1,4 @@
-numberOfCandidates = 14;
+numberOfCandidates = 12;
 
 function IsMobile() {
     return window.innerWidth < 600; 
@@ -207,89 +207,53 @@ function partialScoring(dropOutOrder, playerPredictionsArray) {
 //var dropoutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
 
 function dataPrep() { 
-  d3.csv("data/submissions.csv")
+  d3.csv("data/submissions2024.csv")
     .then(function(data) {
-      d3.text('data/droppedCandidates.csv').then(function(text) {
-          var dropOutOrder = text.split(",");
-          var numCandidatesStillRunning = numberOfCandidates - dropOutOrder.length
-          for (var i = 0; i < numCandidatesStillRunning; i++) {
-              dropOutOrder.push('');
+        // compute performance metrics
+        data.forEach(d => {
+            d.prediction = d.prediction.split(',').slice(0, numberOfCandidates); // slice since splitting adds empty string to array
+            d.kendallDistance = 0;
+            d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
+            d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
+        });
+        data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
+        // compute rank for each player
+        for (let i = 0; i < data.length; i++) {
+          if (i == 0) {
+            data[i].rank = 1;
           }
-          // compute performance metrics
-          data.forEach(d => {
-              d.prediction = d.prediction.split(', ');
-              d.kendallDistance = partialScoring(dropOutOrder, d.prediction);
-              d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
-              d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
-          });
-          data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
-          // compute rank for each player
-          for (let i = 0; i < data.length; i++) {
-            if (i == 0) {
-              data[i].rank = 1;
-            }
-            else if (data[i].kendallDistance == data[i-1].kendallDistance) {
-              data[i].rank = data[i-1].rank;
-            }
-            else {
-              data[i].rank = i + 1;
-            }
-          };
-
-          // add each player to leaderboard
-          var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]); // row color
-          data.forEach(d => {
-            addRow(d.rank, d.name, d.kendallDistance, d.accuracy.toFixed(1), distanceToColorScale(d.rank), d);
-          });
-
-          // get average drop out predictions
-          var candidateScores = {}
-          // find dropout num for each candidate in each guess. Add num to total value for that candidate in the dict.
-          data.forEach(d => {
-            d.prediction.forEach((p, i) => {
-              if (candidateScores[p]) {
-                candidateScores[p] += i;
-              } else { candidateScores[p] = i}
-            });
-          });
-          // calc average by dividing each value by number of participants
-          var averagePredictions = Object.keys(candidateScores).map(function (key) {
-            return {'candidate':key, 'value':candidateScores[key] / data.length};
-          });
-          averagePredictions = averagePredictions.slice().sort((a, b) => d3.ascending(a.value, b.value));
-          var averageOrder = [];
-          averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
-
-          // compute scores for each player at each round so far
-          let scoresOverTime = [];
-          for (let roundNum = 1; roundNum <= text.split(",").length; roundNum++) {
-            const partialDrops = text.split(",").slice(0, roundNum).concat(Array.from({length: numberOfCandidates - roundNum}, (_, roundNum) => ''));
-            let scoresThisRound = [];
-            data.forEach(d => {
-              const score = partialScoring(partialDrops, d.prediction);
-              // const kendallNormal = (score / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
-              // const accuracy = 100 - (kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
-              scoresThisRound.push({'id':d.participantID, 'name':d.name, 'score':score, 'round':roundNum});
-            });
-            // sort the scores for this round of the current loop iteration
-            scoresThisRound = scoresThisRound.slice().sort((a, b) => d3.ascending(a.score, b.score)); // sort data ascending by kendall distance
-            // add rank
-            for (let i = 0; i < scoresThisRound.length; i++) {
-              if (i == 0) {
-                scoresThisRound[i].rank = 1;
-              }
-              else if (scoresThisRound[i].score == scoresThisRound[i-1].score) {
-                scoresThisRound[i].rank = scoresThisRound[i-1].rank;
-              }
-              else {
-                scoresThisRound[i].rank = i + 1;
-              }
-            };
-            // finally, add this round's score data to overall data object
-            scoresOverTime = scoresOverTime.concat(scoresThisRound);
+          else if (data[i].kendallDistance == data[i-1].kendallDistance) {
+            data[i].rank = data[i-1].rank;
           }
-          drawScoresLineplot(scoresOverTime);
-      });
+          else {
+            data[i].rank = i + 1;
+          }
+        };
+
+        // add each player to leaderboard
+        var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]); // row color
+        data.forEach(d => {
+          addRow(d.rank, d.leaderboardAlias, d.kendallDistance, d.accuracy.toFixed(1), distanceToColorScale(d.rank), d);
+        });
+
+        // get average drop out predictions
+        var candidateScores = {}
+        // find dropout num for each candidate in each guess. Add num to total value for that candidate in the dict.
+        data.forEach(d => {
+          d.prediction.forEach((p, i) => {
+            if (candidateScores[p]) {
+              candidateScores[p] += i;
+            } else { candidateScores[p] = i}
+          });
+        });
+        // calc average by dividing each value by number of participants
+        var averagePredictions = Object.keys(candidateScores).map(function (key) {
+          return {'candidate':key, 'value':candidateScores[key] / data.length};
+        });
+        averagePredictions = averagePredictions.slice().sort((a, b) => d3.ascending(a.value, b.value));
+        var averageOrder = [];
+        averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
+        //drawScoresLineplot(scoresOverTime);
   }); 
 };
 
@@ -330,23 +294,10 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
     nameCell.style.fontSize = '18px';
 
     row.addEventListener("mouseover", function() {
-        document.getElementById("playerHeader").innerHTML = d.name + " Prediction"; // customize title
-            
-        // change the order to match the player represented by the li moused over
-        document.getElementById("1stDrop").innerHTML = d["prediction"][0];
-        document.getElementById("2ndDrop").innerHTML = d["prediction"][1];
-        document.getElementById("3rdDrop").innerHTML = d["prediction"][2];
-        document.getElementById("4thDrop").innerHTML = d["prediction"][3];
-        document.getElementById("5thDrop").innerHTML = d["prediction"][4];
-        document.getElementById("6thDrop").innerHTML = d["prediction"][5];
-        document.getElementById("7thDrop").innerHTML = d["prediction"][6];
-        document.getElementById("8thDrop").innerHTML = d["prediction"][7];
-        document.getElementById("9thDrop").innerHTML = d["prediction"][8];
-        document.getElementById("10thDrop").innerHTML = d["prediction"][9];
-        document.getElementById("11thDrop").innerHTML = d["prediction"][10];
-        document.getElementById("12thDrop").innerHTML = d["prediction"][11];
-        document.getElementById("13thDrop").innerHTML = d["prediction"][12];
-        document.getElementById("winner").innerHTML = d["prediction"][13];
+        document.getElementById("playerHeader").innerHTML = d.leaderboardAlias + " Prediction"; // customize title
+        for (i=0; i<d.prediction.length; i++ ) {
+          document.getElementById("drop_" + (i + 1)).innerHTML = candidateDict[d["prediction"][i]];
+        }
     });
     row.addEventListener("click", function() { // click a row to show their line in Standings Over Time tab
       document.getElementById('lineplotRow' + d.participantID).click();
@@ -388,9 +339,8 @@ function addInteractionToPredictionsList() {
 function drawScoresLineplot(data) {
 
   // remove Anonymous players and group the data by player ID
-  data = data.filter(d => d.name != 'Anonymous');
   const grouped = d3.group(data, d => d.id);
-  const sumstat = new Map([...grouped].sort((a, b) => (a[1][0].name > b[1][0].name ? 1 : -1))); // alphabetize
+  const sumstat = new Map([...grouped].sort((a, b) => (a[1][0].leaderboardAlias > b[1][0].leaderboardAlias ? 1 : -1))); // alphabetize
 
   if (IsMobile()) {
     // set the dimensions and margins of the graph
@@ -500,13 +450,13 @@ function drawScoresLineplot(data) {
     row.value = d[0].id; // should be ID
     row.dataset.selected = 0;
     var column = document.createElement('td');
-    column.innerHTML = d[0].name;
+    column.innerHTML = d[0].leaderboardAlias;
     row.appendChild(column);
     row.addEventListener('click', drawPlayerLine);
     row.id = 'lineplotRow' + d[0].id;
     tableSelector.appendChild(row);
 
-    if (d[0].name == 'Wisdom of the crowd') {
+    if (d[0].leaderboardAlias == 'Wisdom of the crowd') {
       row.click();
     }
   });
@@ -514,7 +464,7 @@ function drawScoresLineplot(data) {
   // let voronoiData = [];
 
   // function updateTooltip(event, d) {
-  //   d3.select("#text1").text(d.name);
+  //   d3.select("#text1").text(d.leaderboardAlias);
   //   d3.select("#text2").text('Rank: ' + d.rank);
   //   d3.select("#text3").text('Round: ' + d.round);
   //   // use bounding boxes on first and last text lines to determine rectangle dimensions
@@ -584,7 +534,7 @@ function drawScoresLineplot(data) {
         .on("mouseover", function(event, d) {	
           d3.select(this).transition().duration(500).attr("r", 20);
           tooltip
-            .html("<b>" + d.name + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
+            .html("<b>" + d.leaderboardAlias + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
             .style('left', event.pageX / window.innerWidth <= 0.75 ? event.pageX + 5 + 'px' : event.pageX - tooltip.node().getBoundingClientRect().width - 10 + 'px')
             .style("top", (event.pageY + 10) + "px")
             .transition()		
