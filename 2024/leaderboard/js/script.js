@@ -210,11 +210,12 @@ function dataPrep() {
   d3.csv("data/submissions2024.csv")
     .then(function(data) {
         // compute performance metrics
-        data.forEach(d => {
+        data.forEach((d, i) => {
             d.prediction = d.prediction.split(',').slice(0, numberOfCandidates); // slice since splitting adds empty string to array
             d.kendallDistance = 0;
             d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
             d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
+            d.participantID = i;
         });
         data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
         // compute rank for each player
@@ -254,6 +255,9 @@ function dataPrep() {
         var averageOrder = [];
         averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
         //drawScoresLineplot(scoresOverTime);
+
+        // draw heatmap
+        drawHeatmap(data);
   }); 
 };
 
@@ -655,7 +659,7 @@ function range(start, end) {
 
 function nth(n){return["st","nd","rd"][((n+90)%100-10)%10-1]||"th"}
 
-function drawHeatmap() {
+function drawHeatmap(predictionsData) {
 
   numberOfCandidates = 12;
 
@@ -772,7 +776,8 @@ function drawHeatmap() {
         })
         .on("click", function(event, d) {
             // figure out who made this prediction and highlight them on the leaderboard
-            const theGuessers = data.filter(t => t.prediction[d.dropOutPosition - 1] == d.name);
+            const theGuessers = predictionsData.filter(t => t.prediction[d.dropOutPosition - 1] == d.name);
+            console.log(theGuessers);
             document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill'))
             theGuessers.forEach(g => document.getElementById("leaderboardRow" + g.participantID).classList.add('orangeFill'));
             document.getElementById("contestInfo").innerHTML = 'Remove highlighting';
@@ -823,11 +828,8 @@ function main() {
     // entry form
     addSortingToEntryForm();
 
-    // dataPrep() calls a few other functions, such as addRow()
+    // dataPrep() calls a few other functions
     dataPrep();
-
-    // draw heatmap
-    drawHeatmap();
 
     // leaderboard interaction
     addInteractionToPredictionsList();
