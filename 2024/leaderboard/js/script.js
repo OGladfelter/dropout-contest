@@ -120,18 +120,6 @@ function readData() {
           }
       });
       data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
-      // compute rank for each player
-      for (let i = 0; i < data.length; i++) {
-        if (i == 0) {
-          data[i].rank = 1;
-        }
-        else if (data[i].kendallDistance == data[i-1].kendallDistance) {
-          data[i].rank = data[i-1].rank;
-        }
-        else {
-          data[i].rank = i + 1;
-        }
-      };
 
       // add each player to leaderboard
       var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]); // row color
