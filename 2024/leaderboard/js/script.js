@@ -16,7 +16,6 @@ const candidateDict = {
 }
 
 const dropOutOrder = ["Will Hurd","Larry Elder","Francis Suarez","Asa Hutchinson","Doug Burgum","Chris Christie","Tim Scott","Nikki Haley","Vivek Ramaswamy","Mike Pence","Ron DeSantis","Donald Trump"]; // from first to last
-//var dropoutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
 
 // for tab navigation
 function openTab(evt, tabID) {
@@ -31,6 +30,9 @@ function openTab(evt, tabID) {
   }
   document.getElementById(tabID).style.display = "block";
   evt.currentTarget.className += " active";
+  if (tabID == "analysis") {
+    Waypoint.enableAll();
+  }
 }
 
 // send user to rules tab then smooth scroll to scoring section
@@ -487,12 +489,12 @@ function drawHeatmap(predictionsData) {
     });
 
     // set the dimensions and margins of the graph
-    var margin = {top: 40, right: 40, bottom: 100, left: 140},
+    var margin = {top: 10, right: 0, bottom: 100, left: 110},
         width = screen.height - 150 - margin.left - margin.right,
         height = screen.height - 150 - margin.top - margin.bottom;
 
-    if (screen.width < 600){
-        margin = {top: 30, right: 30, bottom: 10, left: 10},
+    if (screen.width < 600) {
+        margin = {top: 10, right: 30, bottom: 10, left: 10},
         width = screen.width - 40 - margin.left - margin.right,
         height = screen.width - 40 - margin.top - margin.bottom;
     }
@@ -549,8 +551,6 @@ function drawHeatmap(predictionsData) {
             statement = " will drop out " + d.dropOutPosition + nth(d.dropOutPosition);
         }
       
-        console.log(event.clientX);
-
         heatmapTooltip
             .html(player + "<br>" + candidateDict[d.name] + statement)
             .style('left', event.pageX / window.innerWidth <= 0.5 ? event.clientX + 20 + "px" : event.clientX - heatmapTooltip.node().getBoundingClientRect().width + 25 + 'px')
@@ -567,6 +567,7 @@ function drawHeatmap(predictionsData) {
         .data(heatmapData)
         .enter()
         .append("rect")
+        .attr("id", function(d) { return d.name + d.dropOutPosition + "Rect"})
         .attr("y", function(d) { return y(d.name) })
         .attr("x", function(d) { return x(d.dropOutPosition) })
         .attr("width", width / numberOfCandidates )
@@ -614,23 +615,59 @@ function drawHeatmap(predictionsData) {
             
     // text label for the x axis
     svg.append("text")             
-        .attr("transform",
-                "translate(" + (width/2) + " ," + 
-                            (height + margin.top + 10) + ")")
+        .attr("transform", "translate(" + (width/2) + " ," + (height + (margin.bottom / 2)) + ")")
         .style("text-anchor", "middle")
         .attr('class', 'heatmapLabel')
         .text("Predicted Drop Out Position");
 
-    // Heading 
-    svg.append("g")
-        .append("text")
-        .attr("x",(width)/2)
-        .attr('y', 0-margin.top+20)
-        .attr('class', 'heatmapHeader')
-        .attr('font-family', 'Segoe UI bold')
-        .style("text-anchor", "middle")
-        .text("Candidate Drop Out Order Predictions");
+    addWaypointInteractions(heatmapColors);
   });
+}
+
+// for the heatmap and analysis bits
+function addWaypointInteractions(colorScale) {
+
+  // highlight trump circle
+  const step1 = new Waypoint({
+    element: document.getElementById('step1'),
+    handler: function(direction) {
+        if (direction == 'down') {
+          // trump on
+          highlightTile("#trump12Rect");
+        }
+        else {
+          deHighlightTile("#trump12Rect", colorScale);
+        }
+    },
+    offset: 'bottom-in-view'
+  });
+
+  const step2 = new Waypoint({
+    element: document.getElementById('step2'),
+    handler: function(direction) {
+        if (direction == 'down') {
+          deHighlightTile("#trump12Rect", colorScale);
+          highlightTile("#desantis11Rect");
+          highlightTile("#desantis12Rect");
+        }
+        else {
+          highlightTile("#trump12Rect");
+          deHighlightTile("#desantis11Rect", colorScale);
+          deHighlightTile("#desantis12Rect", colorScale);
+        }
+    },
+    offset: 'bottom-in-view'
+  });
+  
+  Waypoint.disableAll();
+}
+
+function highlightTile(id) {
+  d3.select(id).style("fill", "orange");
+}
+function deHighlightTile(id, colorScale) {
+  const thisData = d3.select(id).data()[0];
+  d3.select(id).style("fill", colorScale(thisData.value));
 }
 
 function main() {
@@ -639,30 +676,6 @@ function main() {
 
     // leaderboard interaction
     addInteractionToPredictionsList();
-
-    // Waypoint code
-    let offset = '75%';
-    if (window.innerWidth < 600) {
-        offset = '95%';
-    }
-
-    // highlight trump circle
-    // new Waypoint({
-    //     element: document.getElementById('step1'),
-    //     handler: function(direction) {
-    //         if (direction == 'down') {
-    //             d3.select("#circle85")
-    //                 .transition().duration(1000)
-    //                 .style("fill", highlightColor1)
-    //                 .style('stroke-width', '2px')
-    //                 .style('opacity', 1);
-    //         }
-    //         else {
-    //             d3.selectAll('.announcedCircle').style("fill", defaultColor).style('stroke-width', '1px').style('opacity', 0.7);
-    //         }
-    //     },
-    //     offset: offset
-    // });
 }
 
 main();

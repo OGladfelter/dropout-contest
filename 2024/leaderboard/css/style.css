@@ -29,6 +29,10 @@ h2 {
   font-size: 24px;
   margin-top: 10vh;
 }
+h3 {
+  font-size: 16px;
+  margin: 2px auto;
+}
 
 p { 
   font-size: 18px;
@@ -348,7 +352,7 @@ div.tooltip {
 
 .heatmapContainer {
   position:sticky;
-  top: 10%;
+  top: 7.5%;
   margin: auto;
   z-index: 1;
 }
