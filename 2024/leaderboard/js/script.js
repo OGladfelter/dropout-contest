@@ -15,7 +15,7 @@ const candidateDict = {
   'hurd': "Will Hurd"
 }
 
-const dropOutOrder = ["Will Hurd","Francis Suarez","Larry Elder","Doug Burgum","Vivek Ramaswamy","Tim Scott"]; // from first to last
+const dropOutOrder = ["Will Hurd","Larry Elder","Francis Suarez","Asa Hutchinson","Doug Burgum","Chris Christie","Tim Scott","Nikki Haley","Vivek Ramaswamy","Mike Pence","Ron DeSantis","Donald Trump"]; // from first to last
 //var dropoutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
 
 // for tab navigation
@@ -107,11 +107,10 @@ function partialScoring(dropOutOrder, playerPredictionsArray) {
 }
 
 function readData() { 
-  d3.csv("data/submissions2024.csv").then(function(data) {
+  d3.csv("data/submissions2024.csv", d3.autoType).then(function(data) {
       // compute performance metrics
       data.forEach((d, i) => {
           d.prediction = d.prediction.split(',').slice(0, numberOfCandidates); // slice since splitting adds empty string to array
-          d.kendallDistance = 0;
           d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
           d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
           if (d.leaderboardAlias == 'Wisdom of the crowd') {
@@ -119,12 +118,6 @@ function readData() {
           } else {
             d.participantID = i + 1;
           }
-          d.round_1_rank = 13;
-          d.round_2_rank = 5;
-          d.round_3_rank = 6;
-          d.round_4_rank = 23;
-          d.round_5_rank = 1;
-          d.round_6_rank = 2;
       });
       data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
       // compute rank for each player
@@ -163,7 +156,6 @@ function readData() {
       averagePredictions = averagePredictions.slice().sort((a, b) => d3.ascending(a.value, b.value));
       var averageOrder = [];
       averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
-      console.log(averagePredictions);
       
       // add some viz
       drawScoresLineplot(data); // draw scores over time lineplot
@@ -405,7 +397,7 @@ function drawScoresLineplot(data) {
         .on("mouseover", function(event, d) {	
           d3.select(this).transition().duration(500).attr("r", 20);
           tooltip
-            .html("<b>" + participantData.leaderboardAlias + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
+            .html("<b>" + participantData.leaderboardAlias + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + (d.round + 1))
             .style('left', event.pageX / window.innerWidth <= 0.75 ? event.pageX + 5 + 'px' : event.pageX - tooltip.node().getBoundingClientRect().width - 10 + 'px')
             .style("top", (event.pageY + 10) + "px")
             .transition()		
