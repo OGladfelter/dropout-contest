@@ -663,11 +663,11 @@ function addWaypointInteractions(colorScale) {
 }
 
 function highlightTile(id) {
-  d3.select(id).style("fill", "orange");
+  d3.select(id).style("fill", "orange").style("stroke", 'black').style("stroke-width", '2px');
 }
 function deHighlightTile(id, colorScale) {
   const thisData = d3.select(id).data()[0];
-  d3.select(id).style("fill", colorScale(thisData.value));
+  d3.select(id).style("fill", colorScale(thisData.value)).style("stroke", 'none');
 }
 
 function main() {
