@@ -265,7 +265,7 @@ function drawScoresLineplot(data) {
   }
   else {
     yTicks = ["1st Place", "10th", 20, 30, 40, 50, 60, 70, "80"]; // TODO: automate this based on highest rank
-    dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" "[1])));
+    dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" ")[1]));
   }
 
   // Add X axis
