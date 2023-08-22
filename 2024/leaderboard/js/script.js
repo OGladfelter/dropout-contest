@@ -275,11 +275,11 @@ function drawScoresLineplot(data) {
 
   const xTicks = [];
   if (window.innerWidth < 600) {
-    yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"];
+    yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"]; // TODO: automate this based on highest rank
     dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" "[1]))); // TODO: switch out with candidate initials?
   }
   else {
-    yTicks = ["1st Place", "10th", 20, 30, 40, 50, 60, 70, "80"];
+    yTicks = ["1st Place", "10th", 20, 30, 40, 50, 60, 70, "80"]; // TODO: automate this based on highest rank
     dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" "[1])));
   }
 
@@ -340,19 +340,6 @@ function drawScoresLineplot(data) {
     }
   });
 
-  // let voronoiData = [];
-
-  // function updateTooltip(event, d) {
-  //   d3.select("#text1").text(d.leaderboardAlias);
-  //   d3.select("#text2").text('Rank: ' + d.rank);
-  //   d3.select("#text3").text('Round: ' + d.round);
-  //   // use bounding boxes on first and last text lines to determine rectangle dimensions
-  //   var bbox1 = document.getElementById("text1").getBoundingClientRect();
-  //   var bbox2 = document.getElementById("text3").getBoundingClientRect();
-  //   annotations.select("rect").attr("width", bbox1.width + 20).attr("height", bbox2.y + bbox2.height - bbox1.y + 15);
-  //   annotations.attr("transform", "translate(" + x(d.round) + "," + y(d.rank) + ")");
-  // }
-
   function drawPlayerLine(event) {
     this.dataset.selected == 0 ? this.dataset.selected = 1 : this.dataset.selected = 0; // flip 'truthiness' of if row is selected or not
 
@@ -364,8 +351,8 @@ function drawScoresLineplot(data) {
       this.style.backgroundColor = participantData.color;
 
       const roundData = [];
-      dropOutOrder.forEach((d, i) => roundData.push({'round': i, 'rank': participantData['round_2_rank']}));
-      
+      dropOutOrder.forEach((d, i) => roundData.push({'round': i, 'rank': participantData[`round_${i+1}_rank`]}));
+      console.log(roundData);
       // define the line
       var valueline = d3.line()
         .x(function(d) { return x(d.round); })
