@@ -346,6 +346,25 @@ div.tooltip {
   fill: whitesmoke;
 }
 
+.heatmapContainer {
+  position:sticky;
+  top: 10%;
+  margin: auto;
+  z-index: 1;
+}
+.scrollOnTop {
+  position: relative;
+  background-color: white;
+  color: black;
+  border: 1px black solid;
+  padding: 10px 20px;
+  width: 40%;
+  margin: 100vh auto;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  text-align: left;
+  z-index: 2;
+}
+
 /*--------------------
 Sponsor section
 --------------------*/

@@ -528,10 +528,7 @@ function drawHeatmap(predictionsData) {
         .call(d3.axisLeft(y).tickFormat(function(d){return candidateDict[d].split(" ")[1]}));
     
     // create a tooltip
-    var tooltip = d3.select("body")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip");
+    const tooltip = d3.select("#heatmapTooltip");
     var mousemove = function(event, d) {
         let player;
         if (d.value == 0){
@@ -554,8 +551,8 @@ function drawHeatmap(predictionsData) {
       
         tooltip
             .html(player + "<br>" + candidateDict[d.name] + statement)
-            .style("left", (event.pageX) + 20 + "px")
-            .style("top", (event.pageY) + "px");
+            .style('left', event.pageX / window.innerWidth <= 0.5 ? d.x + 40 + 'px' : d.x - tooltip.node().getBoundingClientRect().width + 25 + 'px')
+            .style('top', d.y + 50 + 'px');
     }
 
     // Build color scale for cells
@@ -580,7 +577,7 @@ function drawHeatmap(predictionsData) {
         })
         .on("mousemove", mousemove)
         .on("mouseleave", function() {
-          tooltip.style("opacity", 0);
+          //tooltip.style("opacity", 0);
           d3.select(this).style("fill", function(d) {return heatmapColors(d.value)} );
         })
         .on("click", function(event, d) {
@@ -640,6 +637,30 @@ function main() {
 
     // leaderboard interaction
     addInteractionToPredictionsList();
+
+    // Waypoint code
+    let offset = '75%';
+    if (window.innerWidth < 600) {
+        offset = '95%';
+    }
+
+    // highlight trump circle
+    // new Waypoint({
+    //     element: document.getElementById('step1'),
+    //     handler: function(direction) {
+    //         if (direction == 'down') {
+    //             d3.select("#circle85")
+    //                 .transition().duration(1000)
+    //                 .style("fill", highlightColor1)
+    //                 .style('stroke-width', '2px')
+    //                 .style('opacity', 1);
+    //         }
+    //         else {
+    //             d3.selectAll('.announcedCircle').style("fill", defaultColor).style('stroke-width', '1px').style('opacity', 0.7);
+    //         }
+    //     },
+    //     offset: offset
+    // });
 }
 
 main();
