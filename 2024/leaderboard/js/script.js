@@ -527,8 +527,8 @@ function drawHeatmap(predictionsData) {
         .attr('transform', 'translate(0, 0)')
         .call(d3.axisLeft(y).tickFormat(function(d){return candidateDict[d].split(" ")[1]}));
     
-    // create a tooltip
-    const tooltip = d3.select("#heatmapTooltip");
+    // grab the heatmap tooltip
+    const heatmapTooltip = d3.select("#heatmapTooltip");
     var mousemove = function(event, d) {
         let player;
         if (d.value == 0){
@@ -549,10 +549,12 @@ function drawHeatmap(predictionsData) {
             statement = " will drop out " + d.dropOutPosition + nth(d.dropOutPosition);
         }
       
-        tooltip
+        console.log(event.clientX);
+
+        heatmapTooltip
             .html(player + "<br>" + candidateDict[d.name] + statement)
-            .style('left', event.pageX / window.innerWidth <= 0.5 ? d.x + 40 + 'px' : d.x - tooltip.node().getBoundingClientRect().width + 25 + 'px')
-            .style('top', d.y + 50 + 'px');
+            .style('left', event.pageX / window.innerWidth <= 0.5 ? event.clientX + 20 + "px" : event.clientX - heatmapTooltip.node().getBoundingClientRect().width + 25 + 'px')
+            .style('top', y(d.name) + heatmapTooltip.node().getBoundingClientRect().height + 25 + "px");
     }
 
     // Build color scale for cells
@@ -572,12 +574,12 @@ function drawHeatmap(predictionsData) {
         .style("fill", function(d) {return heatmapColors(d.value)} )
         .style('cursor', function(d) { return d.value > 0 ? 'pointer' : 'default' })
         .on("mouseover", function() {
-          tooltip.style("opacity", 1);
+          heatmapTooltip.style("opacity", 1);
           d3.select(this).style("fill", "orange");
         })
         .on("mousemove", mousemove)
         .on("mouseleave", function() {
-          //tooltip.style("opacity", 0);
+          heatmapTooltip.style("opacity", 0);
           d3.select(this).style("fill", function(d) {return heatmapColors(d.value)} );
         })
         .on("click", function(event, d) {
