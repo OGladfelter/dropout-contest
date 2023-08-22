@@ -1,8 +1,4 @@
-numberOfCandidates = 12;
-
-function IsMobile() {
-    return window.innerWidth < 600; 
-}
+const numberOfCandidates = 12;
 
 const candidateDict = {
   'trump': "Donald Trump",
@@ -19,6 +15,9 @@ const candidateDict = {
   'hurd': "Will Hurd"
 }
 
+const dropOutOrder = ["Will Hurd","Francis Suarez","Larry Elder","Doug Burgum","Vivek Ramaswamy","Tim Scott"]; // from first to last
+//var dropoutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
+
 // for tab navigation
 function openTab(evt, tabID) {
   var i, tabcontent, tablinks;
@@ -34,10 +33,6 @@ function openTab(evt, tabID) {
   evt.currentTarget.className += " active";
 }
 
-//////////////////////////////////////////////////////////
-// Entry form
-//////////////////////////////////////////////////////////
-
 // send user to rules tab then smooth scroll to scoring section
 function goToScoring(event) {
   openTab(event, 'Rules');
@@ -46,97 +41,6 @@ function goToScoring(event) {
           scrollTop: $('#scoring').offset().top - 100
       }, 'slow');
   });
-}
-
-// make interactive section on entry form sortable
-function addSortingToEntryForm() {
-
-  var candidates = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
-  shuffle(candidates);
-
-  $(".draggableNames").each(function(index) {
-      $(this)[0].style.top = 25 * index + "px";
-      $(this)[0].innerHTML = candidates[index];
-      d3.select($(this)[0]).lower();
-      //d3.select($(this)[0]).on("mouseover", function() { d3.select(this).raise(); })
-  });
-
-  $("#sortable").sortable({
-      stop: function(event, ui) {
-          $("#sortable li").each(function(index) {
-              if (index == 0 && this.id == '') { // if first sortable li element is still blank, make sure it says 'drop nominee here'
-                  this.innerHTML = 'Place 2024 nominee here';
-              }
-              else if (index == 1 && this.id == '') { // if second sortable li element is still blank, make sure it says 'drop last to drop here'
-                  this.innerHTML = 'Place last to drop out here';
-              }
-              else if ($("#sortable li").length - index == 1 && this.id == '') {
-                  this.innerHTML = 'Place first to drop out here';
-              }
-              else if ($("#sortable li").length - index == 2 && this.id == '') {
-                  this.innerHTML = 'Place second to drop out here';
-              }
-              else if (this.id == '') { // middle items that haven't been spoken for yet should just be blank
-                  this.innerHTML = '&nbsp;'
-              }
-          });
-      }
-  });
-
-  $(".draggableNames").draggable({
-      refreshPositions: true,
-      helper: 'clone',
-      start: function(event, ui) {
-        var movingName = event.target;
-        movingName.style.visibility = 'hidden';
-        $("#sortable li").each(function() {
-            if ($(this)[0].id == '') {
-                $(this)[0].style.boxShadow = 'rgba(17, 177, 177, 0.1) 0px 4px 16px, rgba(17, 177, 177, 0.1) 0px 8px 24px, rgba(17, 177, 177, 0.1) 0px 16px 56px';
-            }
-        });
-      },
-      stop: function (event, ui) {
-        var movingName = event.target;
-        movingName.style.visibility = 'visible';
-        $("#sortable li").each(function() {
-          $(this)[0].style.boxShadow = 'none';
-      });
-      },
-  });
-
-  $("#sortable li").droppable({
-    accept: function(d) { // check if a piece can be dropped here
-      if (this.id == '') { 
-          return true;
-      }
-      return false;
-    },
-    drop: function(event, ui) {
-      if (ui.draggable[0].classList.contains('draggableNames')) {
-          ui.draggable[0].style.display = 'none';
-          event.target.style.backgroundColor = 'whitesmoke';
-          event.target.style.border = '1px black solid';
-          event.target.style.color = 'black';
-          event.target.innerHTML = ui.draggable[0].innerHTML;
-          event.target.id = ui.draggable[0].innerHTML;
-      }
-    }
-  });
-}
-
-// dynamic options to "What should we call you on the leaderboard?" question
-function changeLeaderboardOptions() {
-  document.getElementById("option1").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value; 
-  document.getElementById("option2").innerHTML = document.getElementById("firstName").value + " " + document.getElementById("lastName").value.charAt(0); 
-}
-
-// when user clicks submit entry form button
-function submitEntryForm(e) {
-  if(!confirm('Are you sure?')) {
-      e.preventDefault();
-  } else {
-    console.log('submitted');
-  }
 }
 
 //////////////////////////////////////////////////////////
@@ -202,62 +106,63 @@ function partialScoring(dropOutOrder, playerPredictionsArray) {
   return calculateKendallTauDistance(dropsWithPlaceHolders, predictionsWithPlaceHolders);
 }
 
-// from first to last
-//Marianne Williamson,Cory Booker,John Delaney,Andrew Yang,Michael Bennet,Deval Patrick,Tom Steyer,Pete Buttigieg,Amy Klobuchar,Michael Bloomberg,Elizabeth Warren,Tulsi Gabbard,Bernie Sanders,Joe Biden
-//var dropoutOrder = ["Marianne Williamson", "Cory Booker", "John Delaney", "Andrew Yang", "Michael Bennet", "Deval Patrick", "Tom Steyer", "Pete Buttigieg", "Amy Klobuchar", "Michael Bloomberg", "Elizabeth Warren", "Tulsi Gabbard", "Bernie Sanders", "Joe Biden"];
+function readData() { 
+  d3.csv("data/submissions2024.csv").then(function(data) {
+      // compute performance metrics
+      data.forEach((d, i) => {
+          d.prediction = d.prediction.split(',').slice(0, numberOfCandidates); // slice since splitting adds empty string to array
+          d.kendallDistance = 0;
+          d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
+          d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
+          d.participantID = i;
+          d.round_1_rank = 13;
+          d.round_2_rank = 5;
+          d.round_3_rank = 6;
+          d.round_4_rank = 14;
+          d.round_5_rank = 1;
+          d.round_6_rank = 2;
+      });
+      data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
+      // compute rank for each player
+      for (let i = 0; i < data.length; i++) {
+        if (i == 0) {
+          data[i].rank = 1;
+        }
+        else if (data[i].kendallDistance == data[i-1].kendallDistance) {
+          data[i].rank = data[i-1].rank;
+        }
+        else {
+          data[i].rank = i + 1;
+        }
+      };
 
-function dataPrep() { 
-  d3.csv("data/submissions2024.csv")
-    .then(function(data) {
-        // compute performance metrics
-        data.forEach((d, i) => {
-            d.prediction = d.prediction.split(',').slice(0, numberOfCandidates); // slice since splitting adds empty string to array
-            d.kendallDistance = 0;
-            d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
-            d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
-            d.participantID = i;
-        });
-        data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
-        // compute rank for each player
-        for (let i = 0; i < data.length; i++) {
-          if (i == 0) {
-            data[i].rank = 1;
-          }
-          else if (data[i].kendallDistance == data[i-1].kendallDistance) {
-            data[i].rank = data[i-1].rank;
-          }
-          else {
-            data[i].rank = i + 1;
-          }
-        };
+      // add each player to leaderboard
+      var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]); // row color
+      data.forEach(d => {
+        addRow(d.rank, d.leaderboardAlias, d.kendallDistance, d.accuracy.toFixed(1), distanceToColorScale(d.rank), d);
+      });
 
-        // add each player to leaderboard
-        var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]); // row color
-        data.forEach(d => {
-          addRow(d.rank, d.leaderboardAlias, d.kendallDistance, d.accuracy.toFixed(1), distanceToColorScale(d.rank), d);
+      // get average drop out predictions
+      var candidateScores = {}
+      // find dropout num for each candidate in each guess. Add num to total value for that candidate in the dict.
+      data.forEach(d => {
+        d.prediction.forEach((p, i) => {
+          if (candidateScores[p]) {
+            candidateScores[p] += i;
+          } else { candidateScores[p] = i}
         });
-
-        // get average drop out predictions
-        var candidateScores = {}
-        // find dropout num for each candidate in each guess. Add num to total value for that candidate in the dict.
-        data.forEach(d => {
-          d.prediction.forEach((p, i) => {
-            if (candidateScores[p]) {
-              candidateScores[p] += i;
-            } else { candidateScores[p] = i}
-          });
-        });
-        // calc average by dividing each value by number of participants
-        var averagePredictions = Object.keys(candidateScores).map(function (key) {
-          return {'candidate':key, 'value':candidateScores[key] / data.length};
-        });
-        averagePredictions = averagePredictions.slice().sort((a, b) => d3.ascending(a.value, b.value));
-        var averageOrder = [];
-        averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
-        //drawScoresLineplot(scoresOverTime);
-
-        // draw heatmap
-        drawHeatmap(data);
+      });
+      // calc average by dividing each value by number of participants
+      var averagePredictions = Object.keys(candidateScores).map(function (key) {
+        return {'candidate':key, 'value':candidateScores[key] / data.length};
+      });
+      averagePredictions = averagePredictions.slice().sort((a, b) => d3.ascending(a.value, b.value));
+      var averageOrder = [];
+      averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
+      
+      // add some viz
+      drawScoresLineplot(data); // draw scores over time lineplot
+      drawHeatmap(data); // draw heatmap
   }); 
 };
 
@@ -305,63 +210,56 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
     });
     row.addEventListener("click", function() { // click a row to show their line in Standings Over Time tab
       document.getElementById('lineplotRow' + d.participantID).click();
+      openTab(event, 'scoresLineplot');
     })
 
 }
 
 function addInteractionToPredictionsList() {
-  d3.text('data/droppedCandidates.csv').then(function(text) {
-    var dropOutOrder = text.split(",");
-    d3.select("#playerPredictions").on("mouseover", function() {
-        document.getElementById("winnerColumn2").innerHTML = '';
-        document.getElementById("1stDropColumn2").innerHTML = '';
-        $("#playerTable tr").each(function(index) {
+    d3.select("#playerPredictions")
+      .on("mouseover", function() {
+          document.getElementById("winnerColumn2").innerHTML = '';
+          document.getElementById("1stDropColumn2").innerHTML = '';
+          $("#playerTable tr").each(function(index) {
+              var columns = this.querySelectorAll('td');
+              if (dropOutOrder.includes(columns[0].innerHTML)) {
+                  var scoreEffect = Math.abs(numberOfCandidates - 1 - dropOutOrder.indexOf(columns[0].innerHTML) - index);
+                  if (scoreEffect == 0) {
+                      columns[1].innerHTML = "✔";
+                  } else {
+                      columns[1].innerHTML = "-" + scoreEffect;
+                  }
+              }
+          });
+      })
+      .on("mouseout", function() {
+          $("#playerTable tr").each(function(index) {
             var columns = this.querySelectorAll('td');
-            if (dropOutOrder.includes(columns[0].innerHTML)) {
-                var scoreEffect = Math.abs(numberOfCandidates - 1 - dropOutOrder.indexOf(columns[0].innerHTML) - index);
-                if (scoreEffect == 0) {
-                    columns[1].innerHTML = "✔";
-                } else {
-                    columns[1].innerHTML = "-" + scoreEffect;
-                }
-            }
-        });
-    })
-    .on("mouseout", function() {
-        $("#playerTable tr").each(function(index) {
-          var columns = this.querySelectorAll('td');
-          columns[1].innerHTML = "";
-          document.getElementById("winnerColumn2").innerHTML = 'Winner';
-          document.getElementById("1stDropColumn2").innerHTML = '1st drop';
-        });
-    });
-  });
+            columns[1].innerHTML = "";
+            document.getElementById("winnerColumn2").innerHTML = 'Winner';
+            document.getElementById("1stDropColumn2").innerHTML = '1st drop';
+          });
+      });
 }
 
 //////////////////////////
 
 function drawScoresLineplot(data) {
 
-  // remove Anonymous players and group the data by player ID
-  const grouped = d3.group(data, d => d.id);
-  const sumstat = new Map([...grouped].sort((a, b) => (a[1][0].leaderboardAlias > b[1][0].leaderboardAlias ? 1 : -1))); // alphabetize
-
-  if (IsMobile()) {
-    // set the dimensions and margins of the graph
+  // set the dimensions and margins of the graph
+  if (window.innerWidth < 600) {
     var margin = {top: 10, right: 30, bottom: 50, left: 50},
     width = (screen.height / 2) - margin.left - margin.right,
     height = (screen.width) - margin.top - margin.bottom;
   }
   else {
-    // set the dimensions and margins of the graph
     var margin = {top: 10, right: 40, bottom: 50, left: 80},
     width = (screen.width * .75) - margin.left - margin.right,
     height = (screen.height / 1.5) - margin.top - margin.bottom;
-
     document.getElementById('tableContainer').style.maxHeight = height + 'px';
   }
      
-  // append the svg object to the body of the page
+  // append a svg object to the page
   var svg = d3.select("#lineplot")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -375,27 +273,28 @@ function drawScoresLineplot(data) {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  if (IsMobile()) { // update when candidate drops out
+  const xTicks = [];
+  if (window.innerWidth < 600) {
     yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"];
-    xTicks = ["MW", "CB", "JD", "AY", "MB", "DP", "TS", "PB", "AK", "MB", "EW", "TG", "BS"];
+    dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" "[1]))); // TODO: switch out with candidate initials?
   }
-  else { // update when candidate drops out
+  else {
     yTicks = ["1st Place", "10th", 20, 30, 40, 50, 60, 70, "80"];
-    xTicks = ["Williamson", "Booker", "Delaney", "Yang", "Bennet", "Patrick", "Steyer", "Buttigieg", "Klobuchar", "Bloomberg", "Warren", "Gabbard", "Sanders"];
+    dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" "[1])));
   }
 
   // Add X axis
   var x = d3.scaleLinear()
-    .domain(d3.extent(data, function(d) { return Number(d.round); }))
+    .domain([0, dropOutOrder.length - 1]) // 1 tick for each round
     .range([ 0, width ]);
   svg.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).ticks(11).tickFormat(function(d, i){return xTicks[i]}));
-
+    .call(d3.axisBottom(x).ticks(dropOutOrder.length).tickFormat(function(d){return xTicks[d]}));
+  
   // Add Y axis
   var y = d3.scaleLinear()
-    .domain([0, d3.max(data, function(d) { return +d.rank; })])
+    .domain([0, data.length]) // one's rank cannot exceed number of participants
     .range([0, height]);
 
   svg.append("g")
@@ -414,34 +313,10 @@ function drawScoresLineplot(data) {
     .attr("class", "tooltip")				
     .style("opacity", 0);
 
-  // const annotations = svg
-  //   .append("g")
-  //   .attr("class", "annotation");
-  // annotations.append("rect")
-  //   .attr("x", 0)
-  //   .attr("y", 0);
-  // annotations.append("text")
-  //   .attr("id", "text1")
-  //   .attr("x", 20)
-  //   .attr("y", 20)
-  //   .style("dominant-baseline", "hanging")
-  //   .html('Oliver Gladfelter');
-  // annotations.append("text")
-  //   .attr("id", "text2")
-  //   .attr("x", 20)
-  //   .attr("y", 42)
-  //   .style("dominant-baseline", "hanging")
-  //   .html("Rank: 59");
-  // annotations.append("text")
-  //   .attr("id", "text3")
-  //   .attr("x", 20)
-  //   .attr("y", 64)
-  //   .style("dominant-baseline", "hanging")
-  //   .html("Round: 4");
 
   // add all names to table menu
   const tableSelector = document.getElementById('scoresLineplotTable');
-  sumstat.forEach(d => {
+  data.forEach(d => {
     let randomHue = Math.floor(Math.random() * 360);
     const blueMin = 210;
     const purpleMax = 270;
@@ -451,16 +326,16 @@ function drawScoresLineplot(data) {
     d.color = 'hsl(' + randomHue + ', 100%, 50%';
     // add each participant's name to table menu
     var row = document.createElement('tr');
-    row.value = d[0].id; // should be ID
+    row.participantID = d.participantID;
     row.dataset.selected = 0;
     var column = document.createElement('td');
-    column.innerHTML = d[0].leaderboardAlias;
+    column.innerHTML = d.leaderboardAlias;
     row.appendChild(column);
-    row.addEventListener('click', drawPlayerLine);
-    row.id = 'lineplotRow' + d[0].id;
+    row.addEventListener('click', drawPlayerLine, false);
+    row.id = 'lineplotRow' + d.participantID;
     tableSelector.appendChild(row);
 
-    if (d[0].leaderboardAlias == 'Wisdom of the crowd') {
+    if (d.leaderboardAlias == 'Wisdom of the crowd') {
       row.click();
     }
   });
@@ -478,36 +353,35 @@ function drawScoresLineplot(data) {
   //   annotations.attr("transform", "translate(" + x(d.round) + "," + y(d.rank) + ")");
   // }
 
-  function drawPlayerLine(playerID) {
+  function drawPlayerLine(event) {
     this.dataset.selected == 0 ? this.dataset.selected = 1 : this.dataset.selected = 0; // flip 'truthiness' of if row is selected or not
 
-    const selectedData = sumstat.get(this.value || playerID); // access data for the player corresponding to clicked row
+    const participantData = data.filter((d) => d.participantID == event.currentTarget.participantID)[0]; // access data for the player corresponding to clicked row
 
     if (this.dataset.selected == 1) { // draw the line
 
       // highlight the row
-      this.style.backgroundColor = selectedData.color;
+      this.style.backgroundColor = participantData.color;
 
-      // add selected row's data to voronoiData
-      // voronoiData.push(selectedData);
-      // voronoiData = voronoiData.flat();
-
+      const roundData = [];
+      dropOutOrder.forEach((d, i) => roundData.push({'round': i, 'rank': participantData['round_2_rank']}));
+      
       // define the line
       var valueline = d3.line()
         .x(function(d) { return x(d.round); })
         .y(function(d) { return y(d.rank); });
-  
+
       // Draw lines
       svg.append("path")
-        .data([selectedData])
+        .data([roundData])
         .attr("d", valueline)
-        .attr("id", d => "scoreLine" + d[0].id)
+        .attr("id", d => "scoreLine" + participantData.participantID)
         .attr("class", "scoreLine")
-        .style("stroke", selectedData.color)
-        .on("mouseover", function(event, d) {
+        .style("stroke", participantData.color)
+        .on("mouseover", function() {
           d3.select(this).raise(); 
           d3.select(this).style("stroke-width", "8px");
-          d3.selectAll(".scoreDots" +  + d[0].id).raise(); // get scatter dots and make top
+          d3.selectAll(".scoreDots" + participantData.participantID).raise(); // get scatter dots and make top
         })
         .on("mouseout",function() {
           d3.select(this).style("stroke-width", "3px");
@@ -515,30 +389,30 @@ function drawScoresLineplot(data) {
 
       // add circles to look at
       svg.selectAll(".dot")	
-        .data(selectedData)			
+        .data(roundData)			
         .enter().append("circle")								
         .attr("r", 5)
-        .style("stroke", selectedData.color)
-        .attr("class", d => "scoreDots" + d.id)
+        .style("stroke", participantData.color)
+        .attr("class", d => "scoreDots" + participantData.participantID)
         .attr('data-scatterplotMark', 1)
         .attr("cx", function(d) { return x(d.round); })		 
         .attr("cy", function(d) { return y(d.rank); });
 
       // add invisible circles for tooltip
       svg.selectAll(".dot")	
-        .data(selectedData)			
+        .data(roundData)			
         .enter().append("circle")								
         .attr("r", 15)
         .style("opacity", 0.1)
-        .attr("class", d => "scoreDots" + d.id)
+        .attr("class", d => "scoreDots" + participantData.participantID)
         .attr('data-scatterplotMark', 1)
-        .style("fill", selectedData.color)
+        .style("fill", participantData.color)
         .attr("cx", function(d) { return x(d.round); })		 
         .attr("cy", function(d) { return y(d.rank); })
         .on("mouseover", function(event, d) {	
           d3.select(this).transition().duration(500).attr("r", 20);
           tooltip
-            .html("<b>" + d.leaderboardAlias + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
+            .html("<b>" + participantData.leaderboardAlias + "</b>" + "<br/>" + "Rank: " + d.rank + "<br/>" + "Round: " + d.round)
             .style('left', event.pageX / window.innerWidth <= 0.75 ? event.pageX + 5 + 'px' : event.pageX - tooltip.node().getBoundingClientRect().width - 10 + 'px')
             .style("top", (event.pageY + 10) + "px")
             .transition()		
@@ -553,43 +427,11 @@ function drawScoresLineplot(data) {
             .style("opacity", 0);
         });
     } else { // remove the line
-      d3.select("#scoreLine" + selectedData[0].id).remove();
-      d3.selectAll(".scoreDots" + selectedData[0].id).remove();
+      d3.select("#scoreLine" + participantData.participantID).remove();
+      d3.selectAll(".scoreDots" + participantData.participantID).remove();
       this.style.backgroundColor = 'white';
-      //voronoiData = voronoiData.filter(d => d.id != this.value); // remove user data from voronoi
     }
-
-    //updateVoronoi(voronoiData);
   }
-
-  // function updateVoronoi(data) {
-  //   // update voronoi
-  //   voronoi = d3.Delaunay
-  //     .from(data, d => x(d.round), d => y(d.rank))
-  //     .voronoi([-1, -1, width + 1, height + 1]); // ensures voronoi is limited to the chart area
-  //   d3.select("#voronoiWrapper").remove(); // remove old voronoi
-  //   // add new
-  //   svg.append("g")
-  //     .attr('id', 'voronoiWrapper')
-  //     .selectAll("path")
-  //     .data(data)
-  //     .join("path")
-  //     .attr("fill", "transparent")
-  //     .style("pointer-events", "all")
-  //     .attr("d", (d,i) => voronoi.renderCell(i))
-  //     .on("mousemove", updateTooltip);
-  // }
-}
-
-function shuffle(a) {
-  var j, x, i;
-  for (i = a.length - 1; i > 0; i--) {
-      j = Math.floor(Math.random() * (i + 1));
-      x = a[i];
-      a[i] = a[j];
-      a[j] = x;
-  }
-  return a;
 }
 
 function selectTopNum(option, rankNum){
@@ -645,12 +487,8 @@ function selectTopNumPreviousRound(option, rankNum){
   }
 };
 
-function removeDuplicates(array) {
-  array.splice(0, array.length, ...(new Set(array)))
-};
-
 //////////////////////////////////////////////////////////
-// Analysis section
+// Heatmap functions
 //////////////////////////////////////////////////////////
 
 function range(start, end) {
@@ -661,13 +499,11 @@ function nth(n){return["st","nd","rd"][((n+90)%100-10)%10-1]||"th"}
 
 function drawHeatmap(predictionsData) {
 
-  numberOfCandidates = 12;
-
   // read heatmap data generated by python script
   d3.csv("data/heatmapData.csv").then(function(data) {
     
-    const dropOutOrder = data.map(function(d) { return d.index}); // list of candidates in 'average' drop out order
-    const dropOutPositions = range(1, numberOfCandidates); // numbers
+    const averagePredictedDropOutOrder = data.map(function(d) { return d.index}); // list candidates by 'average' drop out order
+    const dropOutPositions = range(1, numberOfCandidates); // an array of numbers, 1 - 12
 
     // reformat data into long format
     const heatmapData = [];
@@ -710,7 +546,7 @@ function drawHeatmap(predictionsData) {
     
     // Build Y scales and axis:
     var y = d3.scaleBand()
-        .domain(dropOutOrder)
+        .domain(averagePredictedDropOutOrder)
         .range([ 0, height ])
         .padding(padding);
     svg.append("g")
@@ -826,11 +662,8 @@ function drawHeatmap(predictionsData) {
 }
 
 function main() {
-    // entry form
-    addSortingToEntryForm();
-
-    // dataPrep() calls a few other functions
-    dataPrep();
+    // calls a few other functions too
+    readData();
 
     // leaderboard interaction
     addInteractionToPredictionsList();
