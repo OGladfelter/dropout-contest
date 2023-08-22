@@ -114,7 +114,11 @@ function readData() {
           d.kendallDistance = 0;
           d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
           d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
-          d.participantID = i;
+          if (d.leaderboardAlias == 'Wisdom of the crowd') {
+            d.participantID = 0;
+          } else {
+            d.participantID = i + 1;
+          }
           d.round_1_rank = 13;
           d.round_2_rank = 5;
           d.round_3_rank = 6;
@@ -159,6 +163,7 @@ function readData() {
       averagePredictions = averagePredictions.slice().sort((a, b) => d3.ascending(a.value, b.value));
       var averageOrder = [];
       averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
+      console.log(averagePredictions);
       
       // add some viz
       drawScoresLineplot(data); // draw scores over time lineplot
