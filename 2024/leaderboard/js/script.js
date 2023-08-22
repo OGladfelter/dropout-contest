@@ -118,7 +118,7 @@ function readData() {
           d.round_1_rank = 13;
           d.round_2_rank = 5;
           d.round_3_rank = 6;
-          d.round_4_rank = 14;
+          d.round_4_rank = 23;
           d.round_5_rank = 1;
           d.round_6_rank = 2;
       });
@@ -293,13 +293,15 @@ function drawScoresLineplot(data) {
     .call(d3.axisBottom(x).ticks(dropOutOrder.length).tickFormat(function(d){return xTicks[d]}));
   
   // Add Y axis
+  let maxRank = 1;
+  dropOutOrder.forEach((d, i) => maxRank = d3.max([maxRank, d3.max(data, c => c[`round_${i+1}_rank`])])); // for every 'round_x_rank' column, find highest possible rank
   var y = d3.scaleLinear()
-    .domain([0, data.length]) // one's rank cannot exceed number of participants
+    .domain([1, maxRank]) // min rank will always be 1
     .range([0, height]);
 
   svg.append("g")
     .attr("class", "axis")
-    .call(d3.axisLeft(y).tickFormat(function(d, i){return yTicks[i]}));
+    .call(d3.axisLeft(y).ticks(5).tickFormat(function(d){ return d + nth(d) }));
 
   svg.append("text")
     .attr("x", width / 2)
@@ -312,7 +314,6 @@ function drawScoresLineplot(data) {
   var tooltip = d3.select("body").append("div")	
     .attr("class", "tooltip")				
     .style("opacity", 0);
-
 
   // add all names to table menu
   const tableSelector = document.getElementById('scoresLineplotTable');
@@ -352,7 +353,7 @@ function drawScoresLineplot(data) {
 
       const roundData = [];
       dropOutOrder.forEach((d, i) => roundData.push({'round': i, 'rank': participantData[`round_${i+1}_rank`]}));
-      console.log(roundData);
+      
       // define the line
       var valueline = d3.line()
         .x(function(d) { return x(d.round); })
