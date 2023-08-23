@@ -345,6 +345,7 @@ function drawScoresLineplot(data) {
       var valueline = d3.line()
         .x(function(d) { return x(d.round); })
         .y(function(d) { return y(d.rank); });
+        //.curve(d3.curveStep);
 
       // Draw lines
       svg.append("path")
@@ -592,7 +593,18 @@ function drawHeatmap(predictionsData) {
                 document.getElementById("contestInfo").innerHTML = 'Remove highlighting';
                 openTab(event, 'Leaderboard');
             }
-        })
+        });
+
+    svg.append('rect')
+        .attr("y", function(d) { return y('ramaswamy') })
+        .attr("x", function(d) { return x(1) })
+        .attr("width", width - 5)
+        .attr("height", height / numberOfCandidates )
+        .style('fill', 'none')
+        .style('stroke', 'orange')
+        .style('stroke-width', '2px')
+        .style('display', 'none')
+        .attr('id', 'ramaswamyHighlightRect');
 
     // Build color scale for text label
     var textColor = d3.scaleQuantile()
@@ -658,12 +670,52 @@ function addWaypointInteractions(colorScale) {
     },
     offset: 'bottom-in-view'
   });
+
+  new Waypoint({
+    element: document.getElementById('step3'),
+    handler: function(direction) {
+        if (direction == 'down') {
+          deHighlightTile("#desantis11Rect", colorScale);
+          deHighlightTile("#desantis12Rect", colorScale);
+          highlightTile("#hurd1Rect");
+          highlightTile("#elder1Rect");
+          highlightTile("#suarez1Rect");
+        }
+        else {
+          highlightTile("#desantis11Rect");
+          highlightTile("#desantis12Rect");
+          deHighlightTile("#hurd1Rect", colorScale);
+          deHighlightTile("#elder1Rect", colorScale);
+          deHighlightTile("#suarez1Rect", colorScale);
+        }
+    },
+    offset: 'bottom-in-view'
+  });
+
+  new Waypoint({
+    element: document.getElementById('step4'),
+    handler: function(direction) {
+        if (direction == 'down') {
+          deHighlightTile("#hurd1Rect", colorScale);
+          deHighlightTile("#elder1Rect", colorScale);
+          deHighlightTile("#suarez1Rect", colorScale);
+          d3.select("#ramaswamyHighlightRect").style('display', 'block');
+        }
+        else {
+          highlightTile("#hurd1Rect");
+          highlightTile("#elder1Rect");
+          highlightTile("#suarez1Rect");
+          d3.select("#ramaswamyHighlightRect").style('display', 'none');
+        }
+    },
+    offset: 'bottom-in-view'
+  });
   
   Waypoint.disableAll();
 }
 
 function highlightTile(id) {
-  d3.select(id).style("fill", "orange").style("stroke", 'black').style("stroke-width", '2px');
+  d3.select(id).style("fill", "orange").style("stroke", 'black').style("stroke-width", '1px');
 }
 function deHighlightTile(id, colorScale) {
   const thisData = d3.select(id).data()[0];

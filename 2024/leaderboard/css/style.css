@@ -16,7 +16,7 @@ body {
 }
 
 #Rules, #analysis {
-  margin-top: 100px;
+  margin-top: 50px;
   text-align: center;
   line-height: 175%;
 }
@@ -55,6 +55,14 @@ article {
 ::selection {
   color: black;
   background: cyan;
+}
+
+.highlightText {
+  line-height: 20px;
+  background: rgb(253, 186, 60);
+  padding: 5px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 /* link */
@@ -251,21 +259,6 @@ Leaderboard CSS
   background-color: #efa311 !important;
 }
 
-/* ::-webkit-scrollbar {
-  width: 13px;
-}
-.contestInfo::-webkit-scrollbar {
-  width: 11px;
-}
-::-webkit-scrollbar-track {
-  background: #181c26;
-}
-::-webkit-scrollbar-thumb {
-  background-color: var(--thumbBG) ;
-  border-radius: 10px;
-  border: 2px solid #8181df;
-} */
-
 /* -------------------
 Scores over time CSS
 ----------------------*/
@@ -362,8 +355,8 @@ div.tooltip {
   color: black;
   border: 1px black solid;
   padding: 10px 20px;
-  width: 40%;
-  margin: 100vh auto;
+  width: 33%;
+  margin: 15vh auto 85vh auto;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   text-align: left;
   z-index: 2;
