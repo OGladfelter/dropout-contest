@@ -199,7 +199,6 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
       document.getElementById('lineplotRow' + d.participantID).click();
       openTab(event, 'scoresLineplot');
     })
-
 }
 
 function addInteractionToPredictionsList() {
@@ -633,7 +632,23 @@ function drawHeatmap(predictionsData) {
         .text("Predicted Drop Out Position");
 
     addWaypointInteractions(heatmapColors);
+
+    // hard coding some interactions on the analytics paragraphs (highlighted sentences)
+    document.getElementById("trumpFact").addEventListener('click', function() {
+        highlightLeaderboardRows(predictionsData, 11, 'trump');
+    });
+    document.getElementById("desantisFact").addEventListener('click', function() {
+        highlightLeaderboardRows(predictionsData, 10, 'desantis');
+    });
   });
+}
+
+function highlightLeaderboardRows(data, dropPosition, candidateName) {
+    document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill'));
+    const theGuessers = data.filter(t => t.prediction[dropPosition] == candidateName);
+    theGuessers.forEach(g => document.getElementById("leaderboardRow" + g.participantID).classList.add('orangeFill'));
+    document.getElementById("contestInfo").innerHTML = 'Remove highlighting';
+    openTab(event, 'Leaderboard');
 }
 
 // for the heatmap and analysis bits

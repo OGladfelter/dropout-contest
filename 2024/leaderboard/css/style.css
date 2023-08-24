@@ -63,6 +63,7 @@ article {
   padding: 5px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+  cursor: pointer;
 }
 
 /* link */
@@ -355,7 +356,7 @@ div.tooltip {
   color: black;
   border: 1px black solid;
   padding: 10px 20px;
-  width: 33%;
+  width: 25%;
   margin: 15vh auto 85vh auto;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   text-align: left;
