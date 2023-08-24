@@ -189,43 +189,38 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
     nameCell.style.textAlign = 'left';
     nameCell.style.fontSize = '18px';
 
+    // add interactions for rows in leaderboard
     row.addEventListener("mouseover", function() {
         document.getElementById("playerHeader").innerHTML = d.leaderboardAlias + " Prediction"; // customize title
         for (i=0; i<d.prediction.length; i++ ) {
           document.getElementById("drop_" + (i + 1)).innerHTML = candidateDict[d["prediction"][i]];
         }
+        document.getElementById("winnerColumn2").innerHTML = '';
+        document.getElementById("1stDropColumn2").innerHTML = '';
+        $("#playerTable tr").each(function(index) {
+            var columns = this.querySelectorAll('td');
+            if (dropOutOrder.includes(columns[0].innerHTML)) {
+                var scoreEffect = Math.abs(numberOfCandidates - 1 - dropOutOrder.indexOf(columns[0].innerHTML) - index);
+                if (scoreEffect == 0) {
+                    columns[1].innerHTML = "✔";
+                } else {
+                    columns[1].innerHTML = "-" + scoreEffect;
+                }
+            }
+        });
+    });
+    row.addEventListener("mouseout", function() {
+      $("#playerTable tr").each(function(index) {
+        var columns = this.querySelectorAll('td');
+        columns[1].innerHTML = "";
+        document.getElementById("winnerColumn2").innerHTML = 'Winner';
+        document.getElementById("1stDropColumn2").innerHTML = '1st drop';
+      });
     });
     row.addEventListener("click", function() { // click a row to show their line in Standings Over Time tab
       document.getElementById('lineplotRow' + d.participantID).click();
       openTab(event, 'scoresLineplot');
-    })
-}
-
-function addInteractionToPredictionsList() {
-    d3.select("#playerPredictions")
-      .on("mouseover", function() {
-          document.getElementById("winnerColumn2").innerHTML = '';
-          document.getElementById("1stDropColumn2").innerHTML = '';
-          $("#playerTable tr").each(function(index) {
-              var columns = this.querySelectorAll('td');
-              if (dropOutOrder.includes(columns[0].innerHTML)) {
-                  var scoreEffect = Math.abs(numberOfCandidates - 1 - dropOutOrder.indexOf(columns[0].innerHTML) - index);
-                  if (scoreEffect == 0) {
-                      columns[1].innerHTML = "✔";
-                  } else {
-                      columns[1].innerHTML = "-" + scoreEffect;
-                  }
-              }
-          });
-      })
-      .on("mouseout", function() {
-          $("#playerTable tr").each(function(index) {
-            var columns = this.querySelectorAll('td');
-            columns[1].innerHTML = "";
-            document.getElementById("winnerColumn2").innerHTML = 'Winner';
-            document.getElementById("1stDropColumn2").innerHTML = '1st drop';
-          });
-      });
+    });
 }
 
 //////////////////////////
@@ -738,11 +733,7 @@ function deHighlightTile(id, colorScale) {
 }
 
 function main() {
-    // calls a few other functions too
     readData();
-
-    // leaderboard interaction
-    addInteractionToPredictionsList();
 }
 
 main();
