@@ -61,6 +61,10 @@
 
 <!-- THE LEADERBOARD -->
 <div id="Leaderboard" class="tabcontent">
+  <article style="text-align: center;">
+    <h1>Contest Leaderboard</h1>
+    <p style="margin:2px;">Click any row to view rank over time</p>
+  </article>
   <div class="container">
     <table id="leaderboardTable" class="leaderboard">
       <tr>
@@ -75,8 +79,8 @@
         <h1 id="playerHeader" style='text-align: center; font-weight: bold;'>Actual Order</h1>
         <table id="playerTable" style="width:90%; margin: auto;">
           <tr>
-            <td id="drop_12" style="font-weight:bold">?</td>
-            <td id="winnerColumn2" class="scoreEffect">Winner</td>
+            <td id="drop_12" style="font-weight:bold">Winner: ?</td>
+            <td id="winnerColumn2" class="scoreEffect"></td>
           </tr>
           <tr>
             <td id="drop_11">?</td>
@@ -119,13 +123,13 @@
             <td class="scoreEffect"></td>
           </tr>
           <tr>
-            <td id="drop_1">?</td>
-            <td id="1stDropColumn2" class="scoreEffect">1st drop</td>
+            <td id="drop_1">1st drop: ?</td>
+            <td id="1stDropColumn2" class="scoreEffect"></td>
           </tr>
         </table>
     </div>
   </div>
-  <div class="contestInfo" id="contestInfo" onclick="document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill')); this.innerHTML='Last Updated April 8, 2020'">Last Updated April 8, 2020</div>
+  <div class="contestInfo" id="contestInfo" onclick="document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill')); this.innerHTML='Last Updated August 23, 2023'">Last Updated August 23, 2023</div>
 </div>
 <!-- end leaderboard -->
 

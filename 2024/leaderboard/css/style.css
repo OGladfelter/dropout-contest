@@ -15,6 +15,10 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+#Leaderboard {
+  margin-top: 50px;
+}
+
 #Rules, #analysis {
   margin-top: 50px;
   text-align: center;
