@@ -261,9 +261,6 @@ Leaderboard CSS
   overflow: auto;
   text-align: center;
 }
-.contestInfo img {
-  padding: 10px;
-}
 
 .orangeFill {
   background-color: #efa311 !important;
@@ -436,14 +433,17 @@ Mobile
 
   .leaderboard {
     position: absolute;
-    /* top: 1000px; */
     width: 90%;
     margin-left: auto;
     margin-right: auto;
     left: 5%;
-    margin-top: 70%;
+    margin-top: 0;
     -webkit-transform: translate(0%, 0%);
           transform: translate(0%, 0%);
+  }
+
+  .contestInfo {
+    display: none;
   }
 
   .analysis {
@@ -471,6 +471,9 @@ Mobile
   }
   .heatmapLabel {
     font-size: 10px;
+  }
+  .scrollOnTop {
+    width: 90%;
   }
 
   .sponsor_container_container {
