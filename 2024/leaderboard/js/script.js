@@ -191,7 +191,7 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 
     // add interactions for rows in leaderboard
     row.addEventListener("mouseover", function() {
-        document.getElementById("playerHeader").innerHTML = d.leaderboardAlias + " Prediction"; // customize title
+        document.getElementById("playerHeader").innerHTML = d.leaderboardAlias + " prediction"; // customize title
         for (i=0; i<d.prediction.length; i++ ) {
           document.getElementById("drop_" + (i + 1)).innerHTML = candidateDict[d["prediction"][i]];
         }
