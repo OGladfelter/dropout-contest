@@ -15,7 +15,7 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-#Leaderboard {
+#Leaderboard, #scoresLineplot {
   margin-top: 50px;
 }
 
