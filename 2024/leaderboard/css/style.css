@@ -203,7 +203,7 @@ Leaderboard CSS
 }
 .leaderboardRow {
   border: collapse;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .leaderboardRow:hover {
   background-color: rgb(0, 210, 210) !important;

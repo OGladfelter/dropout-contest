@@ -171,6 +171,9 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
     nameCell.style.textAlign = 'left';
     nameCell.style.fontSize = '18px';
 
+    distanceCell.style.textAlign = 'right';
+    accuracyCell.style.textAlign = 'right';
+
     // add interactions for rows in leaderboard
     row.addEventListener("mouseover", function() {
         document.getElementById("playerHeader").innerHTML = d.leaderboardAlias + " prediction"; // customize title
