@@ -15,6 +15,10 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+.scoreEffect {
+  text-align: right;
+}
+
 #Leaderboard, #scoresLineplot {
   margin-top: 50px;
 }
