@@ -42,9 +42,10 @@ h3 {
   margin: 2px auto;
 }
 .playerHeader {
-  font-size: 22px;
+  font-size: 20px;
   text-align: center;
   font-weight: bold;
+  margin-top: 10px;
 }
 
 p { 
@@ -242,6 +243,19 @@ Leaderboard CSS
 }
 
 /* Predctions Box */
+.predictionLabel {
+  position: relative;
+  top: 0px;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  font-size: 15px;
+  border: 1px black solid;
+  padding: 7.5px;
+  background-color: #3a404d;
+  border-radius: 5px;
+  display: none;
+}
 .predictions {
   position: -webkit-sticky; /* Safari */
   position: sticky;

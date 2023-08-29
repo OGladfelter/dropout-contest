@@ -182,7 +182,9 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 
     // add interactions for rows in leaderboard
     row.addEventListener("mouseover", function() {
-        document.getElementById("playerHeader").innerHTML = d.leaderboardAlias + " prediction"; // customize title
+        document.getElementById("predictionLabel").style.display = 'inline-block';
+        document.getElementById("playerHeader").style.marginTop = '0px';
+        document.getElementById("playerHeader").innerHTML = d.leaderboardAlias; // customize player header
         for (i=0; i<d.prediction.length; i++ ) {
           document.getElementById("drop_" + (i + 1)).innerHTML = candidateDict[d["prediction"][i]];
         }
@@ -204,7 +206,7 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
       $("#playerTable tr").each(function(index) {
         var columns = this.querySelectorAll('td');
         columns[1].innerHTML = "";
-        document.getElementById("winnerColumn2").innerHTML = 'Winner';
+        document.getElementById("winnerColumn2").innerHTML = 'Nominee';
         document.getElementById("1stDropColumn2").innerHTML = '1st drop';
       });
     });
