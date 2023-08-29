@@ -187,7 +187,7 @@ Leaderboard CSS
   display: block;
 }
 
-.container {
+.leaderboard_container {
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
@@ -465,18 +465,22 @@ Mobile
     width: 90%;
   }
 
+  .tabcontent {
+    width: 99vw;
+  }
+  .leaderboard_container {
+    /* width: 90%; */
+    display: block;
+  }
   .leaderboard {
-    position: absolute;
-    overflow: hidden;
-    max-width: 90%;
+    position: static;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 0;
-    -webkit-transform: translate(0%, 0%);
-          transform: translate(0%, 0%);
+    /* margin: 0 auto; */
   }
   .leaderboard th {
-    padding: 10px 2px;
+    padding: 10px 10px;
   }
   .distanceHeader {
     display: none;

@@ -147,12 +147,21 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 
     var rankCell = row.insertCell(0);
     var nameCell = row.insertCell(1);
-    var distanceCell = row.insertCell(2);
-    var accuracyCell = row.insertCell(3);
+
+    if (screen.width >= 600) {
+      var distanceCell = row.insertCell(2);
+      var accuracyCell = row.insertCell(3);
+      distanceCell.style.textAlign = 'right';
+      distanceCell.innerHTML = kendallDistance;
+    }
+    else {
+      var accuracyCell = row.insertCell(2);
+    }
+    accuracyCell.style.textAlign = 'right';
+    accuracyCell.innerHTML = accuracy;
+
     rankCell.innerHTML = '<span class="circle">' + rank + '</span>';
     nameCell.innerHTML = name == "Wisdom of the crowd" ? "<a href='https://en.wikipedia.org/wiki/Wisdom_of_the_crowd' target='_blank' id='wikiLink'>Wisdom of the crowd &#9432;</a>" : name;
-    distanceCell.innerHTML = kendallDistance;
-    accuracyCell.innerHTML = accuracy;
 
     // make aggregate row stand out
     if (name == "Wisdom of the crowd") {
@@ -170,13 +179,6 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 
     nameCell.style.textAlign = 'left';
     nameCell.style.fontSize = '18px';
-
-    distanceCell.style.textAlign = 'right';
-    accuracyCell.style.textAlign = 'right';
-    
-    if (screen.width < 600) {
-      distanceCell.style.display = 'none';
-    }
 
     // add interactions for rows in leaderboard
     row.addEventListener("mouseover", function() {
