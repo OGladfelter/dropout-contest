@@ -492,4 +492,14 @@ Mobile
   .cultureplot_logo {
     height:50%; width:50%;
   }
+
+  .example_row {
+    display: block;
+    width: 75%;
+  }
+
+  .heatmapContainer {
+    width: 50%;
+    margin-left: 5vw;
+  }
 }
