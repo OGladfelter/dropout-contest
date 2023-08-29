@@ -481,9 +481,9 @@ function drawHeatmap(predictionsData) {
         height = screen.height - 150 - margin.top - margin.bottom;
 
     if (screen.width < 600) {
-        margin = {top: 10, right: 30, bottom: 10, left: 10},
-        width = (screen.width * .8) - margin.left - margin.right,
-        height =(screen.width * .8) - margin.top - margin.bottom;
+        margin = {top: 10, right: 30, bottom: 90, left: 70},
+        width = (screen.width * .95) - margin.left - margin.right,
+        height =(screen.width * .95) - margin.top - margin.bottom;
     }
 
     var padding = 0.05;
