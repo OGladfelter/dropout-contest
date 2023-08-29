@@ -45,7 +45,6 @@ h3 {
 
 p { 
   font-size: 18px;
-  margin: 20px;
   color: whitesmoke;
 }
 
@@ -328,6 +327,7 @@ div.tooltip {
   border-radius: 5px;			
   pointer-events: none;		
   color: black;	
+  display: none;
 }
 
 .annotation {
@@ -367,6 +367,24 @@ div.tooltip {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   text-align: left;
   z-index: 2;
+}
+
+.update {
+  border: 1px rgb(222, 222, 222) solid;
+  padding: 10px;
+  margin: 20px;
+}
+span.date {
+  font-size: 14px;
+  color: rgb(222, 222, 222);
+  float: right;
+}
+.updateHeader {
+  font-size: 20px;
+  font-weight: bold;
+}
+.update p {
+  margin: 5px;
 }
 
 /*--------------------
