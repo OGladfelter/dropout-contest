@@ -560,4 +560,9 @@ Mobile
     margin-left: 5vw;
     top: 20%;
   }
+
+  span.date {
+    float: none;
+    display: block;
+  }
 }
