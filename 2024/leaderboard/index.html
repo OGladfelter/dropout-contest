@@ -53,7 +53,7 @@
 
 <div class="tabs">
   <button class="tablinks" onclick="openTab(event, 'Leaderboard')">Leaderboard</button>
-  <button class="tablinks" onclick="openTab(event, 'scoresLineplot')">Standings Over Time</button>
+  <!-- <button class="tablinks" onclick="openTab(event, 'scoresLineplot')">Standings Over Time</button> -->
   <button class="tablinks" onclick="openTab(event, 'analysis')">Analysis</button>
   <button class="tablinks" onclick="openTab(event, 'Rules')">Rules</button>
   <button class="tablinks" onclick="openTab(event, 'Sponsors')">Sponsors</button>
@@ -63,7 +63,7 @@
 <div id="Leaderboard" class="tabcontent">
   <article style="text-align: center;">
     <h1>Contest Leaderboard</h1>
-    <p style="margin:2px;">Click any row to view rank over time</p>
+    <p style="margin:2px; display:none;">Click any row to view rank over time</p>
   </article>
   <div class="container">
     <table id="leaderboardTable" class="leaderboard">
@@ -168,7 +168,7 @@
       <div class="scrollOnTop" id="step4">Contest participants disagree the most over how long Vivik Ramaswamy will campaign - it's common to see him all over the place in guesses. Predictions also often disagree about Chris Christie, but to a lesser degree.</div>
       <div class="scrollOnTop" style="margin-bottom:10vh; visibility:hidden;">Moving on...</div>
   </div>
-  <article>
+  <article style="display:none;">
       <h1>How Are These Predictions Panning Out?</h1>
       <div class="update">
           <span class="updateHeader">Will Hurd suspends his campaign</span>

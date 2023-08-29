@@ -15,7 +15,7 @@ const candidateDict = {
   'hurd': "Will Hurd"
 }
 
-const dropOutOrder = ["Will Hurd","Larry Elder","Francis Suarez","Doug Burgum","Asa Hutchinson","Tim Scott","Chris Christie","Vivek Ramaswamy","Nikki Haley","Mike Pence","Ron DeSantis","Donald Trump"]; // from first to last
+let dropOutOrder = []; // from first to last
 
 // for tab navigation
 function openTab(evt, tabID) {
@@ -50,63 +50,63 @@ function goToScoring(event) {
 //////////////////////////////////////////////////////////
 
 // kendall tau rank distance function
-function calculateKendallTauDistance(listA, listB){
-  var distance = 0
+// function calculateKendallTauDistance(listA, listB){
+//   var distance = 0
 
-  // get all potential non-self, non-duplicative pairs between the two arrays
-  var combinations = [];
-  listA.forEach(a => {
-    listB.forEach(b => {
-      if (a != b) {
-        combinations.push([a, b].sort());
-      }
-    })
-  });
-  var pairs = Array.from(new Set(combinations.map(JSON.stringify)), JSON.parse);
+//   // get all potential non-self, non-duplicative pairs between the two arrays
+//   var combinations = [];
+//   listA.forEach(a => {
+//     listB.forEach(b => {
+//       if (a != b) {
+//         combinations.push([a, b].sort());
+//       }
+//     })
+//   });
+//   var pairs = Array.from(new Set(combinations.map(JSON.stringify)), JSON.parse);
 
-  // for each pair, calc index of the pair objects, find index in lists, calc difference and add to distance
-  for (let [x, y] of pairs) {
-      a = listA.indexOf(x) - listA.indexOf(y);
-      b = listB.indexOf(x) - listB.indexOf(y);
+//   // for each pair, calc index of the pair objects, find index in lists, calc difference and add to distance
+//   for (let [x, y] of pairs) {
+//       a = listA.indexOf(x) - listA.indexOf(y);
+//       b = listB.indexOf(x) - listB.indexOf(y);
       
-      if (a * b < 0){
-          distance = distance + 1
-      }
-  }
-  return distance;
-}
+//       if (a * b < 0){
+//           distance = distance + 1
+//       }
+//   }
+//   return distance;
+// }
 
-function partialScoring(dropOutOrder, playerPredictionsArray) {
-  // I will want to calculate everyone's scores after each candidate drops out
-  // in the beginning stages, this is a challenge as there are lots of unknowns
-  // contest participants scores' should be impacted only by candidates who have already dropped
-  // candidates still campaigning should essentially be ignored. But removing them does not work because that would
-  // mess with the weight of a correct/incorrect prediction. Instead, replace all unknowns with 'correct' placeholder guesses
+// function partialScoring(dropOutOrder, playerPredictionsArray) {
+//   // I will want to calculate everyone's scores after each candidate drops out
+//   // in the beginning stages, this is a challenge as there are lots of unknowns
+//   // contest participants scores' should be impacted only by candidates who have already dropped
+//   // candidates still campaigning should essentially be ignored. But removing them does not work because that would
+//   // mess with the weight of a correct/incorrect prediction. Instead, replace all unknowns with 'correct' placeholder guesses
 
-  const alpha = Array.from(Array(dropOutOrder.length - 1)).map((e, i) => i + 65);
-  const placeholderValues1 = alpha.map((x) => String.fromCharCode(x)); // needs to equal length of candidates still running - 1
-  const placeholderValues2 = alpha.map((x) => String.fromCharCode(x)); // needs to equal length of candidates still running - 1
+//   const alpha = Array.from(Array(dropOutOrder.length - 1)).map((e, i) => i + 65);
+//   const placeholderValues1 = alpha.map((x) => String.fromCharCode(x)); // needs to equal length of candidates still running - 1
+//   const placeholderValues2 = alpha.map((x) => String.fromCharCode(x)); // needs to equal length of candidates still running - 1
 
-  const predictionsWithPlaceHolders = [];
-  playerPredictionsArray.forEach(function(candidate) {
-    if (!dropOutOrder.includes(candidate)) { // candidate hasn't dropped out
-      predictionsWithPlaceHolders.push(placeholderValues1.shift()); // so instead add a placeholder
-    } else {
-      predictionsWithPlaceHolders.push(candidate);
-    }
-  });
+//   const predictionsWithPlaceHolders = [];
+//   playerPredictionsArray.forEach(function(candidate) {
+//     if (!dropOutOrder.includes(candidate)) { // candidate hasn't dropped out
+//       predictionsWithPlaceHolders.push(placeholderValues1.shift()); // so instead add a placeholder
+//     } else {
+//       predictionsWithPlaceHolders.push(candidate);
+//     }
+//   });
 
-  const dropsWithPlaceHolders = [];
-  dropOutOrder.forEach(function(candidate) {
-    if (candidate == '') {
-      dropsWithPlaceHolders.push(placeholderValues2.shift());
-    } else {
-      dropsWithPlaceHolders.push(candidate);
-    }
-  });
+//   const dropsWithPlaceHolders = [];
+//   dropOutOrder.forEach(function(candidate) {
+//     if (candidate == '') {
+//       dropsWithPlaceHolders.push(placeholderValues2.shift());
+//     } else {
+//       dropsWithPlaceHolders.push(candidate);
+//     }
+//   });
 
-  return calculateKendallTauDistance(dropsWithPlaceHolders, predictionsWithPlaceHolders);
-}
+//   return calculateKendallTauDistance(dropsWithPlaceHolders, predictionsWithPlaceHolders);
+// }
 
 function readData() { 
   d3.csv("data/submissions2024.csv", d3.autoType).then(function(data) {
@@ -128,27 +128,9 @@ function readData() {
       data.forEach(d => {
         addRow(d.rank, d.leaderboardAlias, d.kendallDistance, d.accuracy.toFixed(1), distanceToColorScale(d.rank), d);
       });
-
-      // get average drop out predictions
-      var candidateScores = {}
-      // find dropout num for each candidate in each guess. Add num to total value for that candidate in the dict.
-      data.forEach(d => {
-        d.prediction.forEach((p, i) => {
-          if (candidateScores[p]) {
-            candidateScores[p] += i;
-          } else { candidateScores[p] = i}
-        });
-      });
-      // calc average by dividing each value by number of participants
-      var averagePredictions = Object.keys(candidateScores).map(function (key) {
-        return {'candidate':key, 'value':candidateScores[key] / data.length};
-      });
-      averagePredictions = averagePredictions.slice().sort((a, b) => d3.ascending(a.value, b.value));
-      var averageOrder = [];
-      averagePredictions.forEach(ap => averageOrder.push(ap.candidate));
       
       // add some viz
-      drawScoresLineplot(data); // draw scores over time lineplot
+      //drawScoresLineplot(data); // draw scores over time lineplot
       drawHeatmap(data); // draw heatmap
   }); 
 };
@@ -217,10 +199,10 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
         document.getElementById("1stDropColumn2").innerHTML = '1st drop';
       });
     });
-    row.addEventListener("click", function() { // click a row to show their line in Standings Over Time tab
-      document.getElementById('lineplotRow' + d.participantID).click();
-      openTab(event, 'scoresLineplot');
-    });
+    // row.addEventListener("click", function() { // click a row to show their line in Standings Over Time tab
+    //   document.getElementById('lineplotRow' + d.participantID).click();
+    //   openTab(event, 'scoresLineplot');
+    // });
 }
 
 //////////////////////////
@@ -405,58 +387,58 @@ function drawScoresLineplot(data) {
   }
 }
 
-function selectTopNum(option, rankNum){
+// function selectTopNum(option, rankNum) {
 
-  // grab select
-  select = document.getElementById("select");
+//   // grab select
+//   select = document.getElementById("select");
 
-  // filter sumstatCopy to only contestants with rank 1-3 in most recent round
-  topNum = sumstatCopy.filter(function(row) {
-    return (row['values'][sumstatCopy[0]["values"].length-1]["rank"] <= rankNum);
-  })
+//   // filter sumstatCopy to only contestants with rank 1-3 in most recent round
+//   topNum = sumstatCopy.filter(function(row) {
+//     return (row['values'][sumstatCopy[0]["values"].length-1]["rank"] <= rankNum);
+//   })
   
-  // loop over these players
-  for (i=0;i<topNum.length;i++){
-    // get player's index which corresponds to their option. Then select the option with their name.
-    playerIndex = $('select').find('option:contains('+topNum[i].key+')').index();
+//   // loop over these players
+//   for (i=0;i<topNum.length;i++){
+//     // get player's index which corresponds to their option. Then select the option with their name.
+//     playerIndex = $('select').find('option:contains('+topNum[i].key+')').index();
 
-    if (option.selected){ // if selecting "top 3", select all top 3 individuals
-      select.options[playerIndex].selected = true;
-    }
-    else{ // if deselecting, deselect all top 3 individuals
-      select.options[playerIndex].selected = false;
-    }
-  }
-};
+//     if (option.selected){ // if selecting "top 3", select all top 3 individuals
+//       select.options[playerIndex].selected = true;
+//     }
+//     else{ // if deselecting, deselect all top 3 individuals
+//       select.options[playerIndex].selected = false;
+//     }
+//   }
+// };
 
-function selectTopNumPreviousRound(option, rankNum){
+// function selectTopNumPreviousRound(option, rankNum) {
 
-  if (option.selected){ // update line below when candidate drops out
-    // prompt user for round number of interest
-    roundNumber = prompt("Enter a round number to see the top players for that round.\n\n1 = round after Marianne Williamson dropped\n2 = round after Cory Booker dropped\n3 = after John Delaney\n4 = after Andrew Yang\n5 = after Michael Bennet\n6 = after Deval Patrick\n7 = after Tom Steyer\n8 = after Pete Buttigieg\n9 = after Amy Klobuchar\n10 = after Michael Bloomberg\n11 = after Elizabeth Warren\n12 = after Tulsi Gabbard  \n\n Show me round:", 4);
-  }
+//   if (option.selected){ // update line below when candidate drops out
+//     // prompt user for round number of interest
+//     roundNumber = prompt("Enter a round number to see the top players for that round.\n\n1 = round after Marianne Williamson dropped\n2 = round after Cory Booker dropped\n3 = after John Delaney\n4 = after Andrew Yang\n5 = after Michael Bennet\n6 = after Deval Patrick\n7 = after Tom Steyer\n8 = after Pete Buttigieg\n9 = after Amy Klobuchar\n10 = after Michael Bloomberg\n11 = after Elizabeth Warren\n12 = after Tulsi Gabbard  \n\n Show me round:", 4);
+//   }
 
-  // grab select
-  select = document.getElementById("select");
+//   // grab select
+//   select = document.getElementById("select");
 
-  // filter sumstatCopy to only contestants with rank 1-3 in most recent round
-  topNum = sumstatCopy.filter(function(row) {
-    return (row['values'][roundNumber-1]["rank"] <= rankNum);
-  })
+//   // filter sumstatCopy to only contestants with rank 1-3 in most recent round
+//   topNum = sumstatCopy.filter(function(row) {
+//     return (row['values'][roundNumber-1]["rank"] <= rankNum);
+//   })
   
-  // loop over these players
-  for (i=0;i<topNum.length;i++){
-    // get player's index which corresponds to their option. Then select the option with their name.
-    playerIndex = $('select').find('option:contains('+topNum[i].key+')').index();
+//   // loop over these players
+//   for (i=0;i<topNum.length;i++){
+//     // get player's index which corresponds to their option. Then select the option with their name.
+//     playerIndex = $('select').find('option:contains('+topNum[i].key+')').index();
 
-    if (option.selected){ // if selecting "top 3", select all top 3 individuals
-      select.options[playerIndex].selected = true;
-    }
-    else{ // if deselecting, deselect all top 3 individuals
-      select.options[playerIndex].selected = false;
-    }
-  }
-};
+//     if (option.selected){ // if selecting "top 3", select all top 3 individuals
+//       select.options[playerIndex].selected = true;
+//     }
+//     else{ // if deselecting, deselect all top 3 individuals
+//       select.options[playerIndex].selected = false;
+//     }
+//   }
+// };
 
 //////////////////////////////////////////////////////////
 // Heatmap functions
@@ -735,7 +717,13 @@ function deHighlightTile(id, colorScale) {
 }
 
 function main() {
+  // determine the drop out order by reading from csv file
+  d3.csv("data/droppedCandidates.csv").then(function(droppedCandidatesList) {
+    droppedCandidatesList.columns.forEach(d => dropOutOrder.push(d));
+
+    // once that's done, read submission data and populate all tabs
     readData();
+  });
 }
 
 main();
