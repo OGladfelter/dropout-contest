@@ -173,6 +173,10 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 
     distanceCell.style.textAlign = 'right';
     accuracyCell.style.textAlign = 'right';
+    
+    if (screen.width < 600) {
+      distanceCell.style.display = 'none';
+    }
 
     // add interactions for rows in leaderboard
     row.addEventListener("mouseover", function() {

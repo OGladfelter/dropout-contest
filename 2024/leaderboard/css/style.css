@@ -202,8 +202,20 @@ Leaderboard CSS
 .leaderboard th {
   background-color: #292E3A;
   padding: 20px;
-  /* position: sticky;
-  top:45px; */
+}
+.rankHeader {
+  width: 10%;
+}
+.nameHeader {
+  width: 40%;
+}
+.distanceHeader {
+  width: 25%;
+  text-align:right;
+}
+.accuracyHeader {
+  width: 25%;
+  text-align:right;
 }
 .leaderboardRow {
   border: collapse;
@@ -453,15 +465,28 @@ Mobile
     width: 90%;
   }
 
+  .container {
+    min-width: 0;
+  }
   .leaderboard {
     position: absolute;
-    width: 90%;
+    overflow: hidden;
+    max-width: 80%;
     margin-left: auto;
     margin-right: auto;
-    left: 5%;
+    left: 1%;
     margin-top: 0;
     -webkit-transform: translate(0%, 0%);
           transform: translate(0%, 0%);
+  }
+  .leaderboard th {
+    padding: 10px 2px;
+  }
+  .distanceHeader {
+    display: none;
+  }
+  .accuracyHeader {
+    width: 10%;
   }
 
   .contestInfo {
@@ -484,7 +509,7 @@ Mobile
   }
 
   .predictions {
-    visibility: hidden;
+    display: none;
     z-index: -1;
   }
 
