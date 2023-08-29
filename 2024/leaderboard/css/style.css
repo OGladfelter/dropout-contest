@@ -452,17 +452,27 @@ Sponsor section
   font-size: 42px;
 }
 
+.mobile_instructions {
+  display: none;
+}
 /*--------------------
 Mobile
 --------------------*/
 
 @media screen and (max-width: 600px) {
   h1 {
-    font-size: 36px;
+    font-size: 30px;
     line-height: 120%;
   }
   article {
     width: 90%;
+  }
+
+  .instructions {
+    display: none;
+  }
+  .mobile_instructions {
+    display: initial;
   }
 
   .tabcontent {
@@ -548,5 +558,6 @@ Mobile
   .heatmapContainer {
     width: 50%;
     margin-left: 5vw;
+    top: 20%;
   }
 }
