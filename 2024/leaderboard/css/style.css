@@ -331,6 +331,7 @@ Predictions Map CSS
 
 .predictionsMapContainer {
   text-align: center;
+  width: 60%;
 }
 
 /*--------------------

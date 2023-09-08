@@ -320,6 +320,7 @@ function drawSimilarityMap(submissionData) {
 }
 
 function highlightPredictionCircle(event, data) {
+  document.getElementById("comparisonAnalysis").style.visibility = 'visible';
   const radius = 10;
   d3.selectAll('.predictionMapCircle').transition().duration(1000).style("stroke", function(d) { return d.player1 == 'Wisdom of the crowd' ? 'white' : 'black' }).style('stroke-width', 1).attr('r', radius);
   const value = document.getElementById("participants").value;

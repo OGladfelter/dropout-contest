@@ -157,27 +157,32 @@
     <h1>Predictions Similarity Map</h1>
     <article>
       <p style="margin:2px;">Each circle represents a participant's prediction, colored from <span class="highlightText" style="background-color:#333399; cursor:default; padding:2.5px;">highest</span> to <span class="highlightText" style="background-color:#8181df; cursor:default; padding:2.5px;">lowest</span> current leaderboard rank. Predictions are arranged based on similarity to all other predictions; similar predictions fall near each on the chart.</p>
+      <br>
+      <div style="text-align:center;">
+        <label for="participants">Find a participant:</label>
+        <select name="participants" id="participants" onchange="highlightPredictionCircle()"><option></option></select>
+      </div>
     </article>
   </div>
-  <div id="predictionsMap" class="predictionsMapContainer"></div>
-  <article>
-    <label for="participants">Find a participant:</label>
-    <select name="participants" id="participants" onchange="highlightPredictionCircle()">
-      <option></option>
-    </select>
-    <p><span id="selectedName"></span> is most similar to:</p>
-    <ol>
-      <li><span id="mostSimilar0" onclick="updateComparison(event)"></span> (<span id="mostSimilarDistance0"></span> differences)</li>
-      <li><span id="mostSimilar1" onclick="updateComparison(event)"></span> (<span id="mostSimilarDistance1"></span>)</li>
-      <li><span id="mostSimilar2" onclick="updateComparison(event)"></span> (<span id="mostSimilarDistance2"></span>)</li>
-    </ol>
-    <p>and most dissimilar to:</p>
-    <ol>
-      <li><span id="mostDifferent2" onclick="updateComparison(event)"></span> (<span id="mostDifferentDistance2"></span> differences)</li>
-      <li><span id="mostDifferent1" onclick="updateComparison(event)"></span> (<span id="mostDifferentDistance1"></span>)</li>
-      <li><span id="mostDifferent0" onclick="updateComparison(event)"></span> (<span id="mostDifferentDistance0"></span>)</li>
-    </ol>
-  </article>
+  <div style="display:flex; justify-content:center;">
+    <div id="predictionsMap" class="predictionsMapContainer"></div>
+    <div>
+        <div id="comparisonAnalysis" style="visibility:hidden;">
+            <p><span id="selectedName"></span> is most similar to:</p>
+            <ul>
+              <li><span id="mostSimilar0" onclick="updateComparison(event)" class="fauxLink"></span> (<span id="mostSimilarDistance0"></span> differences)</li>
+              <li><span id="mostSimilar1" onclick="updateComparison(event)" class="fauxLink"></span> (<span id="mostSimilarDistance1"></span>)</li>
+              <li><span id="mostSimilar2" onclick="updateComparison(event)" class="fauxLink"></span> (<span id="mostSimilarDistance2"></span>)</li>
+            </ul>
+            <p>and most dissimilar to:</p>
+            <ul>
+              <li><span id="mostDifferent2" onclick="updateComparison(event)" class="fauxLink"></span> (<span id="mostDifferentDistance2"></span> differences)</li>
+              <li><span id="mostDifferent1" onclick="updateComparison(event)" class="fauxLink"></span> (<span id="mostDifferentDistance1"></span>)</li>
+              <li><span id="mostDifferent0" onclick="updateComparison(event)" class="fauxLink"></span> (<span id="mostDifferentDistance0"></span>)</li>
+            </ul>
+        </div>
+    </div>
+  </div>
 </div>
 
 </div>
