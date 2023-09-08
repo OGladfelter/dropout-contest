@@ -329,9 +329,24 @@ path.scoreLine{
 Predictions Map CSS
 ----------------------*/
 
+.nerdColumn {
+  float: left;
+}
+
+/* Clear floats after the columns */
+.nerdRow:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .predictionsMapContainer {
   text-align: center;
-  width: 60%;
+  width: 70%;
+}
+
+.predictionMapCircle {
+  cursor: pointer;
 }
 
 /*--------------------

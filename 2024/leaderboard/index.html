@@ -160,14 +160,14 @@
       <br>
       <div style="text-align:center;">
         <label for="participants">Find a participant:</label>
-        <select name="participants" id="participants" onchange="highlightPredictionCircle()"><option></option></select>
+        <select name="participants" id="participants" onchange="highlightPredictionCircle()"></select>
       </div>
     </article>
   </div>
-  <div style="display:flex; justify-content:center;">
-    <div id="predictionsMap" class="predictionsMapContainer"></div>
-    <div>
-        <div id="comparisonAnalysis" style="visibility:hidden;">
+  <div class="nerdRow">
+    <div id="predictionsMap" class="predictionsMapContainer nerdColumn"></div>
+    <div class="nerdColumn">
+        <div id="comparisonAnalysis">
             <p><span id="selectedName"></span> is most similar to:</p>
             <ul>
               <li><span id="mostSimilar0" onclick="updateComparison(event)" class="fauxLink"></span> (<span id="mostSimilarDistance0"></span> differences)</li>

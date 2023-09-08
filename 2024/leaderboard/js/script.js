@@ -293,6 +293,11 @@ function drawSimilarityMap(submissionData) {
     .style('fill', function(d) { return submissionData.filter(s => s.leaderboardAlias == d.player1)[0].leaderboardColor })	
     .attr("cx", function(d) { return x(d.x); })		 
     .attr("cy", function(d) { return y(d.y); })
+    .on("click", function(event, d) {
+      const select = document.getElementById("participants");
+      select.value = submissionData.filter(s => s.leaderboardAlias == d.player1)[0].participantID;
+      select.dispatchEvent(new Event('change'));
+    })
     .on("mouseover", function(event, d) {	
       d3.select(this).raise().transition().duration(500).attr("r", radius * 2);
       const metaData = submissionData.filter(s => s.leaderboardAlias == d.player1)[0];
@@ -316,17 +321,16 @@ function drawSimilarityMap(submissionData) {
         .duration(250)		
         .style("opacity", 0);
     });
+
+    select.value = 0;
+    select.dispatchEvent(new Event('change'));
   });
 }
 
 function highlightPredictionCircle(event, data) {
-  document.getElementById("comparisonAnalysis").style.visibility = 'visible';
   const radius = 10;
   d3.selectAll('.predictionMapCircle').transition().duration(1000).style("stroke", function(d) { return d.player1 == 'Wisdom of the crowd' ? 'white' : 'black' }).style('stroke-width', 1).attr('r', radius);
   const value = document.getElementById("participants").value;
-  if (value == "") {
-    return;
-  }
   d3.select('#predictionCircle' + value).style('stroke-width', 2).raise().transition().duration(1000).style("stroke", 'white').attr('r', radius * 2);
 
   const selectedRow = data.filter((s) => s.participantID == value)[0];
