@@ -275,7 +275,7 @@ function drawSimilarityMap(submissionData) {
     .data(data)			
     .enter().append("circle")								
     .attr("r", radius)
-    .style("stroke", 'black')
+    .style("stroke", function(d) { return d.player1 == 'Wisdom of the crowd' ? 'white' : 'black' })
     .style('fill', function(d) { return submissionData.filter(s => s.leaderboardAlias == d.player1)[0].leaderboardColor })	
     .attr("cx", function(d) { return x(d.x); })		 
     .attr("cy", function(d) { return y(d.y); })
@@ -289,7 +289,7 @@ function drawSimilarityMap(submissionData) {
       tooltip
         .html("<b>" + metaData.leaderboardAlias + "</b><br>Rank " + metaData.rank + "<br><br><b>Prediction</b><br>" + predictionStr )
         .style('left', event.pageX / window.innerWidth <= 0.75 ? event.pageX + 5 + 'px' : event.pageX - tooltip.node().getBoundingClientRect().width - 10 + 'px')
-        .style("top", (event.pageY + 10) + "px")
+        .style("top", event.pageY / window.innerHeight <= 0.6 ? event.pageY + 10 + 'px' : event.pageY - tooltip.node().getBoundingClientRect().height - 10 + 'px')
         .transition()		
         .duration(500)		
         .style('display', 'block')
