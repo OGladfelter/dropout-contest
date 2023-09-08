@@ -299,7 +299,7 @@ function drawSimilarityMap(submissionData) {
       select.dispatchEvent(new Event('change'));
     })
     .on("mouseover", function(event, d) {	
-      d3.select(this).raise().transition().duration(500).attr("r", radius * 2);
+      d3.select(this).raise();
       const metaData = submissionData.filter(s => s.leaderboardAlias == d.player1)[0];
       let predictionStr = '';
       metaData.prediction.forEach((p, i) => {
@@ -315,7 +315,6 @@ function drawSimilarityMap(submissionData) {
         .style("opacity", .8);		
     })
     .on("mouseout", function() {
-      d3.select(this).transition().duration(500).attr("r", radius);
       tooltip
         .transition()		
         .duration(250)		
