@@ -110,11 +110,13 @@ function goToScoring(event) {
 
 function readData() { 
   d3.csv("data/submissions2024.csv", d3.autoType).then(function(data) {
+      const rankColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]); // row color
       // compute performance metrics
       data.forEach((d, i) => {
           d.prediction = d.prediction.split(',').slice(0, numberOfCandidates); // slice since splitting adds empty string to array
           d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
           d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
+          d.leaderboardColor = rankColorScale(d.rank);
           if (d.leaderboardAlias == 'Wisdom of the crowd') {
             d.participantID = 0;
           } else {
@@ -124,14 +126,14 @@ function readData() {
       data = data.slice().sort((a, b) => d3.ascending(a.kendallDistance, b.kendallDistance)); // sort data ascending by kendall distance
 
       // add each player to leaderboard
-      var distanceToColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]); // row color
       data.forEach(d => {
-        addRow(d.rank, d.leaderboardAlias, d.kendallDistance, d.accuracy.toFixed(1), distanceToColorScale(d.rank), d);
+        addRow(d.rank, d.leaderboardAlias, d.kendallDistance, d.accuracy.toFixed(1), d.leaderboardColor, d);
       });
       
       // add some viz
       //drawScoresLineplot(data); // draw scores over time lineplot
       drawHeatmap(data); // draw heatmap
+      drawSimilarityMap(data);
   }); 
 };
 
@@ -217,6 +219,91 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
 }
 
 //////////////////////////
+
+function drawSimilarityMap(submissionData) {
+
+  d3.csv("data/tsne.csv", d3.autoType).then(function(data) {
+
+    console.log(data);
+
+    const radius = 10;
+
+    // set the dimensions and margins of the graph
+    if (window.innerWidth < 600) {
+      var margin = {top: 50, right: 60, bottom: 50, left: 50},
+      width = (screen.width * .9) - margin.left - margin.right,
+      height = width;
+    }
+    else {
+      var margin = {top: 50, right: 60, bottom: 50, left: 50},
+      width = (screen.height * .75) - margin.left - margin.right,
+      height = width;
+    }
+      
+    // append a svg object to the page
+    var svg = d3.select("#predictionsMap")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // X scale
+    var x = d3.scaleLinear()
+      .domain(d3.extent(data, function(d) { return (d.x); })) 
+      .range([ 0, width ]);
+    
+    // Y scale
+    var y = d3.scaleLinear()
+      .domain(d3.extent(data, function(d) { return (d.y); })) 
+      .range([height, 0]);
+
+    svg.append("text")
+      .attr("x", width / 2)
+      .attr("y", height + margin.top + (margin.bottom / 1.5))
+      .attr("class", "axis")
+      .style("text-anchor", "middle")
+      .text("Multi-dimensional values compressed into 2 dimensions, using t-SNE");
+
+    // Define the div for the tooltip
+    var tooltip = d3.select("body").append("div")	
+      .attr("class", "tooltip")				
+      .style("opacity", 0);
+
+    // add circles 
+    svg.selectAll(".dot")	
+    .data(data)			
+    .enter().append("circle")								
+    .attr("r", radius)
+    .style("stroke", 'black')
+    .style('fill', function(d) { return submissionData.filter(s => s.leaderboardAlias == d.player1)[0].leaderboardColor })	
+    .attr("cx", function(d) { return x(d.x); })		 
+    .attr("cy", function(d) { return y(d.y); })
+    .on("mouseover", function(event, d) {	
+      d3.select(this).transition().duration(500).attr("r", radius * 2);
+      const metaData = submissionData.filter(s => s.leaderboardAlias == d.player1)[0];
+      let predictionStr = '';
+      metaData.prediction.forEach((p, i) => {
+          predictionStr += candidateDict[p] + (i == metaData.prediction.length - 1 ? "" : " &rarr;<br>");
+      });
+      tooltip
+        .html("<b>" + metaData.leaderboardAlias + "</b><br>Rank " + metaData.rank + "<br><br><b>Prediction</b><br>" + predictionStr )
+        .style('left', event.pageX / window.innerWidth <= 0.75 ? event.pageX + 5 + 'px' : event.pageX - tooltip.node().getBoundingClientRect().width - 10 + 'px')
+        .style("top", (event.pageY + 10) + "px")
+        .transition()		
+        .duration(500)		
+        .style('display', 'block')
+        .style("opacity", 1);		
+    })
+    .on("mouseout", function() {
+      d3.select(this).transition().duration(500).attr("r", radius);
+      tooltip
+        .transition()		
+        .duration(250)		
+        .style("opacity", 0);
+    });
+  });
+}
 
 function drawScoresLineplot(data) {
 

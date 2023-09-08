@@ -55,6 +55,7 @@
   <button class="tablinks" onclick="openTab(event, 'Leaderboard')">Leaderboard</button>
   <!-- <button class="tablinks" onclick="openTab(event, 'scoresLineplot')">Standings Over Time</button> -->
   <button class="tablinks" onclick="openTab(event, 'analysis')">Analysis</button>
+  <button class="tablinks" onclick="openTab(event, 'predictionsMapSection')">Predictions Map</button>
   <button class="tablinks" onclick="openTab(event, 'Rules')">Rules</button>
   <button class="tablinks" onclick="openTab(event, 'Sponsors')">Sponsors</button>
 </div>
@@ -146,6 +147,20 @@
     </div>
     <div id="lineplot"></div>
   </div>
+
+</div>
+<!-- end standing over time lineplot -->
+
+<!-- Prediction tsn-e chart -->
+<div id="predictionsMapSection" class="tabcontent">
+  <div style="text-align: center;">
+    <h1>Predictions Similarity Map</h1>
+    <article>
+      <p style="margin:2px;">Each circle represents a participant's prediction, colored from <span class="highlightText" style="background-color:#333399; cursor:default;">highest</span> to <span class="highlightText" style="background-color:#8181df; cursor:default;">lowest</span> scores. Predictions are arranged in the chart based on how similar they are to all other predictions; circles near each other represent similar predictions.</p>
+    </article>
+  </div>
+  <div id="predictionsMap" class="predictionsMapContainer"></div>
+</div>
 
 </div>
 <!-- end standing over time lineplot -->
