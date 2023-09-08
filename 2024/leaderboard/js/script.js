@@ -328,15 +328,32 @@ function highlightPredictionCircle(event, data) {
   }
   d3.select('#predictionCircle' + value).style('stroke-width', 2).raise().transition().duration(1000).style("stroke", 'white').attr('r', radius * 2);
 
-  const selectedPrediction = data.filter((s) => s.participantID == value)[0].prediction;
+  const selectedRow = data.filter((s) => s.participantID == value)[0];
   data.forEach(d => {
-    const distance = calculateKendallTauDistance(selectedPrediction, d.prediction)
+    const distance = calculateKendallTauDistance(selectedRow.prediction, d.prediction)
     d.comparisonDistance = distance;
   });
   
   const dataSorted = data.slice().sort((a, b) => d3.ascending(a.comparisonDistance, b.comparisonDistance));
-  console.log(dataSorted.slice(1, 4));
-  console.log(dataSorted.slice(-4, -1));
+  
+  document.getElementById("selectedName").innerHTML = selectedRow.leaderboardAlias;
+
+  dataSorted.slice(1, 4).forEach((d, i) => {
+      document.getElementById("mostSimilar" + i).innerHTML = d.leaderboardAlias;
+      document.getElementById("mostSimilar" + i).dataset.value = d.participantID;
+      document.getElementById("mostSimilarDistance" + i).innerHTML = d.comparisonDistance;
+  });
+  dataSorted.slice(-3, dataSorted.length).forEach((d, i) => {
+    document.getElementById("mostDifferent" + i).innerHTML = d.leaderboardAlias;
+    document.getElementById("mostDifferent" + i).dataset.value = d.participantID;
+    document.getElementById("mostDifferentDistance" + i).innerHTML = d.comparisonDistance;
+  });
+}
+
+function updateComparison(event) {
+  const select = document.getElementById("participants");
+  select.value = event.target.dataset.value;
+  select.dispatchEvent(new Event('change'));
 }
 
 function drawScoresLineplot(data) {
