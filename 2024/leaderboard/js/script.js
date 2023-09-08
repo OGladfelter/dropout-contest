@@ -50,31 +50,31 @@ function goToScoring(event) {
 //////////////////////////////////////////////////////////
 
 // kendall tau rank distance function
-// function calculateKendallTauDistance(listA, listB){
-//   var distance = 0
+function calculateKendallTauDistance(listA, listB){
+  var distance = 0
 
-//   // get all potential non-self, non-duplicative pairs between the two arrays
-//   var combinations = [];
-//   listA.forEach(a => {
-//     listB.forEach(b => {
-//       if (a != b) {
-//         combinations.push([a, b].sort());
-//       }
-//     })
-//   });
-//   var pairs = Array.from(new Set(combinations.map(JSON.stringify)), JSON.parse);
+  // get all potential non-self, non-duplicative pairs between the two arrays
+  var combinations = [];
+  listA.forEach(a => {
+    listB.forEach(b => {
+      if (a != b) {
+        combinations.push([a, b].sort());
+      }
+    })
+  });
+  var pairs = Array.from(new Set(combinations.map(JSON.stringify)), JSON.parse);
 
-//   // for each pair, calc index of the pair objects, find index in lists, calc difference and add to distance
-//   for (let [x, y] of pairs) {
-//       a = listA.indexOf(x) - listA.indexOf(y);
-//       b = listB.indexOf(x) - listB.indexOf(y);
+  // for each pair, calc index of the pair objects, find index in lists, calc difference and add to distance
+  for (let [x, y] of pairs) {
+      a = listA.indexOf(x) - listA.indexOf(y);
+      b = listB.indexOf(x) - listB.indexOf(y);
       
-//       if (a * b < 0){
-//           distance = distance + 1
-//       }
-//   }
-//   return distance;
-// }
+      if (a * b < 0){
+          distance = distance + 1
+      }
+  }
+  return distance;
+}
 
 // function partialScoring(dropOutOrder, playerPredictionsArray) {
 //   // I will want to calculate everyone's scores after each candidate drops out
@@ -134,6 +134,7 @@ function readData() {
       //drawScoresLineplot(data); // draw scores over time lineplot
       drawHeatmap(data); // draw heatmap
       drawSimilarityMap(data);
+      document.getElementById("participants").addEventListener("change", highlightPredictionCircle.bind(null, event, data), false);
   }); 
 };
 
@@ -225,18 +226,15 @@ function drawSimilarityMap(submissionData) {
   d3.csv("data/tsne.csv", d3.autoType).then(function(data) {
 
     // sort alphabetically
-    data = data.slice().sort((a, b) => d3.ascending(a.player1, b.player1));
-
-    
+    const submissionDataSorted = submissionData.slice().sort((a, b) => d3.ascending(a.leaderboardAlias, b.leaderboardAlias));
 
     // populate drop down
-    var select = document.getElementById("participants");
+    const select = document.getElementById("participants");
 
-    data.forEach(function(d, i) {
-        d.id = i;
-        var el = document.createElement("option");
-        el.textContent = d.player1;
-        el.value = 'option' + i;
+    submissionDataSorted.forEach(function(d) {
+        const el = document.createElement("option");
+        el.textContent = d.leaderboardAlias;
+        el.value = d.participantID;
         select.appendChild(el);
     });
 
@@ -289,14 +287,14 @@ function drawSimilarityMap(submissionData) {
     .data(data)			
     .enter().append("circle")		
     .attr('class', 'predictionMapCircle')
-    .attr('id', function(d) { return 'option' + d.id + 'Circle'})						
+    .attr('id', function(d) { return 'predictionCircle' + submissionData.filter(s => s.leaderboardAlias == d.player1)[0].participantID})						
     .attr("r", radius)
     .style("stroke", function(d) { return d.player1 == 'Wisdom of the crowd' ? 'white' : 'black' })
     .style('fill', function(d) { return submissionData.filter(s => s.leaderboardAlias == d.player1)[0].leaderboardColor })	
     .attr("cx", function(d) { return x(d.x); })		 
     .attr("cy", function(d) { return y(d.y); })
     .on("mouseover", function(event, d) {	
-      d3.select(this).transition().duration(500).attr("r", radius * 2);
+      d3.select(this).raise().transition().duration(500).attr("r", radius * 2);
       const metaData = submissionData.filter(s => s.leaderboardAlias == d.player1)[0];
       let predictionStr = '';
       metaData.prediction.forEach((p, i) => {
@@ -321,14 +319,24 @@ function drawSimilarityMap(submissionData) {
   });
 }
 
-function highlightPredictionCircle() {
+function highlightPredictionCircle(event, data) {
   const radius = 10;
   d3.selectAll('.predictionMapCircle').transition().duration(1000).style("stroke", function(d) { return d.player1 == 'Wisdom of the crowd' ? 'white' : 'black' }).style('stroke-width', 1).attr('r', radius);
   const value = document.getElementById("participants").value;
   if (value == "") {
     return;
   }
-  d3.select('#' + value + 'Circle').style('stroke-width', 2).transition().duration(1000).style("stroke", 'white').attr('r', radius * 2);
+  d3.select('#predictionCircle' + value).style('stroke-width', 2).raise().transition().duration(1000).style("stroke", 'white').attr('r', radius * 2);
+
+  const selectedPrediction = data.filter((s) => s.participantID == value)[0].prediction;
+  data.forEach(d => {
+    const distance = calculateKendallTauDistance(selectedPrediction, d.prediction)
+    d.comparisonDistance = distance;
+  });
+  
+  const dataSorted = data.slice().sort((a, b) => d3.ascending(a.comparisonDistance, b.comparisonDistance));
+  console.log(dataSorted.slice(1, 4));
+  console.log(dataSorted.slice(-4, -1));
 }
 
 function drawScoresLineplot(data) {
