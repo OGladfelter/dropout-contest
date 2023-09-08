@@ -48,7 +48,7 @@ h3 {
   margin-top: 10px;
 }
 
-p { 
+p, label { 
   font-size: 18px;
   color: whitesmoke;
 }

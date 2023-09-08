@@ -55,7 +55,7 @@
   <button class="tablinks" onclick="openTab(event, 'Leaderboard')">Leaderboard</button>
   <!-- <button class="tablinks" onclick="openTab(event, 'scoresLineplot')">Standings Over Time</button> -->
   <button class="tablinks" onclick="openTab(event, 'analysis')">Analysis</button>
-  <button class="tablinks" onclick="openTab(event, 'predictionsMapSection')">Predictions Map</button>
+  <button class="tablinks" onclick="openTab(event, 'predictionsMapSection')">Nerd Stuff</button>
   <button class="tablinks" onclick="openTab(event, 'Rules')">Rules</button>
   <button class="tablinks" onclick="openTab(event, 'Sponsors')">Sponsors</button>
 </div>
@@ -158,6 +158,11 @@
     <article>
       <p style="margin:2px;">Each circle represents a participant's prediction, colored from <span class="highlightText" style="background-color:#333399; cursor:default;">most</span> to <span class="highlightText" style="background-color:#8181df; cursor:default;">least</span> accurate. Predictions are arranged based on similarity to all other predictions; similar predictions fall near each on the chart.</p>
     </article>
+    <br>
+    <label for="participants">Find a participant:</label>
+      <select name="participants" id="participants" onchange="highlightPredictionCircle()">
+        <option></option>
+      </select>
   </div>
   <div id="predictionsMap" class="predictionsMapContainer"></div>
 </div>

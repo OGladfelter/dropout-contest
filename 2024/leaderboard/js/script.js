@@ -224,7 +224,21 @@ function drawSimilarityMap(submissionData) {
 
   d3.csv("data/tsne.csv", d3.autoType).then(function(data) {
 
-    console.log(data);
+    // sort alphabetically
+    data = data.slice().sort((a, b) => d3.ascending(a.player1, b.player1));
+
+    
+
+    // populate drop down
+    var select = document.getElementById("participants");
+
+    data.forEach(function(d, i) {
+        d.id = i;
+        var el = document.createElement("option");
+        el.textContent = d.player1;
+        el.value = 'option' + i;
+        select.appendChild(el);
+    });
 
     const radius = 10;
 
@@ -273,7 +287,9 @@ function drawSimilarityMap(submissionData) {
     // add circles 
     svg.selectAll(".dot")	
     .data(data)			
-    .enter().append("circle")								
+    .enter().append("circle")		
+    .attr('class', 'predictionMapCircle')
+    .attr('id', function(d) { return 'option' + d.id + 'Circle'})						
     .attr("r", radius)
     .style("stroke", function(d) { return d.player1 == 'Wisdom of the crowd' ? 'white' : 'black' })
     .style('fill', function(d) { return submissionData.filter(s => s.leaderboardAlias == d.player1)[0].leaderboardColor })	
@@ -293,7 +309,7 @@ function drawSimilarityMap(submissionData) {
         .transition()		
         .duration(500)		
         .style('display', 'block')
-        .style("opacity", 1);		
+        .style("opacity", .8);		
     })
     .on("mouseout", function() {
       d3.select(this).transition().duration(500).attr("r", radius);
@@ -303,6 +319,16 @@ function drawSimilarityMap(submissionData) {
         .style("opacity", 0);
     });
   });
+}
+
+function highlightPredictionCircle() {
+  const radius = 10;
+  d3.selectAll('.predictionMapCircle').transition().duration(1000).style("stroke", function(d) { return d.player1 == 'Wisdom of the crowd' ? 'white' : 'black' }).style('stroke-width', 1).attr('r', radius);
+  const value = document.getElementById("participants").value;
+  if (value == "") {
+    return;
+  }
+  d3.select('#' + value + 'Circle').style('stroke-width', 2).transition().duration(1000).style("stroke", 'white').attr('r', radius * 2);
 }
 
 function drawScoresLineplot(data) {
