@@ -386,10 +386,12 @@ function drawScoresLineplot(data) {
   const xTicks = [];
   if (window.innerWidth < 600) {
     yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"]; // TODO: automate this based on highest rank
-    dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" "[1]))); // TODO: switch out with candidate initials?
+    console.log(dropOutOrder);
+    dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" ")[1])); // TODO: switch out with candidate initials?
   }
   else {
     yTicks = ["1st Place", "10th", 20, 30, 40, 50, 60, 70, "80"]; // TODO: automate this based on highest rank
+    console.log(dropOutOrder);
     dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" ")[1]));
   }
 
@@ -400,7 +402,7 @@ function drawScoresLineplot(data) {
   svg.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).ticks(dropOutOrder.length).tickFormat(function(d){return xTicks[d]}));
+    .call(d3.axisBottom(x).ticks(dropOutOrder.length).ticks(1).tickFormat(function(d){return xTicks[d]}));
   
   // Add Y axis
   let maxRank = 1;
@@ -427,7 +429,8 @@ function drawScoresLineplot(data) {
 
   // add all names to table menu
   const tableSelector = document.getElementById('scoresLineplotTable');
-  data.forEach(d => {
+  const alphabetically = data.slice().sort((a, b) => d3.ascending(a.leaderboardAlias.toLowerCase(), b.leaderboardAlias.toLowerCase())); // sort data ascending by kendall distance
+  alphabetically.forEach(d => {
     let randomHue = Math.floor(Math.random() * 360);
     const blueMin = 210;
     const purpleMax = 270;
