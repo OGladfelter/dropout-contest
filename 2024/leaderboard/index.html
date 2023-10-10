@@ -42,7 +42,7 @@
   <meta name="twitter:image:alt" content="2024 Republican Drop Out Predictions Contest" />
   <meta name="twitter:description" content="Leaderboard For 2024 Political Predictions"/>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=2">
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -53,7 +53,7 @@
 
 <div class="tabs">
   <button class="tablinks" onclick="openTab(event, 'Leaderboard')">Leaderboard</button>
-  <!-- <button class="tablinks" onclick="openTab(event, 'scoresLineplot')">Standings Over Time</button> -->
+  <button class="tablinks" onclick="openTab(event, 'scoresLineplot')">Standings Over Time</button>
   <button class="tablinks" onclick="openTab(event, 'analysis')">Analysis</button>
   <button class="tablinks" onclick="openTab(event, 'predictionsMapSection')">Nerd Stuff</button>
   <button class="tablinks" onclick="openTab(event, 'Rules')">Rules</button>
@@ -64,7 +64,8 @@
 <div id="Leaderboard" class="tabcontent">
   <article style="text-align: center;">
     <h1>Contest Leaderboard</h1>
-    <p style="margin:2px;" class="instructions">Hover over any name to see their prediction</p>
+    <p style="margin:2px;" class="instructions">Hover over any name to see their prediction, click to see their rank over time</p>
+    <p style="margin:2px;" class="mobile_instructions">Tap any name to see their rank over time</p>
   </article>
   <div class="leaderboard_container">
     <table id="leaderboardTable" class="leaderboard">
@@ -122,7 +123,7 @@
           </tr>
           <tr>
             <td id="drop_2"></td>
-            <td class="scoreEffect">?</td>
+            <td class="scoreEffect">Will Hurd</td>
           </tr>
           <tr>
             <td id="drop_1">First Drop:</td>
@@ -131,7 +132,7 @@
         </table>
     </div>
   </div>
-  <div class="contestInfo" id="contestInfo" onclick="document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill')); this.innerHTML='Last Updated August 29, 2023'">Last Updated August 29, 2023</div>
+  <div class="contestInfo" id="contestInfo" onclick="document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill')); this.innerHTML='Last Updated October 10, 2023'">Last Updated October 10, 2023</div>
 </div>
 <!-- end leaderboard -->
 
@@ -139,7 +140,10 @@
 <div id="scoresLineplot" class="tabcontent">
   <div style="text-align: center;">
     <h1>Rank Per Round</h1>
-    <p style="margin:2px;"><span class="instructions">Click</span><span class="mobile_instructions">Tap</span> any contestant to view their rank over time; click the line chart to remove all lines</p>
+    <p style="margin:2px;">
+      <span class="instructions">Click any contestant to view their rank over time; <span class="fauxLink" onclick="clearScoresLineplot()">click here</span> to remove all lines</span>
+      <span class="mobile_instructions"><span class="fauxLink" onclick="clearScoresLineplot()">Tap here</span> to remove all lines</span>
+    </p>
   </div>
   <div style="display:flex; justify-content:space-evenly; margin-top:25px;">
     <div style="max-height:500px; overflow:scroll; overflow-x:hidden;" id="tableContainer">
@@ -408,7 +412,7 @@
 </div>
 <!-- end sponsors -->
   
-<script src='js/script.js'></script>
+<script src='js/script.js?v=2'></script>
 
 </body>
 </html>

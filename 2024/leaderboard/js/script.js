@@ -15,7 +15,7 @@ const candidateDict = {
   'hurd': "Will Hurd"
 }
 
-let dropOutOrder = []; // from first to last
+let dropOutOrder = []; // from first to last, filled in through reading droppedCandidates.csv
 
 // for tab navigation
 function openTab(evt, tabID) {
@@ -131,7 +131,7 @@ function readData() {
       });
       
       // add some viz
-      //drawScoresLineplot(data); // draw scores over time lineplot
+      drawScoresLineplot(data); // draw scores over time lineplot
       drawHeatmap(data); // draw heatmap
       drawSimilarityMap(data);
       document.getElementById("participants").addEventListener("change", highlightPredictionCircle.bind(null, event, data), false);
@@ -213,10 +213,10 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
         document.getElementById("1stDropColumn2").innerHTML = '1st drop';
       });
     });
-    // row.addEventListener("click", function() { // click a row to show their line in Standings Over Time tab
-    //   document.getElementById('lineplotRow' + d.participantID).click();
-    //   openTab(event, 'scoresLineplot');
-    // });
+    row.addEventListener("click", function() { // click a row to show their line in Standings Over Time tab
+      document.getElementById('lineplotRow' + d.participantID).click();
+      openTab(event, 'scoresLineplot');
+    });
 }
 
 //////////////////////////
@@ -380,12 +380,6 @@ function drawScoresLineplot(data) {
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .on('click', function() {
-      d3.selectAll("[data-scatterplotMark]").remove();
-      d3.selectAll('.scoreLine').remove();
-      d3.selectAll("[data-selected]").style('background-color', 'white');
-      document.querySelectorAll("[data-selected='1']").forEach(tr => tr.dataset.selected = 0);
-    })
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -538,6 +532,13 @@ function drawScoresLineplot(data) {
       this.style.backgroundColor = 'white';
     }
   }
+}
+
+function clearScoresLineplot() {
+  d3.selectAll("[data-scatterplotMark]").remove();
+  d3.selectAll('.scoreLine').remove();
+  d3.selectAll("[data-selected]").style('background-color', 'white');
+  document.querySelectorAll("[data-selected='1']").forEach(tr => tr.dataset.selected = 0);
 }
 
 // function selectTopNum(option, rankNum) {
