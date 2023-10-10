@@ -398,7 +398,7 @@ function drawScoresLineplot(data) {
   // Add X axis
   var x = d3.scaleLinear()
     .domain([0, dropOutOrder.length - 1]) // 1 tick for each round
-    .range([ 0, width ]);
+    .range([ 10, width - 10 ]);
   svg.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + height + ")")
@@ -413,7 +413,7 @@ function drawScoresLineplot(data) {
 
   svg.append("g")
     .attr("class", "axis")
-    .call(d3.axisLeft(y).ticks(5).tickFormat(function(d){ return d + nth(d) }));
+    .call(d3.axisLeft(y).tickSizeOuter(0).ticks(5).tickFormat(function(d){ return d + nth(d) }));
 
   svg.append("text")
     .attr("x", width / 2)

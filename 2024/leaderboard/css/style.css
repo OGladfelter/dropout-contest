@@ -424,13 +424,15 @@ div.tooltip {
 }
 
 .update {
-  border: 1px rgb(222, 222, 222) solid;
+  background-color: whitesmoke;
+  color: black;
+  border: 1px black solid;
   padding: 10px;
   margin: 20px;
 }
 span.date {
   font-size: 14px;
-  color: rgb(222, 222, 222);
+  color: gray;
   float: right;
 }
 .updateHeader {
@@ -439,6 +441,7 @@ span.date {
 }
 .update p {
   margin: 5px;
+  color: black;
 }
 
 /*--------------------
