@@ -402,7 +402,7 @@ function drawScoresLineplot(data) {
   svg.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).ticks(dropOutOrder.length).ticks(1).tickFormat(function(d){return xTicks[d]}));
+    .call(d3.axisBottom(x).ticks(dropOutOrder.length).ticks(3).tickFormat(function(d){return xTicks[d]}));
   
   // Add Y axis
   let maxRank = 1;
