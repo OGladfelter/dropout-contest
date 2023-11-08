@@ -42,7 +42,7 @@
   <meta name="twitter:image:alt" content="2024 Republican Drop Out Predictions Contest" />
   <meta name="twitter:description" content="Leaderboard For 2024 Political Predictions"/>
 
-  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/style.css?v=3">
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -73,7 +73,7 @@
         <th class="rankHeader">Rank</th>
         <th class="nameHeader"></th>
         <th class="distanceHeader">Kendall Tau</th>
-        <th class="accuracyHeader">Accuracy</th>
+        <th class="accuracyHeader">Accuracy %</th>
       </tr>
     </table>
 
@@ -132,7 +132,7 @@
         </table>
     </div>
   </div>
-  <div class="contestInfo" id="contestInfo" onclick="document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill')); this.innerHTML='Last Updated October 31, 2023'">Last Updated October 31, 2023</div>
+  <div class="contestInfo" id="contestInfo" onclick="document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill')); this.classList.remove('highlightInstructions'); this.innerHTML='Last Updated October 31, 2023'">Last Updated October 31, 2023</div>
 </div>
 <!-- end leaderboard -->
 
@@ -427,7 +427,7 @@
 </div>
 <!-- end sponsors -->
   
-<script src='js/script.js?v=4'></script>
+<script src='js/script.js?v=5'></script>
 
 </body>
 </html>

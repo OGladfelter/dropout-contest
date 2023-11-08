@@ -117,6 +117,7 @@ function readData() {
           d.kendallNormal = (d.kendallDistance / (numberOfCandidates * (numberOfCandidates - 1) / 2)); // normalized tau score = tau_distance / (n * n-1 / 2)
           d.accuracy = 100 - (d.kendallNormal * 100); // accuracy percentage = 100 - normalized score (which is 0-1) * 100
           d.leaderboardColor = rankColorScale(d.rank);
+          d.leaderboardAlias = d.leaderboardAlias;
           if (d.leaderboardAlias == 'Wisdom of the crowd') {
             d.participantID = 0;
           } else {
@@ -161,7 +162,7 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
       var accuracyCell = row.insertCell(2);
     }
     accuracyCell.style.textAlign = 'right';
-    accuracyCell.innerHTML = accuracy;
+    accuracyCell.innerHTML = Math.round(accuracy);
 
     rankCell.innerHTML = '<span class="circle">' + rank + '</span>';
     nameCell.innerHTML = name == "Wisdom of the crowd" ? "<a href='https://en.wikipedia.org/wiki/Wisdom_of_the_crowd' target='_blank' id='wikiLink'>Wisdom of the crowd &#9432;</a>" : name;
@@ -289,7 +290,7 @@ function drawSimilarityMap(submissionData) {
     .attr('class', 'predictionMapCircle')
     .attr('id', function(d) { return 'predictionCircle' + submissionData.filter(s => s.leaderboardAlias == d.player1)[0].participantID})						
     .attr("r", radius)
-    .style("stroke", function(d) { return d.player1 == 'Wisdom of the crowd' ? 'white' : 'black' })
+    .style("stroke", 'black')
     .style('fill', function(d) { return submissionData.filter(s => s.leaderboardAlias == d.player1)[0].leaderboardColor })	
     .attr("cx", function(d) { return x(d.x); })		 
     .attr("cy", function(d) { return y(d.y); })
@@ -328,7 +329,7 @@ function drawSimilarityMap(submissionData) {
 
 function highlightPredictionCircle(event, data) {
   const radius = 10;
-  d3.selectAll('.predictionMapCircle').transition().duration(1000).style("stroke", function(d) { return d.player1 == 'Wisdom of the crowd' ? 'white' : 'black' }).style('stroke-width', 1).attr('r', radius);
+  d3.selectAll('.predictionMapCircle').transition().duration(1000).style("stroke", 'black').style('stroke-width', 1).attr('r', radius);
   const value = document.getElementById("participants").value;
   d3.select('#predictionCircle' + value).style('stroke-width', 2).raise().transition().duration(1000).style("stroke", 'white').attr('r', radius * 2);
 
@@ -386,12 +387,10 @@ function drawScoresLineplot(data) {
   const xTicks = [];
   if (window.innerWidth < 600) {
     yTicks = ["1st", "10", 20, 30, 40, 50, 60, 70, "80"]; // TODO: automate this based on highest rank
-    console.log(dropOutOrder);
     dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" ")[1])); // TODO: switch out with candidate initials?
   }
   else {
     yTicks = ["1st Place", "10th", 20, 30, 40, 50, 60, 70, "80"]; // TODO: automate this based on highest rank
-    console.log(dropOutOrder);
     dropOutOrder.forEach(candidate => xTicks.push(candidate.split(" ")[1]));
   }
 
@@ -449,7 +448,7 @@ function drawScoresLineplot(data) {
     row.id = 'lineplotRow' + d.participantID;
     tableSelector.appendChild(row);
 
-    if (d.leaderboardAlias == 'Wisdom of the crowd') {
+    if (d.leaderboardAlias == 'Brooke B') {
       row.click();
     }
   });
@@ -726,6 +725,7 @@ function drawHeatmap(predictionsData) {
             if (theGuessers.length) {
                 theGuessers.forEach(g => document.getElementById("leaderboardRow" + g.participantID).classList.add('orangeFill'));
                 document.getElementById("contestInfo").innerHTML = 'Remove highlighting';
+                document.getElementById("contestInfo").classList.add('highlightInstructions');
                 openTab(event, 'Leaderboard');
             }
         });
@@ -784,6 +784,7 @@ function highlightLeaderboardRows(data, dropPosition, candidateName) {
     const theGuessers = data.filter(t => t.prediction[dropPosition] == candidateName);
     theGuessers.forEach(g => document.getElementById("leaderboardRow" + g.participantID).classList.add('orangeFill'));
     document.getElementById("contestInfo").innerHTML = 'Remove highlighting';
+    document.getElementById("contestInfo").classList.add('highlightInstructions');
     openTab(event, 'Leaderboard');
 }
 

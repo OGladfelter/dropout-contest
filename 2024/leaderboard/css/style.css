@@ -281,11 +281,12 @@ Leaderboard CSS
 /* contest info box */
 .contestInfo {
   position: fixed;
-  bottom: 2.5%;
-  right: 2.5%;
-  padding: 20px;
+  bottom: 1.5%;
+  right: 1.5%;
+  padding: 15px;
   background: linear-gradient(to bottom, #292E3A, #3a404d);
   border-radius: 10px;
+  border: 1px black solid;
   box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
   overflow: auto;
   text-align: center;
@@ -293,6 +294,13 @@ Leaderboard CSS
 
 .orangeFill {
   background-color: #efa311 !important;
+}
+
+.highlightInstructions {
+  color: black;
+  background: none;
+  background-color: cyan;
+  cursor: pointer;
 }
 
 /* -------------------
