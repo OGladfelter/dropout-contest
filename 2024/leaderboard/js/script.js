@@ -1,4 +1,6 @@
 const numberOfCandidates = 12;
+let leaderboardRowClicks = 0;
+const colorOverrides = ['cyan', '#FFAC1C', 'rgb(255, 0, 183)', 'rgb(0, 255, 187)', 'red', 'yellow', 'rgb(132, 0, 255)', 'rgb(0, 255, 94)'];
 
 const candidateDict = {
   'trump': "Donald Trump",
@@ -454,10 +456,16 @@ function drawScoresLineplot(data) {
     }
   });
 
-  function drawPlayerLine(event) {
+  function drawPlayerLine(event) {  
     this.dataset.selected == 0 ? this.dataset.selected = 1 : this.dataset.selected = 0; // flip 'truthiness' of if row is selected or not
 
     const participantData = data.filter((d) => d.participantID == event.currentTarget.participantID)[0]; // access data for the player corresponding to clicked row
+    
+    if (leaderboardRowClicks < colorOverrides.length) {
+      participantData.color = colorOverrides[leaderboardRowClicks];
+      event.target.backgroundColor = colorOverrides[leaderboardRowClicks];
+    }
+    leaderboardRowClicks += 1;
 
     if (this.dataset.selected == 1) { // draw the line
 
