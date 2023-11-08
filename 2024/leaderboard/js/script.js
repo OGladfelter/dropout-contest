@@ -1,6 +1,6 @@
 const numberOfCandidates = 12;
 let leaderboardRowClicks = 0;
-const colorOverrides = ['cyan', '#FFAC1C', 'rgb(255, 0, 183)', 'rgb(0, 255, 187)', 'red', 'yellow', 'rgb(132, 0, 255)', 'rgb(0, 255, 94)'];
+const colorOverrides = ['cyan', '#FFAC1C', 'rgb(255, 0, 183)', 'rgb(0, 255, 187)', 'gold', '#ADD8E6', 'rgb(0, 255, 94)', 'red', 'silver'];
 
 const candidateDict = {
   'trump': "Donald Trump",
@@ -461,11 +461,11 @@ function drawScoresLineplot(data) {
 
     const participantData = data.filter((d) => d.participantID == event.currentTarget.participantID)[0]; // access data for the player corresponding to clicked row
     
-    if (leaderboardRowClicks < colorOverrides.length) {
+    if (leaderboardRowClicks < colorOverrides.length && participantData.color.includes('hsl')) {
       participantData.color = colorOverrides[leaderboardRowClicks];
       event.target.backgroundColor = colorOverrides[leaderboardRowClicks];
+      leaderboardRowClicks += 1;
     }
-    leaderboardRowClicks += 1;
 
     if (this.dataset.selected == 1) { // draw the line
 
@@ -894,3 +894,13 @@ function main() {
 }
 
 main();
+
+function highlightFamily() {
+  document.getElementById("lineplotRow28").click(); // turn off default
+  const IDs = [66, 65, 74, 68, 67];
+
+  IDs.forEach(function(d, i) {
+    setTimeout(() => { document.getElementById(`lineplotRow${d}`).click(); }, 1000 * i);
+  });
+
+}
