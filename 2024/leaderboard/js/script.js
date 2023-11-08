@@ -196,6 +196,7 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
         document.getElementById("1stDropColumn2").innerHTML = '';
         $("#playerTable tr").each(function(index) {
             var columns = this.querySelectorAll('td');
+            columns[1].innerHTML = "";
             if (dropOutOrder.includes(columns[0].innerHTML)) {
                 var scoreEffect = Math.abs(numberOfCandidates - 1 - dropOutOrder.indexOf(columns[0].innerHTML) - index);
                 if (scoreEffect == 0) {
