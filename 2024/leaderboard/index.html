@@ -42,7 +42,7 @@
   <meta name="twitter:image:alt" content="2024 Republican Drop Out Predictions Contest" />
   <meta name="twitter:description" content="Leaderboard For 2024 Political Predictions"/>
 
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=4">
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -55,7 +55,7 @@
   <button class="tablinks" onclick="openTab(event, 'Leaderboard')">Leaderboard</button>
   <button class="tablinks" onclick="openTab(event, 'scoresLineplot')">Standings Over Time</button>
   <button class="tablinks" onclick="openTab(event, 'analysis')">Analysis</button>
-  <button class="tablinks" onclick="openTab(event, 'predictionsMapSection')">Nerd Stuff</button>
+  <button class="tablinks" onclick="openTab(event, 'updatesSection')">Updates</button>
   <button class="tablinks" onclick="openTab(event, 'Rules')">Rules</button>
   <button class="tablinks" onclick="openTab(event, 'Sponsors')">Sponsors</button>
 </div>
@@ -111,7 +111,7 @@
           </tr>
           <tr>
             <td id="drop_5"></td>
-            <td class="scoreEffect">?</td>
+            <td class="scoreEffect">Tim Scott</td>
           </tr>
           <tr>
             <td id="drop_4"></td>
@@ -132,7 +132,7 @@
         </table>
     </div>
   </div>
-  <div class="contestInfo" id="contestInfo" onclick="document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill')); this.classList.remove('highlightInstructions'); this.innerHTML='Last Updated October 31, 2023'">Last Updated October 31, 2023</div>
+  <div class="contestInfo" id="contestInfo" onclick="document.querySelectorAll('.leaderboardRow').forEach(d => d.classList.remove('orangeFill')); this.classList.remove('highlightInstructions'); this.innerHTML='Last Updated November 13, 2023'">Last Updated November 13, 2023</div>
 </div>
 <!-- end leaderboard -->
 
@@ -156,7 +156,61 @@
 <!-- end standing over time lineplot -->
 
 <!-- Prediction tsn-e chart -->
-<div id="predictionsMapSection" class="tabcontent">
+<div id="updatesSection" class="tabcontent">
+  <article>
+    <h1>How Are The Predictions Panning Out?</h1>
+    <h2 style="margin-top: 5vh;">Latest update</h2>
+    <div class="update">
+      <span class="updateHeader">Tim Scott exits the race</span>
+      <span class="date">November 12th, 2023</span>
+      <p>Senator Scott is the 5th  out of 12 initial candidates to drop out, bringing us close to the mid-point of this contest. Nearly half of contestants (48%) predicted Scott would leave the campaign trail in the middle of the pack (5th, 6th, 7th, or 8th drop out position). </p>
+    </div>
+    <h2 style="margin-top: 5vh;">Older updates</h2>
+    <div class="update">
+      <span class="updateHeader">Mike Pence is out</span>
+      <span class="date">October 28th, 2023</span>
+      <p>Pence is arguably the first "surprise drop out" of this contest - in fact, only a single contestant predicted he'd be among the first four candidates to exit the race. On average, contestants predicted Pence would stick around till the final three.</p>
+    </div>
+    <div class="update">
+      <span class="updateHeader">Larry Elder suspends his campaign</span>
+      <span class="date">October 26th, 2023</span>
+      <p>Elder is the third candidate to end their campaign after failing to gain traction. Like Suarez and Hurd, Elder was yet another common "early drop" pick, keeping most contestants predictions relatively accurate thus far.</p>
+    </div>
+    <div class="update">
+      <span class="updateHeader">Will Hurd ends his run</span>
+      <span class="date">October 9th, 2023</span>
+      <p>Hurd departed the race after failing to qualify for either of the first two primary debates. This didn't catch many contestants by surprise: Hurd was the most common choice for first, second, or third drop, with 64% of predictions marking him as one of the first three candidates to drop out. In fact, predictions agreed on Hurd more than every other candidate except DeSantis and Trump, both who are widely expected to run till the end.</p>
+    </div>
+    <div class="update">
+        <span class="updateHeader">Francis Suarez ends his campaign</span>
+        <span class="date">August 29th, 2023</span>
+        <p>Suarez is the first candidate to drop out, which was accurately predicted by 24% of contestants. Many others thought he would drop out second or third; a majority of contestants (56%) placed Suarez in their first three drop out slots.</p>
+    </div>
+  </article>
+</div>
+
+</div>
+<!-- end standing over time lineplot -->
+
+<!-- ANALYSIS & FUN FACTS -->
+<div id="analysis" class="tabcontent">
+  <div>
+      <article style="text-align:center;">
+        <h1>The Predictions</h1>
+        <p style="margin:2px;"><span class="instructions">Click</span><span class="mobile_instructions">Tap</span> any tile to view corresponding participants</p>
+      </article>
+      <div class="heatmapContainer">
+          <div id="heatmap"></div>
+          <div id="heatmapTooltip" class="tooltip"></div>
+      </div>
+      <div class="scrollOnTop" id="step1">
+        <h3>Donald Trump is widely predicted to win the nomination</h3>
+        Although projections are all over the place, there is near-universal agreement on one prediction: <span class="highlightText" id="trumpFact">82% of participants believe Trump will win the nomination</span>. By contrast, only 45% of participants accurately predicted Joe Biden would win the Democratic primary in the 2020 edition of this contest, as many participants were also confident in Bernie Sanders' (25%) and Elizabeth Warren's (23%) chances.</div>
+      <div class="scrollOnTop" id="step2">Meanwhile, Ron DeSantis is the second most selected pick for the predicted nominee, with only 10% of predictions. Additionally, <span class="highlightText" id="desantisFact">DeSantis is the most common pick for 'last to drop out,'</span> another prediction with widespread agreement.</div>
+      <div class="scrollOnTop" id="step3">On the other end of the spectrum, candidates Will Hurd, Larry Elder, and Francis Suarez are each notable common picks for first or otherwise early drops. 66% of participants predict one of these candidates will be the first to end their campaign.</div>
+      <div class="scrollOnTop" id="step4">Contest participants disagree the most over how long Vivik Ramaswamy will campaign - it's common to see him all over the place in guesses. Predictions also often disagree about Chris Christie, but to a lesser degree.</div>
+      <div class="scrollOnTop" style="margin-bottom:10vh; visibility:hidden;">Moving on...</div>
+  </div>
   <div style="text-align: center;">
     <h1>Predictions Similarity Map</h1>
     <article>
@@ -187,63 +241,6 @@
         </div>
     </div>
   </div>
-</div>
-
-</div>
-<!-- end standing over time lineplot -->
-
-<!-- ANALYSIS & FUN FACTS -->
-<div id="analysis" class="tabcontent">
-  <div>
-      <article style="text-align:center;">
-        <h1>The Predictions</h1>
-        <p style="margin:2px;"><span class="instructions">Click</span><span class="mobile_instructions">Tap</span> any tile to view corresponding participants</p>
-      </article>
-      <div class="heatmapContainer">
-          <div id="heatmap"></div>
-          <div id="heatmapTooltip" class="tooltip"></div>
-      </div>
-      <div class="scrollOnTop" id="step1">
-        <h3>Donald Trump is widely predicted to win the nomination</h3>
-        Although projections are all over the place, there is near-universal agreement on one prediction: <span class="highlightText" id="trumpFact">82% of participants believe Trump will win the nomination</span>. By contrast, only 45% of participants accurately predicted Joe Biden would win the Democratic primary in the 2020 edition of this contest, as many participants were also confident in Bernie Sanders' (25%) and Elizabeth Warren's (23%) chances.</div>
-      <div class="scrollOnTop" id="step2">Meanwhile, Ron DeSantis is the second most selected pick for the predicted nominee, with only 10% of predictions. Additionally, <span class="highlightText" id="desantisFact">DeSantis is the most common pick for 'last to drop out,'</span> another prediction with widespread agreement.</div>
-      <div class="scrollOnTop" id="step3">On the other end of the spectrum, candidates Will Hurd, Larry Elder, and Francis Suarez are each notable common picks for first or otherwise early drops. 66% of participants predict one of these candidates will be the first to end their campaign.</div>
-      <div class="scrollOnTop" id="step4">Contest participants disagree the most over how long Vivik Ramaswamy will campaign - it's common to see him all over the place in guesses. Predictions also often disagree about Chris Christie, but to a lesser degree.</div>
-      <div class="scrollOnTop" style="margin-bottom:10vh; visibility:hidden;">Moving on...</div>
-  </div>
-  <article>
-      <h1>How Are These Predictions Panning Out?</h1>
-      <div class="update">
-        <span class="updateHeader">Mike Pence is out</span>
-        <span class="date">October 28th, 2023</span>
-        <p>Pence is arguably the first "surprise drop out" of this contest - in fact, only a single contestant predicted he'd be among the first four candidates to exit the race. On average, contestants predicted Pence would stick around till the final three.</p>
-      </div>
-      <div class="update">
-        <span class="updateHeader">Larry Elder suspends his campaign</span>
-        <span class="date">October 26th, 2023</span>
-        <p>Elder is the third candidate to end their campaign after failing to gain traction. Like Suarez and Hurd, Elder was yet another common "early drop" pick, keeping most contestants predictions relatively accurate thus far.</p>
-      </div>
-      <div class="update">
-        <span class="updateHeader">Will Hurd ends his run</span>
-        <span class="date">October 9th, 2023</span>
-        <p>Hurd departed the race after failing to qualify for either of the first two primary debates. This didn't catch many contestants by surprise: Hurd was the most common choice for first, second, or third drop, with 64% of predictions marking him as one of the first three candidates to drop out. In fact, predictions agreed on Hurd more than every other candidate except DeSantis and Trump, both who are widely expected to run till the end.</p>
-      </div>
-      <div class="update">
-          <span class="updateHeader">Francis Suarez ends his campaign</span>
-          <span class="date">August 29th, 2023</span>
-          <p>Suarez is the first candidate to drop out, which was accurately predicted by 24% of contestants. Many others thought he would drop out second or third; a majority of contestants (56%) placed Suarez in their first three drop out slots.</p>
-      </div>
-      <!-- <div class="update">
-        <span class="updateHeader">Will Hurd ends his run</span>
-        <span class="date">October 9th, 2023</span>
-        <p>With Tim Scott departing the race, just six candidates remain: Christie, Ramaswamy, Haley, Pence, DeSantis, and Trump. Just 12% of participants accurately predicted these individuals would be the final six candidates still running.</p>
-      </div> -->
-      <!-- <div class="update">
-        <span class="updateHeader">Down to Haley, Pence, DeSantis, and Trump</span>
-        <span class="date">May 2nd, 2024</span>
-        <p>Only four candidates are still actively campaigning after Ramaswamy's depature. 33% and 46% of contest participants accurately predicted Haley and Pence would be among the final four candidates; compare this to the 87% and 97% of contestants who made the same prediction for DeSantis and Trump, respectively.</p>
-      </div> -->
-  </article>
 </div>
 <!-- end analysis and fun facts -->
 
@@ -427,7 +424,7 @@
 </div>
 <!-- end sponsors -->
   
-<script src='js/script.js?v=5'></script>
+<script src='js/script.js?v=6'></script>
 
 </body>
 </html>

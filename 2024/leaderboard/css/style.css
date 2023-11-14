@@ -19,7 +19,7 @@ body {
   text-align: right;
 }
 
-#Leaderboard, #scoresLineplot {
+#Leaderboard, #scoresLineplot, #updatesSection {
   margin-top: 50px;
 }
 
@@ -339,6 +339,7 @@ Predictions Map CSS
 
 .nerdColumn {
   float: left;
+  text-align: left;
 }
 
 /* Clear floats after the columns */
