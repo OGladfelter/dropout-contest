@@ -111,7 +111,7 @@ function calculateKendallTauDistance(listA, listB){
 // }
 
 function readData() { 
-  d3.csv("data/submissions2024.csv", d3.autoType).then(function(data) {
+  d3.csv("data/submissions2024.csv?v=3", d3.autoType).then(function(data) {
       const rankColorScale = d3.scaleLinear().domain([0, data.length]).range(["#333399","#8181df"]); // row color
       // compute performance metrics
       data.forEach((d, i) => {
@@ -885,7 +885,7 @@ function deHighlightTile(id, colorScale) {
 
 function main() {
   // determine the drop out order by reading from csv file
-  d3.csv("data/droppedCandidates.csv").then(function(droppedCandidatesList) {
+  d3.csv("data/droppedCandidates.csv?v=3").then(function(droppedCandidatesList) {
     droppedCandidatesList.columns.forEach(d => dropOutOrder.push(d));
 
     // once that's done, read submission data and populate all tabs
