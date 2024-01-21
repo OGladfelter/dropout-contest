@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9MC8LMQVMV"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9MC8LMQVMV');
+  </script>
+
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta charset="UTF-8">
+  <title>2024 Drop Out Contest | Info</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <!-- Favicons -->
+	<link rel="apple-touch-icon" sizes="180x180" href="../../../favicon/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../../favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../../favicon/favicon-16x16.png">
+    <link rel="manifest" href="../favicon/site.webmanifest">
+
+  <!-- Facebook Opengraph -->
+  <meta property="og:url" content="https://cultureplot.com/drop-out-contest/2024/about/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="2024 Republican Drop Out Prediction Contest" />
+  <meta property="og:description" content="About The Contest"/>
+
+  <meta property="og:image" content="https://cultureplot.com/img/candidate-headshots.png" />
+  <meta property="og:image:alt" content="2024 Republican Drop Out Prediction Contest" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="677" />
+  <meta property="og:image:height" content="583" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://cultureplot.com/img/candidate-headshots.png" />
+  <meta name="twitter:image:alt" content="2024 Republican Drop Out Prediction Contest" />
+  <meta name="twitter:description" content="About The Contest"/>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://kit.fontawesome.com/788718e8f2.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="tabs">
+  <button class="tablinks" onclick="openTab(event, 'FAQs')">FAQs</button>
+  <button class="tablinks" onclick="openTab(event, 'Rules')">Rules</button>
+</div>
+
+<!-- RULES & CONTEST INFO -->
+<div id="Rules" class="tabcontent">
+  <h2>🏆 Prizes 🏆</h2>
+  <h3 style='text-align: center; margin-bottom: 10px;'>1st Place: Apple iPad</h3>
+  <h3 style='text-align: center; margin-bottom: 10px;'>2nd Place: $100</h3>
+  <h3 style='text-align: center;'>3rd Place: $25</h3>
+  <h2>Contest Entry</h2>
+  <article>
+    <p>1. One entry per player</p>
+    <p>2. The submission deadline is August 23rd, 2023</p>
+    <p>3. Any candidates who enter or exit the primary during the submission window of August 10th - 23rd will be ignored in contest scoring; this prevents advantaging last-minute entries</p>
+    <p>4. The contest will conclude and awards will be distributed no later than the Republican National Convention in July of 2024</p>
+  </article>
+  <h2 id="scoring">Scoring</h2>
+  <article>
+      <p>The player with the lowest Kendall tau distance wins.</p>
+      <p>Kendall tau distance compares how similar any two ordered lists are: the number of <i>adjacent</i> swaps needed to make a player's prediction match the real order is their Kendall tau distance. For example, let's say the 2020 Democratic primary had just four candidates: Joe Biden, Bernie Sanders, Elizabeth Warren, and Amy Klobuchar. I may have predicted they'd drop out in this order:</p>
+      <div class="example_row" style="width:60%;">
+        <div style="padding:5px; width:60%;">
+          <table>
+            <tr><td>Eventual nominee</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>1st drop out</td></tr>
+          </table>
+        </div>
+        <div class="example_column">
+          <table class="example_table">
+            <tr><td>Sanders</td></tr>
+            <tr><td>Biden</td></tr>
+            <tr><td>Warren</td></tr>
+            <tr><td>Klobuchar</td></tr>
+          </table>
+        </div>
+      </div>
+      <p>In that case, my Kendall tau distance would be 1, because just one swap (Sanders & Biden) would be needed to make my prediction match the actual outcome:</p>
+      <div class="example_row">
+        <div class="example_column">
+          <table class="example_table">
+            <tr><td>Sanders</td></tr>
+            <tr><td>Biden</td></tr>
+            <tr><td>Warren</td></tr>
+            <tr><td>Klobuchar</td></tr>
+          </table>
+        </div>
+        <div class="arrow_container">
+          <span>&rarr;</span>
+        </div>
+        <div class="example_column">
+          <table class="example_table">
+            <tr><td>Biden</td></tr>
+            <tr><td>Sanders<sup>1</sup></td></tr>
+            <tr><td>Warren</td></tr>
+            <tr><td>Klobuchar</td></tr>
+          </table>
+        </div>
+      </div>
+      <p>By contrast, had my predictions been a complete reversal of reality, my Kendall tau distance would be 6, due to needing six swaps to correct my list:</p>
+  </article>
+  <div class="example_row">
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Klobuchar</td></tr>
+        <tr><td>Warren</td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Warren</td></tr>
+        <tr><td>Klobuchar<sup>1</sup></td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Warren</td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Klobuchar<sup>2</sup></td></tr>
+        <tr><td>Biden</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Warren</td></tr>
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+        <tr><td>Klobuchar<sup>3</sup></td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Sanders</td></tr>
+        <tr><td>Warren<sup>4</sup></td></tr>
+        <tr><td>Biden</td></tr>
+        <tr><td>Klobuchar</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Sanders</td></tr>
+        <tr><td>Biden</td></tr>
+        <tr><td>Warren<sup>5</sup></td></tr>
+        <tr><td>Klobuchar</td></tr>
+      </table>
+    </div>
+    <div class="arrow_container">
+      <span>&rarr;</span>
+    </div>
+    <div class="example_column">
+      <table class="example_table">
+        <tr><td>Biden</td></tr>
+        <tr><td>Sanders<sup>6</sup></td></tr>
+        <tr><td>Warren</td></tr>
+        <tr><td>Klobuchar</td></tr>
+      </table>
+    </div>
+  </div>
+  <!-- <h2>The Leaderboard</h2>
+  <article>
+      <p>A second metric you may be interested in is your accuracy percentage: how close you are to a perfect prediction, in other words.</p>
+      <p>A player's accuracy percentage is derived by first converting your Kendall tau distance to a number between 0-1 using the formula Kendall tau distance / (N candidates * (N candidates - 1) / 2.</p>
+      <p>In the case of a normalized Kendall tau distance, 0 means perfectly predicting reality and 1 means perfectly predicting the opposite of reality.</p>
+      <p>These accuracy percentage is then calculated using the formula (100 - 100 * your normalized Kendall tau distance).</p>
+      <p>Because accuracy scores are much easier to read and interpret to understand, they will be shown on the leaderboard instead of the Kendall tau distances. But don't worry: players cannot win by one metric and lose by the other.</p>
+  </article> -->
+  <h2>Tie Breaker</h2>
+  <article>
+      <p>Final scoring will be calculated once the final drop out order is known. Ties will be broken by omitting the first candidate who dropped out and rerunning the scoring algorithm. The player with the lower Kendall tau distance from that will be awarded the better final placement. If their Kendall tau distances continue to match, this process will be repeated iteratively until we reach a decisive outcome.</p>
+      <p>In other words, ties are broken by determining which player more accurately predicted the drop out positions of the final N - X candidates, where N is the number of candidates and X is the number of early-drop-out candidates needed to omit in order to break the tie. So accurate predictions closer to the end of the drop out order are more important than correctly guessing the earlier drop outs for a tie breaker.</p>
+  </article>
+  <h2>Brokered Convention</h2>
+  <article>
+      <p>A brokered convention occurs when no single candidate wins a majority of delegates through the standard primary process. In this rare scenario, we could end up with multiple candidates actively campaigning right up to the end.</p>
+      <p>Usually a brokered convention has multiple rounds of votes and revotes. A candidate might suspend their campaign in between these votes. In this event, their withdrawl from the primary is considered a standard drop out for the purposes of this contest and they are simply added to their place in the drop out order.</p>
+      <p>However, a candidate may also decide to stick around all the way to the final convention vote. In this case, their campaign is considered over as soon as someone else wins the nomination. If multiple candidates meet this fate, the candidate receiving fewer final delegates is considered the earlier drop out. These rules would apply to protest candidates whom refuse to concede during the primary, even in the absence of a brokered convention.</p>
+  </article>
+  <h2>The “Gary Hart” Affair</h2>
+  <article>
+      <p>In the rare event that a candidate leaves then re-enters the primary, the scoring algorithm will only account for their <i>first</i> drop out - unless they go on to win the nomination, in which case the scoring algorithm will consider the candidate as never having dropped out.</p>
+  </article>
+</div>
+<!-- end rules & contest info -->
+
+<!-- FAQs -->
+<div id="FAQs" class="tabcontent" style="display:block;">
+  <article>
+      <h2>Q&A with contest host Oliver Gladfelter</h2>
+      <p><b>What is this?</b></p>
+      <p>A contest in which participants predict how a presidential primary might play out.</p>
+      <p>The concept goes back to when Kamala Harris surprised the general public by suspending her campaign in December of 2019. Sensing there would be more unexpected moments, I put together a simple survey offering amateur political pundits a chance to prove their skills.</p>
+      <p>That form became the <a href="https://cultureplot.com/dem-drop-out-contest/" target="_blank">2020 Democratic Primary Drop Out Predictions contest</a> (four years later and I’m still searching for a catchier title). Running that contest was so fun, I couldn’t resist the opportunity to host the 2024 Republican Primary Drop Out Predictions contest (four hours later and I’m still searching for a catchier title).</p>
+  
+      <p><b>Why is this?</b></p>
+      <p>Purely for fun. Think March Madness, but for political geeks. The contest doesn’t make money, doesn’t collect data for third parties, doesn’t take itself too seriously. It really just gives everyone a chance to play Nostradamus and brag to friends and family when they see their name at the top of the leaderboard.</p>
+
+      <p><b>Who is this?</b></p>
+      <p>This is <a href="https://www.linkedin.com/in/oliver-gladfelter/" target="_blank">Oliver</a>, who’s this?</p>
+      <p>The contest lives on cultureplot.com, which (sadly) isn’t a business, but rather just my blog. Full disclosure: when you see Cultureplot listed as a contest sponsor, that’s just me trying to look fancy. 😅</p>
+      <p>This competition is also fortunate to be sponsored by two small businesses: Bellwether Analytics of Northbrook, IL and Scioto Analysis of Columbus, OH.</p>
+      
+      <p><b>What are the prizes?</b></p>
+      <p>An iPad for first place, $100 for second place, and $50 for third place. $50 gift certificates will also be awarded to two participants chosen at random (I’ll re-roll if I land on myself, I promise!!).</p>
+      
+      <p><b>What’s the entry fee?</b></p>
+      <p>$0.00. There is no cost to enter; simply fill out the entry form and you’re in.</p>
+      
+      <p><b>Then how does this contest make money?</b></p>
+      <p>It doesn’t. 😄 But neither do any of my other hobbies. Hosting the contest is just a lot of fun.</p>
+      
+      <p><b>You’re going to sell my email to marketers, right?</b></p>
+      <p>Honestly, I don’t know how to do that even if I wanted to. But no, your email is required only so we can contact you if you win a prize. We also send periodic contest updates, which you can opt out of (although we hope you don’t, they’re really neat).</p>
+      
+      <p><b>What about my other data?</b></p>
+      <p>The only other information we ask for is your name and your prediction. I’m the only one with access to the entry forms - they aren’t shared with anyone else, not even the sponsors. In fact, I’d hide them under my mattress if I could!</p>
+      <p>Predictions will be posted on the contest website, but you can obscure them through an alias if you’d like. I also aggregate the prediction data and use them to write fun facts. Examples from the 2020 contest include <i>“Participants disagree the most over Cory Booker”</i> and <i>“Tulsi Gabbard is the fifth candidate still running, defying 90% of expectations.”</i></p>
+      <p>I also made a cool heatmap:</p>
+  </article>
+      <div style="text-align:center;">
+        <img src="img/heatmap.png" width="50%;">
+      </div>
+  <article>
+      <p>In other words: nerd stuff.</p>
+      
+      <p><b>Ok then what’s the catch? What do you get out of it? What do your sponsors get out of it?</b></p>
+      <p>I get to run an interesting contest <i>and</i> have an excuse to email my friends every time my predictions come true?? Yes please! You’ve most likely deduced I’m both a political geek and a data nerd; running this contest simply scratches both itches.</p>
+      <p>Now imagine being overly into political data, having editorial direction over a political predictions contest, <i>and</i> not having to do any coding! Like if you got to choose the font style for next year's March Madness leaderboard. C’mon, you know you’d pitch in some prize money for that kind of power.</p>
+
+      <p><b>Can I still enter if I’m not a United States citizen, not registered to vote, or not planning to vote in the Republican primary?</b></p>
+      <p>The day we’re required to register in order to make predictions is the day I finally move to Antarctica. Everyone is welcome to participate in this contest. </p>
+
+  </article>  
+</div>
+<!-- end FAQs -->
+
+<script>
+  function openTab(evt, tabID) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabID).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+
+</body>
+</html>
