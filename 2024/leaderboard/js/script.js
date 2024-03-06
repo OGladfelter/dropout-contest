@@ -179,6 +179,12 @@ function addRow(rank, name, kendallDistance, accuracy, rowColor, d) {
         });
         nameCell.style.fontWeight = 'bold';
         nameCell.style.color = 'cyan';
+    } else if (name == "Katie R") {
+      nameCell.innerHTML += " &#129351;";
+    } else if (name == "Keerit K") {
+      nameCell.innerHTML += " &#129352;";
+    } else if (name == "Karla A") {
+      nameCell.innerHTML += " &#129353;";
     }
 
     row.style.backgroundColor = rowColor;
